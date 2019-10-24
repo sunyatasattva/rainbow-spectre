@@ -1,0 +1,7 @@
+.color-picker-container {
+  background-image: conic-gradient(red, yellow, green, blue, magenta, red);
+  border-radius: 100%;
+  border: 1px solid white;
+  height: 250px;
+  width: 250px;
+}
