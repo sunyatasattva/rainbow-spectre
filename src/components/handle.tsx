@@ -1,9 +1,6 @@
 import '../styles/handle.css';
 import React from 'react';
 
-const handleRotation = Symbol();
-const toggleMouseDown = Symbol();
-
 interface State {
   isMouseDown: boolean;
   radianAngle: number,
@@ -17,7 +14,7 @@ export default class Handle extends React.Component<{}, State> {
     radianAngle: 0,
   };
 
-  [handleRotation](e: MouseEvent) {
+  private handleRotation(e: MouseEvent) {
     if (!this.state.isMouseDown) return;
     if (!this.container.current) return;
 
@@ -32,18 +29,18 @@ export default class Handle extends React.Component<{}, State> {
     this.setState({ radianAngle });
   }
 
-  [toggleMouseDown]() {
+  private toggleMouseDown() {
     this.setState({ isMouseDown: false });
   }
 
   componentDidMount() {
-    document.addEventListener('mouseup', this[toggleMouseDown].bind(this));
-    document.addEventListener('mousemove', this[handleRotation].bind(this));
+    document.addEventListener('mouseup', this.toggleMouseDown.bind(this));
+    document.addEventListener('mousemove', this.handleRotation.bind(this));
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mouseup', this[toggleMouseDown].bind(this));
-    document.removeEventListener('mousemove', this[handleRotation].bind(this));
+    document.removeEventListener('mouseup', this.toggleMouseDown.bind(this));
+    document.removeEventListener('mousemove', this.handleRotation.bind(this));
   }
 
   render() {
