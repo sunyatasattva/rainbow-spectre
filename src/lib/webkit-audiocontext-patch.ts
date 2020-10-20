@@ -8,8 +8,6 @@
  * @see https://github.com/meszaros-lajos-gyorgy/meszaros-lajos-gyorgy.github.io/blob/master/microtonal/monochord/js/webkit-audio-context-patch.js
  */
 
-"use strict";
-
 import { WaveType } from "./types";
 
 declare global {
@@ -41,7 +39,7 @@ export default function() {
 		!window.hasOwnProperty("AudioContext")
 		&& window.hasOwnProperty("webkitAudioContext")
 	) {
-		AudioContext = (<any>window).webkitAudioContext;
+		AudioContext = (window as any).webkitAudioContext;
 		OscillatorNode = window.OscillatorNode;
 		
 		if( !AudioContext.hasOwnProperty("createGain") ) {
