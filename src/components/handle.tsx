@@ -1,17 +1,23 @@
 import '../styles/handle.css';
 import React from 'react';
+import hexToHsl from 'hex-to-hsl';
 
-interface State {
-  isMouseDown: boolean;
-  radianAngle: number,
+interface Props {
+  initialColor: string;
+  onChange: (value: number) => any;
 }
 
-export default class Handle extends React.Component<{}, State> {
+interface State {
+  angle: number;
+  isMouseDown: boolean;
+}
+
+export default class Handle extends React.Component<Props, State> {
   private container = React.createRef<HTMLDivElement>();
 
   state = {
+    angle: hexToHsl(this.props.initialColor)[0],
     isMouseDown: false,
-    radianAngle: 0,
   };
 
   private handleRotation(e: MouseEvent) {
@@ -26,7 +32,15 @@ export default class Handle extends React.Component<{}, State> {
     }
 
     const radianAngle = (Math.atan2(delta.y, delta.x) - Math.PI / 2) * -1;
-    this.setState({ radianAngle });
+    this.setState({ angle: this.radiansToDegrees(radianAngle) });
+
+    this.props.onChange(this.state.angle);
+  }
+
+  private radiansToDegrees(x: number) {
+    const theta = x * 180 / Math.PI;
+
+    return theta < 0 ? theta + 360 : theta;
   }
 
   private toggleMouseDown() {
@@ -50,10 +64,16 @@ export default class Handle extends React.Component<{}, State> {
         onMouseDown={() => this.setState({ isMouseDown: true })}
         ref={this.container}
         style={{
-          transform: `rotate(${this.state.radianAngle}rad)`,
+          transform: `rotate(${this.state.angle}deg)`,
         }}
       >
-        <span className="handle"></span>
+        <span
+          className="handle"
+          style={{
+            backgroundColor: `hsl(${this.state.angle}deg, 100%, 50%)`
+          }}
+        >
+        </span>
       </div>
     );
   }
