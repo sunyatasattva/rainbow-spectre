@@ -1,0 +1,30 @@
+.infobox {
+  border: 1px solid #333333;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: Judson, Georgia, serif;
+  font-weight: 100;
+  justify-content: space-around;
+  padding: 10px;
+  text-align: center;
+  z-index: 1;
+  width: 483px;
+  height: 300px;
+
+  .interval {
+    font-size: 128px;
+    text-transform: uppercase;
+    height: 185px;
+  }
+
+  .interval-name {
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
+
+    &.unknown-interval {
+      opacity: 0;
+    }
+  }
+}
+
