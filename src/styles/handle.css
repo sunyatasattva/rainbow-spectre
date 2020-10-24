@@ -1,7 +1,7 @@
 .handle {
   background-color: white;
   border-radius: 100%;
-  border: 1px solid black;
+  border: 2px solid black;
   cursor: pointer;
   display: inline-block;
   pointer-events: auto;
@@ -12,7 +12,6 @@
 .handle-container {
   border-radius: 100%;
   pointer-events: none;
-  height: 250px;
-  width: 250px;
   position: absolute;
+  z-index: 1;
 }

@@ -1,6 +1,9 @@
 .core-container {
   overflow: visible;
   width: 200px;
+  position: absolute;
+  left: calc(50% - 100px);
+  top: calc(50% - 100px);
 }
 
 .core .fish {
