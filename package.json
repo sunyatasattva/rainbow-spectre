@@ -9,6 +9,7 @@
     "@types/react-dom": "^16.9.0",
     "frac": "^1.1.2",
     "hex-to-hsl": "^1.0.2",
+    "hsl-to-hex": "^1.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1",

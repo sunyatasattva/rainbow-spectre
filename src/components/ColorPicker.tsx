@@ -1,6 +1,7 @@
 import React from "react";
-import Handle from "./handle";
+import Handle from "./Handle";
 import "../styles/color-picker.css";
+import hslToHex from "hsl-to-hex";
 
 interface Props {
   onChange?: (colors: string[]) => any;
@@ -14,6 +15,11 @@ interface State {
 }
 
 export default class ColorPicker extends React.Component<Props, State> {
+  static defaultProps = {
+    radiusInner: 0,
+    radiusOuter: 250,
+  }
+
   state = {
     value: this.props.value
   }
@@ -21,17 +27,16 @@ export default class ColorPicker extends React.Component<Props, State> {
   private canvas = React.createRef<HTMLCanvasElement>();
 
   private handleChange = (angle: number, i: number) => {
-    const newColorString = `hsl(${Math.round(angle)}deg, 100%, 50%)`;
     const newVal = [...this.state.value];
-    newVal[i] = newColorString;
+    newVal[i] = hslToHex(Math.round(angle), 100, 50);
 
     this.setState({ value: newVal });
     this.props.onChange && this.props.onChange(this.state.value);
   }
 
   private renderColorWheel(canvas: HTMLCanvasElement) {
-    const radiusOuter = this.props.radiusOuter || 250;
-    const radiusInner = this.props.radiusInner || 0;
+    const radiusOuter = this.props.radiusOuter!;
+    const radiusInner = this.props.radiusInner!;
     const half = radiusOuter / 2;
     const radius = Math.sqrt(2) * half;
     const deg = Math.PI / 180;
@@ -79,6 +84,7 @@ export default class ColorPicker extends React.Component<Props, State> {
           key={i}
           initialColor={color}
           onChange={(angle) => this.handleChange(angle, i)}
+          parentSize={this.props.radiusOuter!}
         />
       );
     });
@@ -92,9 +98,16 @@ export default class ColorPicker extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="color-picker-container">
+      <div 
+        className="color-picker-container"
+        style={{
+          width: `${this.props.radiusOuter}px`,
+          height: `${this.props.radiusOuter}px`,
+        }}
+      >
         <canvas ref={this.canvas} />
         {this.renderHandles()}
+        {this.props.children}
       </div>
     );
   }

@@ -1,3 +1,12 @@
+import hexToHsl from "hex-to-hsl";
+
+export function calculateColorsRatio(a: string, b: string) {
+  const [aHue] = hexToHsl(a);
+  const [bHue] = hexToHsl(b);
+
+  return (aHue + 360) / (bHue + 360);
+}
+
 /**
   * Checks if a number is a power of two
   *
