@@ -1,10 +1,11 @@
-import '../styles/handle.css';
-import React from 'react';
-import hexToHsl from 'hex-to-hsl';
+import "../styles/handle.css";
+import React from "react";
+import hexToHsl from "hex-to-hsl";
 
 interface Props {
   initialColor: string;
   onChange: (value: number) => any;
+  parentSize: number // Perhaps this could be calculated instead?
 }
 
 interface State {
@@ -64,6 +65,8 @@ export default class Handle extends React.Component<Props, State> {
         onMouseDown={() => this.setState({ isMouseDown: true })}
         ref={this.container}
         style={{
+          width: `${this.props.parentSize}px`,
+          height: `${this.props.parentSize}px`,
           transform: `rotate(${this.state.angle}deg)`,
         }}
       >
