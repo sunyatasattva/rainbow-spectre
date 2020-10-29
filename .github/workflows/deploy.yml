@@ -21,7 +21,7 @@ jobs:
       - name: Deploy
         uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
-          ftp-server: ftp://ftp.cluster007.hosting.ovh.net/rainbow
-          ftp-username: ${{ secrets.ftp_user }}
-          ftp_password: ${{ secrets.ftp_password }}
+          ftp-server: ftp://ftp.cluster007.hosting.ovh.net/asmi/rainbow
+          ftp-username: ${{ secrets.FTP_USER }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
           local-dir: build
