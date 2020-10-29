@@ -1,7 +1,7 @@
 import React from "react";
+import hslToHex from "hsl-to-hex";
 import Handle from "./Handle";
 import "../styles/color-picker.css";
-import hslToHex from "hsl-to-hex";
 
 interface Props {
   onChange?: (colors: string[]) => any;
@@ -26,7 +26,7 @@ export default class ColorPicker extends React.Component<Props, State> {
 
   private canvas = React.createRef<HTMLCanvasElement>();
 
-  private handleChange = (angle: number, i: number) => {
+  private handleChange(angle: number, i: number) {
     const newVal = [...this.state.value];
     newVal[i] = hslToHex(Math.round(angle), 100, 50);
 

@@ -1,7 +1,7 @@
 import React from "react";
-import Sound from "../lib/tones";
 import "../styles/Core.css";
-import { calculateColorsRatio } from "lib/utils";
+import { calculateColorsRatio, playColorsInterval } from "lib/utils";
+import { useOptions } from "../hooks/useGlobalState";
 
 interface CoreProps {
   baseFrequency?: number;
@@ -10,13 +10,10 @@ interface CoreProps {
 
 export default function Core(props: CoreProps) {
   const [leftColor, rightColor] = props.colors;
-  const f = props.baseFrequency || 220;
+  const [{ baseFrequency }] = useOptions();
 
   function playInterval() {
-    const ratio = calculateColorsRatio(leftColor, rightColor);
-  
-    Sound.play(f, { volume: 0.33 });
-    Sound.play(f * (1 / ratio), { volume: 0.33 });
+    playColorsInterval(leftColor, rightColor, baseFrequency);
   }
 
   return (
@@ -46,7 +43,7 @@ export default function Core(props: CoreProps) {
             fill={leftColor}
           />
           <g className="frequency-container">
-            <text>{f} Hz</text>
+            <text>{baseFrequency} Hz</text>
           </g>
         </g>
         <g className="fish right-fish">
@@ -58,7 +55,7 @@ export default function Core(props: CoreProps) {
           />
           <g className="frequency-container">
             <text>{Math.round(
-              f * (1 / calculateColorsRatio(leftColor, rightColor))
+              baseFrequency * (1 / calculateColorsRatio(leftColor, rightColor))
             )} Hz</text>
           </g>
         </g>

@@ -1,10 +1,22 @@
 import hexToHsl from "hex-to-hsl";
+import Sound from "./tones";
 
 export function calculateColorsRatio(a: string, b: string) {
   const [aHue] = hexToHsl(a);
   const [bHue] = hexToHsl(b);
 
-  return (aHue + 360) / (bHue + 360);
+  return 1 + Math.abs(degreesToRad(bHue - aHue) / (2 * Math.PI));
+}
+
+export function degreesToRad(n: number) {
+  return (n * Math.PI) / 180;
+}
+
+export function playColorsInterval(a: string, b: string, f: number) {
+  const ratio = calculateColorsRatio(a, b);
+  
+  Sound.play(f, { volume: 0.33 });
+  Sound.play(f * (1 / ratio), { volume: 0.33 });
 }
 
 /**

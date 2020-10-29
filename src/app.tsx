@@ -1,14 +1,36 @@
-import React, { useState } from "react";
+import { useColors } from "hooks/useGlobalState";
+import React, { useEffect } from "react";
 import ColorPicker from "./components/ColorPicker"
 import Core from "./components/Core";
 import Infobox from "./components/Infobox";
+import OptionsBox from "./components/OptionsBox";
+import { useOptions } from "./hooks/useGlobalState";
+import { playColorsInterval } from "./lib/utils";
+import EventBus from "./lib/EventBus";
 import logo from "./images/logo.svg";
 import "./styles/app.scss";
 
-const defaultColors: [string, string] = ["#ff0000", "#00ffff"];
+export const bus = new EventBus<{
+  angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
+  angleCommit: (deg: number) => void;
+}>();
 
 function App() {
-  const [colors, setColors] = useState<[string, string]>(defaultColors);
+  const [colors, setColors] = useColors();
+  const [options] = useOptions();
+
+  function handleAngleChange() {
+    const [a, b] = colors;
+    if(options.autoplay) playColorsInterval(a, b, options.baseFrequency);
+  }
+
+  useEffect(() => {
+    bus.on("angleCommit", handleAngleChange);
+
+    return () => {
+      bus.off("angleCommit", handleAngleChange);
+    }
+  }, [colors, options]);
 
   return (
     <div className="app">
@@ -28,6 +50,7 @@ function App() {
           <Core colors={colors} />
         </ColorPicker>
         <Infobox colors={colors} />
+        <OptionsBox />
       </main>
       <footer className="app-footer"></footer>
     </div>

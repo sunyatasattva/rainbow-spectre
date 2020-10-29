@@ -1,6 +1,7 @@
 import "../styles/handle.css";
 import React from "react";
 import hexToHsl from "hex-to-hsl";
+import { bus } from "../app";
 
 interface Props {
   initialColor: string;
@@ -21,7 +22,12 @@ export default class Handle extends React.Component<Props, State> {
     isMouseDown: false,
   };
 
-  private handleRotation(e: MouseEvent) {
+  private handleMouseDown = () => {
+    document.addEventListener('mouseup', this.toggleMouseDown);
+    document.addEventListener('mousemove', this.handleRotation);
+  }
+
+  private handleRotation = (e: MouseEvent) => {
     if (!this.state.isMouseDown) return;
     if (!this.container.current) return;
 
@@ -33,9 +39,12 @@ export default class Handle extends React.Component<Props, State> {
     }
 
     const radianAngle = (Math.atan2(delta.y, delta.x) - Math.PI / 2) * -1;
-    this.setState({ angle: this.radiansToDegrees(radianAngle) });
+    const oldVal = this.state.angle;
+    const newVal = this.radiansToDegrees(radianAngle);
+    this.setState({ angle: newVal });
 
     this.props.onChange(this.state.angle);
+    bus.emit("angleChange", { oldVal, newVal });
   }
 
   private radiansToDegrees(x: number) {
@@ -44,18 +53,19 @@ export default class Handle extends React.Component<Props, State> {
     return theta < 0 ? theta + 360 : theta;
   }
 
-  private toggleMouseDown() {
+  private toggleMouseDown = () => {
     this.setState({ isMouseDown: false });
+
+    document.removeEventListener('mouseup', this.toggleMouseDown);
+    document.removeEventListener('mousemove', this.toggleMouseDown);
+
+    bus.emit("angleCommit", this.state.angle);
   }
 
   componentDidMount() {
-    document.addEventListener('mouseup', this.toggleMouseDown.bind(this));
-    document.addEventListener('mousemove', this.handleRotation.bind(this));
-  }
+    if(!this.container.current) return;
 
-  componentWillUnmount() {
-    document.removeEventListener('mouseup', this.toggleMouseDown.bind(this));
-    document.removeEventListener('mousemove', this.handleRotation.bind(this));
+    this.container.current.addEventListener('mousedown', this.handleMouseDown.bind(this));
   }
 
   render() {

@@ -1,7 +1,7 @@
 import React from "react";
 import Switch from "react-switch";
 import camelCase from "lodash.camelcase";
-import { Options } from "hooks/useOptions";
+import { Options } from "hooks/useGlobalState";
 
 interface Props {
   label: string;
