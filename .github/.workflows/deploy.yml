@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master, staging ]
+  pull_request:
+    branches: [ master, staging ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: NPM install
+        run: yarn install
+      - name: Build app
+        run: yarn build
+      - name: Deploy
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+        with:
+          ftp-server: ftp://ftp.cluster007.hosting.ovh.net/rainbow
+          ftp-username: ${{ secrets.ftp_user }}
+          ftp_password: ${{ secrets.ftp_password }}
+          local-dir: build
