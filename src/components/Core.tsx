@@ -1,7 +1,7 @@
 import React from "react";
-import hexToHsl from "hex-to-hsl";
-import Sound from "../lib/tones";
 import "../styles/Core.css";
+import { calculateColorsRatio, playColorsInterval } from "lib/utils";
+import { useOptions } from "../hooks/useGlobalState";
 
 interface CoreProps {
   baseFrequency?: number;
@@ -10,20 +10,10 @@ interface CoreProps {
 
 export default function Core(props: CoreProps) {
   const [leftColor, rightColor] = props.colors;
-  const f = props.baseFrequency || 440;
-
-  function calculateColorsRatio() {
-    const [aHue] = hexToHsl(leftColor);
-    const [bHue] = hexToHsl(rightColor);
-
-    return (aHue + 360) / (bHue + 360);
-  }
+  const [{ baseFrequency }] = useOptions();
 
   function playInterval() {
-    const ratio = calculateColorsRatio();
-  
-    Sound.play(f, { volume: 0.33 });
-    Sound.play(f * ratio, { volume: 0.33 });
+    playColorsInterval(leftColor, rightColor, baseFrequency);
   }
 
   return (
@@ -53,7 +43,7 @@ export default function Core(props: CoreProps) {
             fill={leftColor}
           />
           <g className="frequency-container">
-            <text>{f} Hz</text>
+            <text>{baseFrequency} Hz</text>
           </g>
         </g>
         <g className="fish right-fish">
@@ -64,7 +54,9 @@ export default function Core(props: CoreProps) {
             fill={rightColor}
           />
           <g className="frequency-container">
-            <text>{Math.round(f * calculateColorsRatio())} Hz</text>
+            <text>{Math.round(
+              baseFrequency * (1 / calculateColorsRatio(leftColor, rightColor))
+            )} Hz</text>
           </g>
         </g>
       </svg>

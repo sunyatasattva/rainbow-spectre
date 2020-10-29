@@ -1,3 +1,30 @@
+import hexToHsl from "hex-to-hsl";
+import Sound from "./tones";
+
+export function calculateColorsRatio(a: string, b: string) {
+  const [aHue] = hexToHsl(a);
+  const [bHue] = hexToHsl(b);
+
+  return 1 + Math.abs(degToRad(bHue - aHue) / (2 * Math.PI));
+}
+
+export function degToRad(n: number) {
+  return (n * Math.PI) / 180;
+}
+
+export function playColorsInterval(a: string, b: string, f: number) {
+  const ratio = calculateColorsRatio(a, b);
+  
+  Sound.play(f, { volume: 0.33 });
+  Sound.play(f * (1 / ratio), { volume: 0.33 });
+}
+
+export function radToDeg(x: number) {
+  const theta = x * 180 / Math.PI;
+
+  return theta < 0 ? theta + 360 : theta;
+}
+
 /**
   * Checks if a number is a power of two
   *

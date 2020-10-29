@@ -1,4 +1,9 @@
 /**
+ * [`hue`, `saturation`, `lightness`]
+ */
+export type HSLColor = [number, number, number];
+
+/**
   * @property  {number}   attack  The attack duration of the sound (in secs). See {@link Sound#createEnvelope}
   * @property  {number}   decay   The decay duration of the sound (in secs). See {@link Sound#createEnvelope}
   * @property  {number}   maxVolume The peak amplitude of the sound.
@@ -39,6 +44,7 @@ export interface SoundOptions {
 	sustain: number;
 	type: WaveType;
   volume: number;
+  weigh: boolean;
 }
 
 export type WaveType = "sine" | "square" | "sawtooth" | "triangle" | "custom";

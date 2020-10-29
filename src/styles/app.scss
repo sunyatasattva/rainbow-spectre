@@ -1,0 +1,47 @@
+.app {
+  background-color: #222;
+  color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+
+  .app-header {
+    background-color: #262626;
+    border-bottom: 1px solid #1f1f1f;
+    margin-bottom: 3em;
+    padding: 10px;
+    width: 100vw;
+    height: 100px;
+
+    .logo-container {
+      display: inline-block;
+      text-align: center;
+      width: 300px;
+      height: 100%;
+
+      &:hover {
+       img {
+         opacity: 1;
+       }   
+      }
+
+      img {
+        margin: 0;
+        max-height: 100%;
+        max-width: 100%;
+        opacity: 0.5;
+        transition: opacity 0.2s ease-out;
+      }
+    }
+  }
+
+  .app-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-around;
+    text-align: center;
+  }
+}

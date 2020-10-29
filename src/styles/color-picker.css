@@ -1,0 +1,11 @@
+.color-picker-container {
+  border-radius: 100%;
+  border: 1px solid white;
+  overflow: hidden;
+  position: relative;
+}
+
+.color-picker-container canvas {
+  position: absolute;
+  left: 0;
+}
