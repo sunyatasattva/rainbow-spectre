@@ -3,13 +3,15 @@ import { createGlobalState } from "react-hooks-global-state";
 export interface Options {
   autoplay: boolean;
   baseFrequency: number;
+  lockRatio: boolean;
 }
 
 const defaultColors: [string, string] = ["#ff0000", "#00ffff"];
 
 const defaultOptions = {
   autoplay: true,
-  baseFrequency: 220
+  baseFrequency: 220,
+  lockRatio: false
 };
 
 const globalState = createGlobalState({

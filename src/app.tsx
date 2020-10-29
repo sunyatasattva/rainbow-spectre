@@ -19,12 +19,13 @@ function App() {
   const [colors, setColors] = useColors();
   const [options] = useOptions();
 
-  function handleAngleChange() {
-    const [a, b] = colors;
-    if(options.autoplay) playColorsInterval(a, b, options.baseFrequency);
-  }
-
   useEffect(() => {
+    function handleAngleChange() {
+      const [a, b] = colors;
+      
+      if(options.autoplay) playColorsInterval(a, b, options.baseFrequency);
+    }
+    
     bus.on("angleCommit", handleAngleChange);
 
     return () => {
