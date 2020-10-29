@@ -6,6 +6,7 @@
 
 /* jshint maxlen:110 */
 
+import frac from "frac";
 import { SoundOptions, Pitch, Envelope, WaveType } from "./types";
 import { isPowerOfTwo, logBase } from "./utils";
 import WebkitPatch from "./webkit-audiocontext-patch";
@@ -22,7 +23,8 @@ const defaults: SoundOptions = {
   release: 1250,
   volume:  1,
   detune:  0,
-  type:    "sine"
+	type:    "sine",
+	weigh:   false
 }
 
 export const sounds: Sound[] = [];
@@ -56,6 +58,7 @@ export default class Sound implements Pitch {
 	 * @param  {number}  [opts.sustain]    The sustain duration of the sound (in ms). See {@link Sound#createEnvelope}
 	 * @param  {string}  [opts.type]       The shape of the wave. See {@link Sound#createOscillator}
 	 * @param  {float}   [opts.volume]     The amplitude of the sound, after the decay. 1 is full amplitude.
+	 * @param  {boolean} [opts.weigh]      Whether to lower the volume for higher frequencies
 	 *
 	 * @return {Sound}  The Sound object.
 	 */
@@ -75,6 +78,11 @@ export default class Sound implements Pitch {
     this.waveType   = oscillator.type;
 
 		this.duration = envelope.attack + envelope.decay + envelope.sustain + envelope.release;
+
+		if(opts.weigh) {
+			this.envelope.maxVolume = this.weighFrequencyLoudness(frequency) * this.envelope.maxVolume;
+			this.envelope.volume    = this.weighFrequencyLoudness(frequency) * this.envelope.volume;
+		}
 		
 		oscillator.connect(envelope.node);
 		envelope.node.connect(masterGain);
@@ -119,13 +127,52 @@ export default class Sound implements Pitch {
 	 * @return {OscillatorNode}  The oscillator node
 	 */
 	private createOscillator(frequency: number, detune: number = 0, type: WaveType = "sine") {
-		var oscillatorNode = ctx.createOscillator();
+		const oscillatorNode = ctx.createOscillator();
 		
 		oscillatorNode.frequency.value = frequency;
 		oscillatorNode.detune.value    = detune;
 		oscillatorNode.type            = type;
 		
 		return oscillatorNode;
+	}
+	
+	/*
+	 * Weighs the loudness of a frequency depending on its height.
+	 *
+	 * It cuts off the most frequencies in the range of 2k–6k.
+	 *
+	 * @param  {number}  f  The frequency to weigh.
+	 *
+	 * @return {number}  A weighed number from 0 to 1 to apply to loudness of the sound.
+	 */
+	private weighFrequencyLoudness(f: number) {
+		const a = -1.5768 * Math.pow(10, -12),
+		      b = 3.70162 * Math.pow(10, -8),
+		      c = -0.000220906,
+		      d = 1.05609;
+
+		return a * Math.pow(f, 3) + b * Math.pow(f, 2) + c * f + d;
+	}
+
+	/**
+	 * Duplicates a Sound.
+	 * 
+	 * @param   {Sound}         sound   The sound to duplicate
+	 * @param   {SoundOptions}  [opts]  Sound options to override 
+	 * 
+	 * @return  {Sound}  The duplicated sound.
+	 */
+	static duplicateSound(sound: Sound, opts?: SoundOptions) {
+		const options = {
+			...sound.envelope,
+			attack: sound.envelope.attack * 1000,
+			decay: sound.envelope.decay * 1000,
+			sustain: sound.envelope.sustain * 1000,
+			release: sound.envelope.release * 1000,
+			...opts
+		};
+
+		return new Sound(sound.frequency, options);
 	}
 
 	/**
@@ -134,14 +181,44 @@ export default class Sound implements Pitch {
 	 * @example
 	 * Sound.intervalInCents( { frequency: 440 }, { frequency: 660 } ); // returns 702
 	 *
-	 * @param  {Pitch}  tone  Any object which implements a `frequency` property
+	 * @param  {Pitch}   a  Any object which implements a `frequency` property
+	 * @param  {Pitch}   b  Any object which implements a `frequency` property
+	 * @param  {boolean} reduceToOctave  Calculate the interval reducing `b` to the same octave as `a`
 	 *
 	 * @return {Number}  The interval between the two sounds rounded to the closest cent.
 	 */
-	static intervalInCents(a: Pitch, b: Pitch) {
-		const ratio = a.frequency / b.frequency;
+	static intervalInCents(a: Pitch, b: Pitch, reduceToOctave?: boolean) {
+		let referenceFrequency = b.frequency;
+
+		if(reduceToOctave)
+			referenceFrequency = Sound.reduceToSameOctave(b, a);
+
+		const ratio = a.frequency / referenceFrequency;
 		
 		return Math.round( 1200 * logBase(2, ratio) );
+	};
+
+	/**
+	 * Calculates the approximate interval ratio with another tone.
+	 *
+	 * @example
+	 * // Assume `sound` has a frequency of 440Hz
+	 * Sound.intervalRatio({ frequency: 440 }, { frequency: 660 }); // returns [0, 3, 2]
+	 *
+	 * @param  {Pitch}  a  Any object which implements a `frequency` property
+	 * @param  {Pitch}  b  Any object which implements a `frequency` property
+	 * @param  {boolean} reduceToOctave  Calculate the interval reducing `b` to the same octave as `a`
+	 *
+	 * @return {Array}  The return value is an array of the form `[quot, num, den]`
+	 *                  where `quot === 0` for improper fractions.
+	 */
+	static intervalRatio(a: Pitch, b: Pitch, reduceToOctave: boolean) {
+		let referenceFrequency = b.frequency;
+
+		if(reduceToOctave)
+			referenceFrequency = Sound.reduceToSameOctave(b, a);
+
+		return frac(a.frequency / referenceFrequency, 999);
 	};
 
 	/**
@@ -211,6 +288,36 @@ export default class Sound implements Pitch {
 	}
 
 	/**
+	 * Plays a sequence of sounds.
+	 * 
+	 * @param  {Sound[]}  sounds       An array of `Sound` objects to play
+	 * @param  {Object}   [opts]       An options object
+	 * @param  {boolean}  [opts.copy]  Whether to make a duplicate of the sound before playing.
+	 *                                 This allows not to modify the original object and being able to
+	 *                                 play the same array of sounds several times.
+	 */
+	static playSequence(sounds: Sound[], opts?: { copy?: boolean }) {
+		if(opts && opts.copy)
+			sounds = sounds.map((sound) => Sound.duplicateSound(sound));
+	
+		return sounds.reduce(
+			(acc, curr) => {
+				return acc.then(() => curr.play());
+			},
+			Promise.resolve() as unknown as Promise<Sound>
+		);
+	}
+
+	/**
+	 * Duplicate this sound
+	 * 
+	 * @see {@link Sound.duplicateSound}
+	 */
+	duplicate() {
+		return Sound.duplicateSound(this);
+	}
+
+	/**
 	 * Fades out a sound according to its release value. Useful for sustained sounds.
 	 *
 	 * @return {Promise<Sound>}
@@ -218,6 +325,7 @@ export default class Sound implements Pitch {
 	fadeOut(): Promise<Sound> {
 		const now  = ctx.currentTime;
 		
+		this.envelope.node.gain.cancelScheduledValues(now);
 		this.envelope.node.gain.setTargetAtTime( 0, now, this.envelope.release / 5 );
 		this.isPlaying = false;
 		this.isStopping = true;
@@ -259,7 +367,7 @@ export default class Sound implements Pitch {
 		return Sound.isOctaveOf(this, tone);
 	};
 
-  play() {
+  play(): Promise<Sound> {
 		const now = ctx.currentTime;
 		const { attack, decay, maxVolume, node, release, sustain, volume } = this.envelope;
 
@@ -299,21 +407,19 @@ export default class Sound implements Pitch {
 					now + attack + decay + sustain,
 					release / 5
 				);
-	
-			// Start the removal of the sound process after a little more than the sound duration to account for
-			// the approximation. (To make sure that the sound doesn't get cut off while still audible)
-			return new Promise((resolve) => {
-				let effectiveSoundDuration = attack + decay + sustain;
-				
-				setTimeout( () => resolve(this), effectiveSoundDuration * 1000 );
-				
-				setTimeout( () => {
-					if( !this.isStopping ) this.stop();
-				}, this.duration * 1250 );
-			});
 		}
 		
-		return this;
+		// Start the removal of the sound process after a little more than the sound duration to account for
+		// the approximation. (To make sure that the sound doesn't get cut off while still audible)
+		return new Promise((resolve) => {
+			let effectiveSoundDuration = attack + decay + sustain;
+			
+			setTimeout( () => resolve(this), effectiveSoundDuration * 1000 );
+			
+			setTimeout( () => {
+				if( !this.isStopping ) this.stop();
+			}, this.duration * 1250 );
+		});
 	}
 	
 	/**
