@@ -83,6 +83,7 @@ export default class ColorPicker extends React.Component<Props, State> {
         <Handle
           key={i}
           initialColor={color}
+          isReferenceHandle={i === 0}
           onChange={(angle) => this.handleChange(angle, i)}
           parentSize={this.props.radiusOuter!}
         />

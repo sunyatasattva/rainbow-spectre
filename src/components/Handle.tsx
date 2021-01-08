@@ -1,4 +1,4 @@
-import "../styles/handle.css";
+import "../styles/handle.scss";
 import React, { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import hexToHsl from "hex-to-hsl";
 import { bus } from "../app";
@@ -7,11 +7,13 @@ import useMouseRotation from "../hooks/useMouseRotation";
 
 interface Props {
   initialColor: string;
+  isReferenceHandle?: boolean;
   onChange: (value: number) => any;
-  parentSize: number // Perhaps this should be calculated instead?
+  parentSize: number; // Perhaps this should be calculated instead?
 }
 
 export default function Handle(props: Props) {
+  const className = `${props.isReferenceHandle ? "reference-handle" : ""}`;
   const [{ lockRatio }] = useOptions();
   const container = useRef<HTMLDivElement>(null);
   const [angle, setAngle] = useMouseRotation(
@@ -50,7 +52,7 @@ export default function Handle(props: Props) {
 
   return (
     <div
-      className="handle-container"
+      className={`handle-container ${className}`}
       ref={container}
       style={{
         width: `${props.parentSize}px`,

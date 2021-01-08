@@ -6,6 +6,7 @@ export interface Options {
   baseFrequency: number;
   harmonicLimit?: AllowedHarmonicLimit;
   lockRatio: boolean;
+  mode: "interval" | "absolute";
 }
 
 const defaultColors: [string, string] = ["#ff0000", "#00ffff"];
@@ -14,7 +15,8 @@ const defaultOptions: Options = {
   autoplay: true,
   baseFrequency: 220,
   harmonicLimit: 5,
-  lockRatio: false
+  lockRatio: false,
+  mode: "interval"
 };
 
 const globalState = createGlobalState({

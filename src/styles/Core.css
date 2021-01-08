@@ -18,10 +18,6 @@
   /* transform: scale(1.05); */
 }
 
-.core:hover .frequency-container {
-  display: block;
-}
-
 .fish .frequency-container {
   display: none;
 }
