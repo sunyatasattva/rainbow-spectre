@@ -1,15 +1,16 @@
 /**
  * Tones module
  *
- * @module
+ * @module tones/main
  */
 
 /* jshint maxlen:110 */
 
 import frac from "frac";
-import { SoundOptions, Pitch, Envelope, WaveType } from "./types";
-import { isPowerOfTwo, logBase } from "./utils";
+import { SoundOptions, Pitch, Envelope, WaveType, Ratio } from "./types";
+import { fractionMax, isPowerOfTwo, logBase, primeFactorsOf } from "./utils";
 import WebkitPatch from "./webkit-audiocontext-patch";
+import { parsedIntervals } from "./intervals";
 
 WebkitPatch();
 
@@ -104,7 +105,7 @@ export default class Sound implements Pitch {
 	 * @return {Envelope}  The envelope object, containing the gain node.
 	 */
 	private createEnvelope(attack: number, decay: number, sustain: number, release: number): Envelope {
-		var gainNode = ctx.createGain();
+		const gainNode = ctx.createGain();
 		
 		gainNode.gain.setValueAtTime(0, ctx.currentTime);
 		
@@ -136,7 +137,7 @@ export default class Sound implements Pitch {
 		return oscillatorNode;
 	}
 	
-	/*
+	/**
 	 * Weighs the loudness of a frequency depending on its height.
 	 *
 	 * It cuts off the most frequencies in the range of 2k–6k.
@@ -152,6 +153,17 @@ export default class Sound implements Pitch {
 		      d = 1.05609;
 
 		return a * Math.pow(f, 3) + b * Math.pow(f, 2) + c * f + d;
+	}
+
+	/**
+	 * Given a number of cents, returns the equivalent ratio.
+	 * 
+	 * @param   {number}  cents  Amount of cents 
+	 * 
+	 * @return  {number}  The ratio represented by those cents.
+	 */
+	static centsToRatio(cents: number) {
+		return Math.pow(2, cents / 1200);
 	}
 
 	/**
@@ -176,6 +188,53 @@ export default class Sound implements Pitch {
 	}
 
 	/**
+	 * Get the closest `n-limit` interval to a given number
+	 * 
+	 * Rounds a decimal number to the closest fraction which respects
+	 * a given harmonic limit. Obviously, the higher the limit, the lower
+	 * the rounding. The allowed fractions are limited to the ones listed
+	 * in the interval list.
+	 * 
+	 * @see module:tones/intervals
+	 *  
+	 * @param {Number} n      The number to round
+	 * @param {Number} limit  The desired harmonic space
+	 * 
+	 * @return {Ratio}  The closest named ratio
+	 */
+	static getClosestIntervalTo(n: number, limit: 3 | 5 | 7 | 11 | 13) {
+		const interval = parsedIntervals.reduce((acc, curr) => {
+			return Math.abs(curr - n) < Math.abs(acc - n)
+				&& Sound.harmonicLimitOf(curr) <= limit ? curr : acc;
+		});
+
+		return fractionMax(interval, 1000);
+	}
+
+	/**
+	 * Calculates the harmonic limit of a ratio
+	 * 
+	 * The harmonic limit of a given ratio is the largest prime number in which
+	 * both its numerator and denominator can be factored into.
+	 * 
+	 * @see https://en.wikipedia.org/wiki/Limit_(music)
+	 * 
+	 * @param {Number | Ratio}  n  The number to calculate the harmonic limit of
+	 * 
+	 * @return {Number}  The prime number representing the harmonic limit
+	 */
+	static harmonicLimitOf(n: number | Ratio) {
+		let num, den;
+
+		if( Array.isArray(n) ) [num, den] = n;
+		else [num, den] = fractionMax(n, 1000);
+	
+		const factors = [...primeFactorsOf(num), ...primeFactorsOf(den)];
+
+		return Math.max(...factors);
+	};
+
+	/**
 	 * Calculates the interval in cents between two pitches.
 	 *
 	 * @example
@@ -192,10 +251,8 @@ export default class Sound implements Pitch {
 
 		if(reduceToOctave)
 			referenceFrequency = Sound.reduceToSameOctave(b, a);
-
-		const ratio = a.frequency / referenceFrequency;
 		
-		return Math.round( 1200 * logBase(2, ratio) );
+		return Sound.ratioToCents([a.frequency, referenceFrequency]);
 	};
 
 	/**
@@ -248,7 +305,7 @@ export default class Sound implements Pitch {
 	 * @return {Number}  The frequency of the first sound within the same octave as the reference tone.
 	 */
 	static reduceToSameOctave(firstTone: Pitch, referenceTone: Pitch, excludeOctave?: boolean){
-		var targetFrequency = firstTone.frequency,
+		let targetFrequency = firstTone.frequency,
 				ratio           = targetFrequency / referenceTone.frequency;
 
 		if( excludeOctave ) {
@@ -306,6 +363,19 @@ export default class Sound implements Pitch {
 			},
 			Promise.resolve() as unknown as Promise<Sound>
 		);
+	}
+
+	/**
+	 * Converts a given decimal number or ratio to its value in cents
+	 * 
+	 * @param {Number | Ratio} n  The number to convert 
+	 * 
+	 * @return {Number} Value in cents of the given ratio
+	 */
+	static ratioToCents(n: number | Ratio) {
+		if( Array.isArray(n) ) n = n[0] / n[1];
+
+		return Math.round( 1200 * logBase(2, n) );
 	}
 
 	/**

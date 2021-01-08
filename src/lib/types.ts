@@ -25,6 +25,8 @@ export interface Pitch {
 	frequency: number;
 }
 
+export type Ratio = [numerator: number, denominator: number];
+
 /**
   * @property  {number}   attack      The attack duration of the sound (in secs). See {@link Sound#createEnvelope}
   * @property  {number}   decay       The decay duration of the sound (in secs). See {@link Sound#createEnvelope}

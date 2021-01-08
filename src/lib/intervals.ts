@@ -1,3 +1,7 @@
+/**
+ * @module tones/intervals
+ */
+
 interface Interval {
   alternateNames?: string[];
   name: string;
