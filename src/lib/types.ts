@@ -1,7 +1,9 @@
+export type AllowedHarmonicLimit = 3 | 5 | 7 | 11;
+
 /**
  * [`hue`, `saturation`, `lightness`]
  */
-export type HSLColor = [number, number, number];
+export type HSLColor = [hue: number, saturation: number, lightness: number];
 
 /**
   * @property  {number}   attack  The attack duration of the sound (in secs). See {@link Sound#createEnvelope}

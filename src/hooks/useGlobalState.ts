@@ -1,16 +1,19 @@
+import { AllowedHarmonicLimit } from "lib/types";
 import { createGlobalState } from "react-hooks-global-state";
 
 export interface Options {
   autoplay: boolean;
   baseFrequency: number;
+  harmonicLimit?: AllowedHarmonicLimit;
   lockRatio: boolean;
 }
 
 const defaultColors: [string, string] = ["#ff0000", "#00ffff"];
 
-const defaultOptions = {
+const defaultOptions: Options = {
   autoplay: true,
   baseFrequency: 220,
+  harmonicLimit: 5,
   lockRatio: false
 };
 
