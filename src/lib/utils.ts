@@ -6,9 +6,10 @@ export function calculateColorsInterval(a: string, b: string) {
   const CENTS_PER_DEGREE = 1200 / 360;
   const [aHue] = hexToHsl(a);
   const [bHue] = hexToHsl(b);
-  console.log({bHue});
+  let difference = 360 + bHue - aHue;
+  if(difference > 360) difference -= 360;
 
-  return (bHue - aHue) * CENTS_PER_DEGREE;
+  return difference * CENTS_PER_DEGREE;
 }
 
 export function calculateColorsRatio(a: string, b: string) {

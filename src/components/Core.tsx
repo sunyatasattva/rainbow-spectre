@@ -33,7 +33,6 @@ export default function Core(props: CoreProps) {
    */
   useEffect(() => {
     const core = document.getElementById("core");
-    console.log("switcharoo", shouldSwitch)
 
     if(!core?.firstElementChild) return;
 
