@@ -9,6 +9,7 @@ import { playColorsInterval } from "./lib/utils";
 import EventBus from "./lib/EventBus";
 import logo from "./images/logo.svg";
 import "./styles/app.scss";
+import { useKeyPress } from "hooks/useKeyPress";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
@@ -18,6 +19,7 @@ export const bus = new EventBus<{
 function App() {
   const [colors, setColors] = useColors();
   const [options] = useOptions();
+  const isAltPressed = useKeyPress("Alt");
 
   useEffect(() => {
     function handleAngleChange() {
@@ -34,7 +36,7 @@ function App() {
   }, [colors, options]);
 
   return (
-    <div className="app">
+    <div className={`app ${isAltPressed ? "alt-pressed" : ""}`}>
       <header className="app-header">
         <a href="https://www.suonoterapia.org" className="logo-container">
           <img src={logo} alt="Associazione Suonomusicoterapia Italiana" />

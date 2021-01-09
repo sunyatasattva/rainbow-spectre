@@ -34,7 +34,7 @@ export function playColorsInterval(a: string, b: string, f: number) {
   const ratio = calculateColorsRatio(a, b);
   
   Sound.play(f, { volume: 0.33 });
-  Sound.play(f * (1 / ratio), { volume: 0.33 });
+  Sound.play(f * ratio, { volume: 0.33 });
 }
 
 export function primeFactorsOf(n: number) {
