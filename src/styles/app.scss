@@ -37,11 +37,27 @@
   }
 
   .app-content {
+    @media screen and (min-width: 1350px) {
+      flex-direction: row;
+
+      .color-picker-container {
+        order: 1;
+      }
+
+      .infobox {
+        order: 2;
+      }
+    }
+
     align-items: center;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     justify-content: space-around;
     text-align: center;
+
+    > * {
+      margin-bottom: 3em;
+    }
   }
 }
