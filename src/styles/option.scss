@@ -1,0 +1,44 @@
+.option {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .icon-container .icon {
+    border-radius: 4px;
+    cursor: pointer;
+    flex-basis: 18px;
+    opacity: 0.75;
+    transition: all 0.2s ease-out;
+
+    &:hover,
+    &.is-active {
+      background-color: #333;
+      opacity: 1;
+    } 
+  }
+
+  label, .label-text {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-grow: 1;
+    margin-right: 10px;
+
+    .icon {
+      padding-right: 10px;
+    }
+  }
+
+  .help-text {
+    background-color: #333;
+    border-top: 1px solid #333;
+    font-family: Judson, Georgia, serif;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 0;
+    padding: 10px;
+    text-align: left;
+  }
+}

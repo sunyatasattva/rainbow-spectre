@@ -7,10 +7,31 @@
   font-weight: 100;
   justify-content: space-around;
   padding: 10px;
+  position: relative;
   text-align: center;
   z-index: 1;
   width: 483px;
   height: 300px;
+
+  .badge {
+    border-radius: 10px;
+    display: inline-block;
+    font-size: 13px;
+    font-style: italic;
+    padding: 5px 8px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    user-select: none;
+
+    transition: background-color .25s ease-in;
+
+    &.limit-3 { background-color: rgb(76, 156, 76); }
+    &.limit-5 { background-color: rgb(0, 92, 128); }
+    &.limit-7 { background-color: rgb(212, 82, 42); }
+    &.limit-11 { background-color: rgb(98, 0, 128); }
+    &.is-12-tet { background-color: rgb(128, 0, 79);}
+  }
 
   .interval {
     font-size: 128px;

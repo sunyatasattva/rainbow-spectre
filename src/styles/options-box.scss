@@ -1,0 +1,65 @@
+.options-container {
+  border: 1px solid #333;
+  opacity: .5;
+  user-select: none;
+  width: 483px;
+
+  transition: opacity .2s ease-out;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  input,
+  select {
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    color: #f3f3f3;
+    font-size: 18px;
+    padding: 5px;
+  }
+
+  label {
+    cursor: pointer;
+    flex-grow: 1;
+  }
+
+  input {
+    width: 80px;
+  }
+
+  select {
+    padding-right: 0.5em;
+    text-align-last: right;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  .option {
+    border-top: 1px solid #333;
+    padding: 1em 10px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .reference-frequency {
+    .input-wrapper::after {
+      content: "Hz.";
+      font-size: 14px;
+      position: absolute;
+      right: 1.75em;
+      top: 0.5em;
+    }
+  }
+}

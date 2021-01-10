@@ -1,7 +1,9 @@
+export type AllowedHarmonicLimit = "None" | 3 | 5 | 7 | 11 | "12-TET";
+
 /**
  * [`hue`, `saturation`, `lightness`]
  */
-export type HSLColor = [number, number, number];
+export type HSLColor = [hue: number, saturation: number, lightness: number];
 
 /**
   * @property  {number}   attack  The attack duration of the sound (in secs). See {@link Sound#createEnvelope}
@@ -24,6 +26,8 @@ export type HSLColor = [number, number, number];
 export interface Pitch {
 	frequency: number;
 }
+
+export type Ratio = [numerator: number, denominator: number];
 
 /**
   * @property  {number}   attack      The attack duration of the sound (in secs). See {@link Sound#createEnvelope}

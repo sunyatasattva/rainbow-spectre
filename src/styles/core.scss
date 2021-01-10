@@ -1,0 +1,48 @@
+.core-container {
+  overflow: visible;
+  width: 200px;
+  position: absolute;
+  left: calc(50% - 100px);
+  top: calc(50% - 100px);
+}
+
+.core {
+  transition: transform 0.2s ease-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .fish {
+    transform: scale(1);
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    transition: transform 0.2s ease-out;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .frequency-container {
+      display: none;
+    }
+  }
+}
+
+.alt-pressed {
+  .core:hover .fish {
+    transform: scale(1);
+  }
+
+  .core .fish:hover {
+    transform: scale(1.05);
+  }
+}
+
+.left-fish .frequency-container {
+  transform: translate(180px, 110px);
+}
+
+.right-fish .frequency-container {
+  transform: translate(180px, 370px);
+}
