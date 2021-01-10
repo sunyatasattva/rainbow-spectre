@@ -18,10 +18,11 @@
     display: inline-block;
     font-size: 13px;
     font-style: italic;
-    padding: 5px;
+    padding: 5px 8px;
     position: absolute;
     right: 10px;
     top: 10px;
+    user-select: none;
 
     transition: background-color .25s ease-in;
 

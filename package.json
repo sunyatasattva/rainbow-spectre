@@ -3,6 +3,8 @@
   "version": "1.0.0-alpha.1",
   "private": true,
   "dependencies": {
+    "@mdi/js": "^5.8.55",
+    "@mdi/react": "^1.4.0",
     "@types/jest": "^24.0.18",
     "@types/lodash.camelcase": "^4.3.6",
     "@types/node": "^12.7.5",

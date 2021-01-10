@@ -28,7 +28,7 @@ export default function Infobox(props: Props) {
   const currentRatioLimit = Sound.harmonicLimitOf(intervalRatio);
 
   function badgeClassName() {
-    const limitClass = `limit${currentRatioLimit}`;
+    const limitClass = `limit-${currentRatioLimit}`;
     const equalTemperament = harmonicLimit === "12-TET" ? "is-12-tet" : "";
 
     return `badge ${limitClass} ${equalTemperament}`;
