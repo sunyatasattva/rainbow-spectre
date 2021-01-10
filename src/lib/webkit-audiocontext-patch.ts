@@ -31,7 +31,7 @@ interface OscillatorNodeConstructor {
 	prototype: OscillatorNode;
 }
 
-export default function() {
+export default function WebkitPatch() {
 	let AudioContext: AudioContextConstructor,
 		  OscillatorNode: OscillatorNodeConstructor;
 	
