@@ -1,6 +1,6 @@
 import "../styles/infobox.scss";
 import { useOptions } from "hooks/useGlobalState";
-import intervals from "lib/intervals";
+import intervals, { equallyTemperedIntervals } from "lib/intervals";
 import Sound from "lib/tones";
 import { calculateColorsRatio, fractionMax } from "lib/utils";
 import React, { useEffect, useState } from "react";
@@ -14,7 +14,8 @@ interface Props {
 function getIntervalName(ratio: [number, number]) {
   const [n, d] = ratio;
   const interval = intervals[`${n}/${d}`]
-    || intervals[`${d}/${n}`];
+    || intervals[`${d}/${n}`]
+    || equallyTemperedIntervals[Sound.ratioToCents(ratio)];
 
   return interval ? interval.name : "Unknown interval";
 }
@@ -26,7 +27,14 @@ export default function Infobox(props: Props) {
   const [{ harmonicLimit }] = useOptions();
   const currentRatioLimit = Sound.harmonicLimitOf(intervalRatio);
 
-  function className() {
+  function badgeClassName() {
+    const limitClass = `limit${currentRatioLimit}`;
+    const equalTemperament = harmonicLimit === "12-TET" ? "is-12-tet" : "";
+
+    return `badge ${limitClass} ${equalTemperament}`;
+  }
+
+  function intervalNameClassName() {
     const isUnknownInterval = intervalName === "Unknown interval";
 
     return `interval-name ${isUnknownInterval ? "unknown-interval" : ""}`;
@@ -37,9 +45,9 @@ export default function Infobox(props: Props) {
       const [a, b] = props.colors;
       const ratio = calculateColorsRatio(a, b);
       const ratioInCents = Sound.ratioToCents(ratio);
-      const interval = harmonicLimit ?
+      const interval = harmonicLimit !== "None" ?
         Sound.getClosestIntervalTo( calculateColorsRatio(a, b), harmonicLimit )
-        : fractionMax(ratio, 1000);
+        : fractionMax(ratio, 100);
       const intervalInCents = Sound.ratioToCents(interval);
 
       setIntervalRatio(interval);
@@ -51,9 +59,12 @@ export default function Infobox(props: Props) {
 
   return (
     <div className="infobox">
-      {!harmonicLimit || harmonicLimit > 3 ?
-        <div className={`badge limit-${currentRatioLimit}`}>
-          {currentRatioLimit}-limit
+      {!(harmonicLimit && harmonicLimit < 3) ?
+        <div className={badgeClassName()}>
+          {harmonicLimit === "12-TET" ?
+            harmonicLimit
+            : `${currentRatioLimit}-limit`
+          }
         </div>
         : null
       }
@@ -62,12 +73,13 @@ export default function Infobox(props: Props) {
         <span>/</span>
         <sub>{intervalRatio[1]}</sub>
       </div>
-      <div
-        className={className()}
-      >
+      <div className={intervalNameClassName()}>
         {intervalName}
       </div>
-      <DifferenceBar value={intervalsInCents[0] - intervalsInCents[1]} />
+      {harmonicLimit !== "None" ?
+        <DifferenceBar value={intervalsInCents[0] - intervalsInCents[1]} />
+        : null
+      }
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { createGlobalState } from "react-hooks-global-state";
 export interface Options {
   autoplay: boolean;
   baseFrequency: number;
-  harmonicLimit?: AllowedHarmonicLimit;
+  harmonicLimit: AllowedHarmonicLimit;
   lockRatio: boolean;
   mode: "interval" | "absolute";
 }

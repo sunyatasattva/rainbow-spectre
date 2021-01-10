@@ -73,7 +73,6 @@ export default function Core(props: CoreProps) {
               { volume: 0.33 }
             )
           }
-          onKeyDown={(e) => console.log(e)}
           onMouseEnter={() => setShouldSwitch(true)}
           onMouseLeave={() => shouldSwitch && setShouldSwitch(false)}
         >

@@ -776,6 +776,42 @@ const intervals: Record<string, Interval> = {
 
 export default intervals;
 
+export const equallyTemperedIntervals: Record<number, Interval> = {
+  100: {
+    "name": "Tempered Minor second"
+  },
+  200: {
+    "name": "Tempered Major second"
+  },
+  300: {
+    "name": "Tempered Minor third"
+  },
+  400: {
+    "name": "Tempered Major third"
+  },
+  500: {
+    "name": "Tempered Fourth"
+  },
+  600: {
+    "name": "Tempered Tritone"
+  },
+  700: {
+    "name": "Tempered Fifth"
+  },
+  800: {
+    "name": "Tempered Minor sixth"
+  },
+  900: {
+    "name": "Tempered Major sixth"
+  },
+  1000: {
+    "name": "Tempered Minor seventh"
+  },
+  1100: {
+    "name": "Tempered Major seventh"
+  }
+}
+
 export const intervalsByName = Object.entries(intervals)
 	.reduce((acc, curr) => {
 		const [ratio, data] = curr,

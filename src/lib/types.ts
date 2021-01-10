@@ -1,4 +1,4 @@
-export type AllowedHarmonicLimit = 3 | 5 | 7 | 11;
+export type AllowedHarmonicLimit = "None" | 3 | 5 | 7 | 11 | "12-TET";
 
 /**
  * [`hue`, `saturation`, `lightness`]

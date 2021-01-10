@@ -14,7 +14,6 @@ export function calculateColorsInterval(a: string, b: string) {
 
 export function calculateColorsRatio(a: string, b: string) {
   const cents = calculateColorsInterval(a, b);
-  console.log({cents});
 
   return Sound.centsToRatio(cents);
 }

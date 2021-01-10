@@ -33,15 +33,18 @@ export default function OptionsBox() {
           name="n-limit"
           onChange={(e) => setOption(
             "harmonicLimit",
-            +e.target.value as AllowedHarmonicLimit
+              Number.isNaN(+e.target.value) ?
+              e.target.value as AllowedHarmonicLimit
+              : +e.target.value as AllowedHarmonicLimit
           )}
           value={options.harmonicLimit}
         >
-          <option>None</option>
+          <option value="None">None</option>
           <option value="3">3-limit</option>
           <option value="5">5-limit</option>
           <option value="7">7-limit</option>
           <option value="11">11-limit</option>
+          <option value="12-TET">12 Equal Temperament</option>
         </select>
       </div>
       <Option onChange={setOption} label="Autoplay" value={options.autoplay} />

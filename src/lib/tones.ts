@@ -202,11 +202,19 @@ export default class Sound implements Pitch {
 	 * 
 	 * @return {Ratio}  The closest named ratio
 	 */
-	static getClosestIntervalTo(n: number, limit: 3 | 5 | 7 | 11 | 13) {
-		const interval = parsedIntervals.reduce((acc, curr) => {
-			return Math.abs(curr - n) < Math.abs(acc - n)
-				&& Sound.harmonicLimitOf(curr) <= limit ? curr : acc;
-		});
+	static getClosestIntervalTo(n: number, limit: 3 | 5 | 7 | 11 | "12-TET") {
+		let interval;
+
+		if(limit === "12-TET") {
+			interval = Sound.centsToRatio(
+				Math.round(Sound.ratioToCents(n) / 100) * 100
+			);
+		} else {
+			interval = parsedIntervals.reduce((acc, curr) => {
+				return Math.abs(curr - n) < Math.abs(acc - n)
+					&& Sound.harmonicLimitOf(curr) <= limit ? curr : acc;
+			});
+		}
 
 		return fractionMax(interval, 1000);
 	}
