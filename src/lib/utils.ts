@@ -38,7 +38,7 @@ export function playColorsInterval(a: string, b: string, f: number) {
 }
 
 export function primeFactorsOf(n: number) {
-  const factors = [];
+  const factors = [1];
   let factor = 2;
 
   while(n >= 2) {

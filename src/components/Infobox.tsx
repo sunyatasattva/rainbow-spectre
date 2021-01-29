@@ -59,7 +59,7 @@ export default function Infobox(props: Props) {
 
   return (
     <div className="infobox">
-      {!(harmonicLimit && harmonicLimit < 3) ?
+      {currentRatioLimit >= 3 ?
         <div className={badgeClassName()}>
           {harmonicLimit === "12-TET" ?
             harmonicLimit
