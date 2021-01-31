@@ -14,7 +14,9 @@ import { parsedIntervals } from "./intervals";
 
 WebkitPatch();
 
-export const ctx = new window.AudioContext();
+const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+
+export const ctx = new AudioContext();
 export const masterGain = ctx.createGain();
 
 const defaults: SoundOptions = {
