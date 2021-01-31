@@ -6,6 +6,12 @@
   justify-content: space-between;
   min-height: 100vh;
 
+  -webkit-user-select: none;
+
+  > * {
+    box-sizing: border-box;
+  }
+
   .app-header {
     background-color: #262626;
     border-bottom: 1px solid #1f1f1f;
@@ -47,6 +53,10 @@
       .infobox {
         order: 2;
       }
+    }
+
+    @media screen and (max-width: 600px) {
+      padding: 0 20px;
     }
 
     align-items: center;

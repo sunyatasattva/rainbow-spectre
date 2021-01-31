@@ -1,7 +1,7 @@
 import React from "react";
 import hslToHex from "hsl-to-hex";
 import Handle from "./Handle";
-import "../styles/color-picker.css";
+import "../styles/color-picker.scss";
 
 interface Props {
   onChange?: (colors: string[]) => any;

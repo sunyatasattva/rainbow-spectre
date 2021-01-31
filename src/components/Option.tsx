@@ -50,39 +50,41 @@ export default function Option(props: CustomInputProps | SwitchProps) {
 
   return (
     <div className={`option ${props.className ? props.className : ""}`}>
-      <label>
-        <span className="label-text">
-          {props.icon ?
-            <Icon {...defaultIconProps} path={props.icon} />
-            : null
+      <div className="controls">
+        <label>
+          <span className="label-text">
+            {props.icon ?
+              <Icon {...defaultIconProps} path={props.icon} />
+              : null
+            }
+            {props.label}
+          </span>
+          {!props.children ?
+            <Switch
+              checked={props.value!}
+              checkedIcon={false}
+              offColor="#444"
+              onColor="#4c9c4c"
+              onChange={handleChange}
+              uncheckedIcon={false}
+            />
+            :
+            <div className="input-wrapper">
+              {props.children}
+            </div>
           }
-          {props.label}
-        </span>
-        {!props.children ?
-          <Switch
-            checked={props.value!}
-            checkedIcon={false}
-            offColor="#444"
-            onColor="#4c9c4c"
-            onChange={handleChange}
-            uncheckedIcon={false}
-          />
-          :
-          <div className="input-wrapper">
-            {props.children}
+        </label>
+        {props.helpText ?
+          <div className="icon-container" onClick={toggleDescription}>
+            <Icon
+              {...defaultIconProps}
+              className={helpClassName()}
+              path={mdiInformationVariant}
+            />
           </div>
+          : null
         }
-      </label>
-      {props.helpText ?
-        <div className="icon-container" onClick={toggleDescription}>
-          <Icon
-            {...defaultIconProps}
-            className={helpClassName()}
-            path={mdiInformationVariant}
-          />
-        </div>
-        : null
-      }
+      </div>
       {showHelp ?
         <p className="help-text">
           {props.helpText}

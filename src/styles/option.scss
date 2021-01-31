@@ -1,8 +1,23 @@
 .option {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  label,
+  .label-text {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-grow: 1;
+    margin-right: 10px;
+
+    .icon {
+      flex-shrink: 0;
+      padding-right: 10px;
+    }
+  }
+
+  .controls {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
 
   .icon-container .icon {
     border-radius: 4px;
@@ -18,16 +33,8 @@
     } 
   }
 
-  label, .label-text {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    flex-grow: 1;
-    margin-right: 10px;
-
-    .icon {
-      padding-right: 10px;
-    }
+  .label-text {
+    text-align: left;
   }
 
   .help-text {

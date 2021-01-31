@@ -6,6 +6,7 @@
   font-family: Judson, Georgia, serif;
   font-weight: 100;
   justify-content: space-around;
+  max-width: 100%;
   padding: 10px;
   position: relative;
   text-align: center;
@@ -34,6 +35,10 @@
   }
 
   .interval {
+    @media screen and (max-width: 600px) {
+      font-size: 88px;
+    }
+
     font-size: 128px;
     text-transform: uppercase;
     height: 185px;

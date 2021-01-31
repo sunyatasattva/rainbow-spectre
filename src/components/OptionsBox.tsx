@@ -35,6 +35,7 @@ export default function OptionsBox() {
             max="440"
             min="110"
             type="number"
+            inputMode="decimal"
             onChange={(e) => setOption("baseFrequency", +e.target.value)}
             value={options.baseFrequency}
           />
