@@ -1,7 +1,8 @@
 .handle {
   background-color: white;
   border-radius: 100%;
-  border: 2px solid black;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
   display: inline-block;
   pointer-events: auto;
@@ -17,6 +18,11 @@
   pointer-events: none;
   position: absolute;
   z-index: 1;
+
+  &.is-selected .handle {
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 5px 0px rgba(0, 0, 0, 0.5);
+  }
 
   &.reference-handle .handle::after {
     background-color: rgba(0, 0, 0, 0.5);

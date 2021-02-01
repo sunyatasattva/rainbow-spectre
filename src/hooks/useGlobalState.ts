@@ -7,6 +7,7 @@ export interface Options {
   harmonicLimit: AllowedHarmonicLimit;
   lockRatio: boolean;
   mode: "interval" | "absolute";
+  showColorSliders: boolean;
 }
 
 const defaultColors: [HSLColor, HSLColor] = [
@@ -19,7 +20,8 @@ const defaultOptions: Options = {
   baseFrequency: 220,
   harmonicLimit: 5,
   lockRatio: false,
-  mode: "interval"
+  mode: "interval",
+  showColorSliders: false,
 };
 
 const globalState = createGlobalState({

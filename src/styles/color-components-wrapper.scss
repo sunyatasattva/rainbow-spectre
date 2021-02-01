@@ -3,8 +3,8 @@
 
   > .handle-container {
     &.lightness-handle {
-      left: -15px;
-      top: -15px;
+      left: -30px;
+      top: -30px;
     }
 
     &.reference-handle {
@@ -18,8 +18,8 @@
     }
 
     &.saturation-handle {
-      left: -30px;
-      top: -30px;
+      left: -15px;
+      top: -15px;
     }
 
     .handle {
@@ -39,7 +39,15 @@
   }
 
   .ring {
+    fill: transparent;
     transform: rotate(-90deg);
     transform-origin: 50%;
+
+    &.exit-done,
+    &.enter-done {
+      .ring-train {
+        transition: none !important;
+      }
+    }
   }
 }

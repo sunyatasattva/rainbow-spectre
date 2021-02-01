@@ -36,7 +36,7 @@ export function degToRad(n: number) {
 }
 
 export function degToPercent(n: number) {
-  return Math.floor(n / 360 * 100);
+  return +(n / 360 * 100).toFixed(2);
 }
 
 export function playColorsInterval(a: HSLColor, b: HSLColor, f: number) {

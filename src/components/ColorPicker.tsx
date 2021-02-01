@@ -79,12 +79,15 @@ export default class ColorPicker extends React.Component<Props, State> {
   }
 
   private renderHandles() {
-    const { value } = this.props;
+    const { selectedColor, value } = this.props;
 
     return value.map((color, i) => {
+      const referenceHandleClassName = i === 0 ? "reference-handle" : "";
+      const selectedHandleClassName = i === selectedColor ? "is-selected" : "";
+
       return (
         <Handle
-          className={i === 0 ? "reference-handle" : ""}
+          className={`${referenceHandleClassName} ${selectedHandleClassName}`}
           key={i}
           initialAngle={color[0]}
           onChange={(angle) => this.handleChange(angle, i)}

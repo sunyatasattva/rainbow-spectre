@@ -1,0 +1,165 @@
+import { logBase } from "./utils";
+
+export default class NoteTranslator {
+  /**
+	 * Derives the note number in an equal tempered system given a reference frequency.
+	 *
+	 * @param  {Number}  frequency                 The frequency to check
+	 * @param  {Number}  [referenceFrequency=440]  A reference point for the Equal Tempered system
+	 * @param  {Int}     [referencePoint=0]        The point in the scale for the reference frequency.
+	 *                                             E.g. in MIDI A440 is 69, while in a regular
+	 *                                             piano the same note is in the 49th position.
+	 * @param  {Int}     [semitones=12]            The number of semitones in an octave
+	 * @param  {Bool}    [round=true]              Whether or not to round the note position
+	 *
+	 * @return {Number}  The note position in relationship to the reference point
+	 */
+	static getEqualTemperedNoteNumber(
+    frequency: number,
+    { referenceFrequency = 440,
+      referencePoint     = 0,
+      semitones          = 12,
+      round              = true } = {}
+   ){
+    const n = semitones * logBase(
+      2,
+      frequency / referenceFrequency
+    ) + referencePoint;
+
+  return round ? Math.round(n) : n;
+}
+
+  /**
+   * Derives an absolute frequency given a MIDI note number and the reference A4.
+   * 
+   * @see https://www.inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies
+   * 
+   * @param {Number}  n
+   * @param {Number}  a4 
+   */
+  static getETFrequencyfromMIDINumber(n: number, a4 = 440) {
+    return Math.pow(2, (n - 69) / 12) * a4;
+  }
+
+  /**
+	 * Given a MIDI note number it returns the name for that note.
+	 *
+	 * Technically it would work with any 12 tone Equal Temperament reference
+	 * as long as it starts on a C.
+	 *
+	 * @param  {Number}  n           The MIDI number
+	 * @param  {Array}   [pitchSet]  An Array of Pitches to get the desired name
+	 *                               of the note.
+	 *
+	 * @return {Object}  The name of the note and the relative octave
+	 */
+	static MIDIToName(n, pitchSet) {
+		let name,
+		    octave;
+
+		n        = Math.round(n);
+		pitchSet = pitchSet ? this.pitchSort(pitchSet) :
+			       this.pitchSet("P1 m2 M2 m3 M3 P4 4A P5 m6 M6 m7 M7", "C");
+		
+		name     = pitchSet[n % 12];
+		octave   = Math.floor(n / 12) - 1;
+
+		return { name, octave };
+	}
+}
+
+module.exports = {
+	
+	/**
+	 * Transforms the decimals in a number into the difference in cents to the closest integer.
+	 *
+	 * @param  {Number}  n  The number
+	 *
+	 * @return {Number}  The cents (within -50 and +50) difference to the closest integer.
+	 */
+	decimalsToCents: function(n){
+		let decimals = n % 1;
+		
+		return decimals > 0.5 ? -Math.round( (1 - decimals) * 100 ) :
+		                        Math.round(decimals * 100);
+	},
+	/**
+	 * Encodes the accidentals in a string with the correct HTML entity.
+	 *
+	 * @todo  Currently doesn't correctly encode double/triple accidentals e.g. F##
+	 *
+	 * @param  {string}  str  A string to check for accidentals
+	 *
+	 * @return {string}  The correctly encoded accidental
+	 */
+	encodeAccidentals: function(str){
+		if( str.match(/#/g) )
+			return "&sharp;";
+		else if( str.match(/b/g) )
+			return "&flat;";
+		else
+			return "";
+	},
+	/**
+	 * Finds the last element of an array which satisfies a given condition.
+	 *
+	 * @param  {Array}     arr      The array to transverse
+	 * @param  {Function}  matches  A function that will be called to check
+	 *                              if the current element satisfies a condition
+	 * @param  {Number}    [pad=0]  Skips this amount of elements from the right
+	 *
+	 * @return {mixed}  The element which satisfies the given condition
+	 */
+	findLast: function(arr, matches, pad = 0){
+		for( let i = arr.length - 1 - pad; i >= 0; i-- ) {
+			if( matches.call(arr[i]) )
+				return arr[i];
+		}
+		
+		return null;
+	},
+	/**
+	* Transforms an rgb value into an hex value
+	*
+	* @param  {string}  rgb  The rgb value, must be in format `rgb(r,g,b)`
+	*
+	* @return {string}  The hex value of the color
+	*/
+	rgbToHex: function(rgb) {
+		if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
+
+	rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+	function hex(x) {
+		return ( "0" + parseInt(x).toString(16) ).slice(-2);
+	}
+	return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+},
+    /**
+     * @see  {@link  https://lodash.com/docs#clamp|lodash.clamp}
+     */
+    clamp: require("lodash.clamp"),
+	/**
+	* @see  {@link  https://lodash.com/docs#debounce|lodash.debounce}
+	*/
+	debounce: require("lodash.debounce"),
+	/**
+	* @see  {@link  https://lodash.com/docs#findkey|lodash.findkey}
+	*/
+	findKey:  require("lodash.findkey"),
+	/**
+	* @see  {@link  https://www.npmjs.com/package/frac|SheetJS's frac}
+	*/
+	fraction: require("frac"),
+	/**
+	* @see  {@link  https://lodash.com/docs#debounce|lodash.values}
+	*/
+	values:   require("lodash.values"),
+	/**
+	* @see  {@link  https://github.com/danigb/tonal/tree/master/packages/pitch-set|pitch-set}
+	*/
+	pitchSet: require("pitch-set"),
+	/**
+	* @see  {@link  https://github.com/danigb/tonal/tree/master/packages/music-gamut|music-gamut.sort}
+	*/
+	pitchSort: require("music-gamut").sort
+};

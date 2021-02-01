@@ -3,7 +3,7 @@ import React from "react";
 import Option from "./Option";
 import { Options, useOptions } from "../hooks/useGlobalState";
 import { AllowedHarmonicLimit } from "lib/types";
-import { mdiAbTesting, mdiMotionPlay, mdiRecordCircleOutline, mdiVariableBox } from "@mdi/js";
+import { mdiAbTesting, mdiMotionPlay, mdiPalette, mdiRecordCircleOutline, mdiVariableBox } from "@mdi/js";
 import { setStateProp } from "lib/utils";
 
 export default function OptionsBox() {
@@ -76,6 +76,16 @@ export default function OptionsBox() {
           onChange={setOption}
           label="Autoplay"
           value={options.autoplay}
+        />
+        <Option
+          helpText={`This option will display two concentrical circles
+          around the color picker, for you to refine the exact color you
+          would like to pick. Note that this won't have any effect on the
+          notes being played, as they are only dependent on the selected hue.`}
+          icon={mdiPalette}
+          onChange={setOption}
+          label="Show color sliders"
+          value={options.showColorSliders}
         />
         <Option
           helpText={`When this option is enabled, moving one handle

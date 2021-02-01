@@ -76,6 +76,7 @@ function App() {
             }}
             radiusInner={110}
             radiusOuter={300}
+            selectedColor={selectedColor}
             value={colors}>
             <Core colors={colors} />
           </ColorPicker>
