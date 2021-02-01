@@ -1,18 +1,17 @@
-import hexToHsl from "hex-to-hsl";
 import Sound from "./tones";
-import { Ratio } from "./types";
+import { HSLColor, Ratio } from "./types";
 
-export function calculateColorsInterval(a: string, b: string) {
+export function calculateColorsInterval(a: HSLColor, b: HSLColor) {
   const CENTS_PER_DEGREE = 1200 / 360;
-  const [aHue] = hexToHsl(a);
-  const [bHue] = hexToHsl(b);
+  const [aHue] = a;
+  const [bHue] = b;
   let difference = 360 + bHue - aHue;
   if(difference > 360) difference -= 360;
 
   return difference * CENTS_PER_DEGREE;
 }
 
-export function calculateColorsRatio(a: string, b: string) {
+export function calculateColorsRatio(a: HSLColor, b: HSLColor) {
   const cents = calculateColorsInterval(a, b);
 
   return Sound.centsToRatio(cents);
@@ -26,11 +25,21 @@ export function greatestCommonFactorOf(a: number, b: number): number {
   return b === 0 ? a : greatestCommonFactorOf(b, a % b); 
 }
 
+export function hslToString(hsl: HSLColor) {
+  const [h, s, l] = hsl;
+
+  return `hsl(${h}, ${s}%, ${l}%)`;
+}
+
 export function degToRad(n: number) {
   return (n * Math.PI) / 180;
 }
 
-export function playColorsInterval(a: string, b: string, f: number) {
+export function degToPercent(n: number) {
+  return +(n / 360 * 100).toFixed(2);
+}
+
+export function playColorsInterval(a: HSLColor, b: HSLColor, f: number) {
   const ratio = calculateColorsRatio(a, b);
   
   Sound.play(f, { volume: 0.33 });
@@ -56,6 +65,22 @@ export function radToDeg(x: number) {
   const theta = x * 180 / Math.PI;
 
   return theta < 0 ? theta + 360 : theta;
+}
+
+export function setStateProp<
+  T,
+  K extends keyof T
+>(
+  setState: React.Dispatch<React.SetStateAction<T>>,
+  key: K,
+  val: T[K]
+) {
+  return setState((prev) => {
+    return {
+      ...prev,
+      [key]: val
+    };
+  });
 }
 
 export function fraction(n: number): Ratio {

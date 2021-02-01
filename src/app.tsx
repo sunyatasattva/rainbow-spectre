@@ -1,15 +1,17 @@
 import { useColors } from "hooks/useGlobalState";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ColorPicker from "./components/ColorPicker"
 import Core from "./components/Core";
 import Infobox from "./components/Infobox";
 import OptionsBox from "./components/OptionsBox";
 import { useOptions } from "./hooks/useGlobalState";
-import { playColorsInterval } from "./lib/utils";
+import { degToPercent, playColorsInterval } from "./lib/utils";
 import EventBus from "./lib/EventBus";
 import logo from "./images/logo.svg";
 import "./styles/app.scss";
 import { useKeyPress } from "hooks/useKeyPress";
+import ColorComponentsWrapper from "components/ColorComponentsWrapper";
+import { HSLColor } from "lib/types";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
@@ -18,20 +20,38 @@ export const bus = new EventBus<{
 
 function App() {
   const [colors, setColors] = useColors();
+  const colorsRef = useRef(colors);
+  const [selectedColor, setSelectedColor] = useState<0 | 1>(0);
+  const selectedColorRef = useRef(selectedColor);
   const [options] = useOptions();
   const isAltPressed = useKeyPress("Alt");
 
+  colorsRef.current = colors;
+  selectedColorRef.current = selectedColor;
+
+  function onColorComponentChange(k: 0 | 1 | 2, angle: number) {
+    const currentColors = colorsRef.current;
+    const currentColor = selectedColorRef.current;
+    const hsl = currentColors[currentColor];
+    const v = degToPercent(angle);
+    hsl[k] = v;
+
+    const newColors: [HSLColor, HSLColor] = [...colors];
+    newColors[currentColor] = hsl;
+    setColors(newColors);
+  }
+
   useEffect(() => {
-    function handleAngleChange() {
+    function handleHueChange() {
       const [a, b] = colors;
       
       if(options.autoplay) playColorsInterval(a, b, options.baseFrequency);
     }
-    
-    bus.on("angleCommit", handleAngleChange);
+
+    bus.on("angleCommit", handleHueChange);
 
     return () => {
-      bus.off("angleCommit", handleAngleChange);
+      bus.off("angleCommit", handleHueChange);
     }
   }, [colors, options]);
 
@@ -43,15 +63,24 @@ function App() {
         </a>
       </header>
       <main className="app-content">
-        <ColorPicker 
-          onChange={(val) => {
-            setColors([val[0], val[1]]);
-          }}
-          radiusInner={110}
-          radiusOuter={300}
-          value={colors}>
-          <Core colors={colors} />
-        </ColorPicker>
+        <ColorComponentsWrapper
+          selectedColor={selectedColor}
+          onChange={onColorComponentChange}
+        >
+          <ColorPicker 
+            onChange={(val) => {
+              setColors([val[0], val[1]]);
+            }}
+            onClickHandle={(_, i) => {
+              setSelectedColor(i as 0 | 1);
+            }}
+            radiusInner={110}
+            radiusOuter={300}
+            selectedColor={selectedColor}
+            value={colors}>
+            <Core colors={colors} />
+          </ColorPicker>
+        </ColorComponentsWrapper>
         <Infobox colors={colors} />
         <OptionsBox />
       </main>

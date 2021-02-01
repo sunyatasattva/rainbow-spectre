@@ -1,17 +1,19 @@
 import React from "react";
-import hslToHex from "hsl-to-hex";
 import Handle from "./Handle";
 import "../styles/color-picker.scss";
+import { HSLColor } from "lib/types";
 
 interface Props {
-  onChange?: (colors: string[]) => any;
+  onChange?: (colors: HSLColor[], i: number) => any;
+  onClickHandle?: (angle: number, i: number) => any;
   radiusInner?: number;
   radiusOuter?: number;
-  value: string[];
+  selectedColor: 0 | 1;
+  value: HSLColor[];
 }
 
 interface State {
-  value: string[];
+  value: HSLColor[];
 }
 
 export default class ColorPicker extends React.Component<Props, State> {
@@ -28,10 +30,11 @@ export default class ColorPicker extends React.Component<Props, State> {
 
   private handleChange(angle: number, i: number) {
     const newVal = [...this.state.value];
-    newVal[i] = hslToHex(Math.round(angle), 100, 50);
+    const [/**/, s, l] = newVal[i];
+    newVal[i] = [Math.round(angle), s, l];
 
     this.setState({ value: newVal });
-    this.props.onChange && this.props.onChange(this.state.value);
+    this.props.onChange?.(this.state.value, i);
   }
 
   private renderColorWheel(canvas: HTMLCanvasElement) {
@@ -76,15 +79,19 @@ export default class ColorPicker extends React.Component<Props, State> {
   }
 
   private renderHandles() {
-    const { value } = this.props;
+    const { selectedColor, value } = this.props;
 
     return value.map((color, i) => {
+      const referenceHandleClassName = i === 0 ? "reference-handle" : "";
+      const selectedHandleClassName = i === selectedColor ? "is-selected" : "";
+
       return (
         <Handle
+          className={`${referenceHandleClassName} ${selectedHandleClassName}`}
           key={i}
-          initialColor={color}
-          isReferenceHandle={i === 0}
+          initialAngle={color[0]}
           onChange={(angle) => this.handleChange(angle, i)}
+          onClick={(angle) => this.props.onClickHandle?.(angle, i)}
           parentSize={this.props.radiusOuter!}
         />
       );

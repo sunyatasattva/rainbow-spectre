@@ -1,41 +1,40 @@
 import "../styles/handle.scss";
-import React, { MutableRefObject, useCallback, useEffect, useRef } from "react";
-import hexToHsl from "hex-to-hsl";
+import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { bus } from "../app";
-import { useOptions } from "../hooks/useGlobalState";
 import useMouseRotation from "../hooks/useMouseRotation";
 
 interface Props {
-  initialColor: string;
+  className?: string;
+  initialAngle: number;
   isReferenceHandle?: boolean;
+  ignoreLock?: boolean;
   onChange: (value: number) => any;
+  onClick?: (value: number) => any;
   parentSize: number; // Perhaps this should be calculated instead?
+  style?: CSSProperties;
 }
 
 export default function Handle(props: Props) {
-  const className = `${props.isReferenceHandle ? "reference-handle" : ""}`;
-  const [{ lockRatio }] = useOptions();
+  const { ignoreLock } = props;
   const container = useRef<HTMLDivElement>(null);
   const [angle, setAngle] = useMouseRotation(
-    hexToHsl(props.initialColor)[0],
+    props.initialAngle,
     container as MutableRefObject<HTMLElement>
   );
   const angleRef = useRef<number>();
-  const lockRef = useRef<boolean>();
   const onChangeRef = useRef(props.onChange);
 
   angleRef.current = angle;
-  lockRef.current = lockRatio;
 
   const respondToChanges = useCallback(
     ({ newVal, oldVal }: { newVal: number, oldVal: number }) => {
-      if(lockRef.current && oldVal !== angleRef.current) {
+      if(!ignoreLock && oldVal !== angleRef.current) {
         const delta = newVal - oldVal;
 
         setAngle(angleRef.current! + delta);
       }
     },
-    [setAngle]
+    [ignoreLock, setAngle]
   );
 
   useEffect(
@@ -52,16 +51,18 @@ export default function Handle(props: Props) {
 
   return (
     <div
-      className={`handle-container ${className}`}
+      className={`handle-container ${props.className}`}
       ref={container}
       style={{
         width: `${props.parentSize}px`,
         height: `${props.parentSize}px`,
         transform: `rotate(${angle}deg)`,
+        ...props.style
       }}
     >
       <span
         className="handle"
+        onMouseDown={() => props.onClick?.(angle)}
         style={{
           backgroundColor: `hsl(${angle}deg, 100%, 50%)`
         }}
