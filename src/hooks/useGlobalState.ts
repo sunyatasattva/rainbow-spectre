@@ -1,4 +1,4 @@
-import { AllowedHarmonicLimit } from "lib/types";
+import { AllowedHarmonicLimit, HSLColor } from "lib/types";
 import { createGlobalState } from "react-hooks-global-state";
 
 export interface Options {
@@ -9,7 +9,10 @@ export interface Options {
   mode: "interval" | "absolute";
 }
 
-const defaultColors: [string, string] = ["#ff0000", "#00ffff"];
+const defaultColors: [HSLColor, HSLColor] = [
+  [50, 100, 50],
+  [200, 100, 50]
+];
 
 const defaultOptions: Options = {
   autoplay: true,

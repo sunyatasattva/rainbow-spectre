@@ -11,8 +11,7 @@ import logo from "./images/logo.svg";
 import "./styles/app.scss";
 import { useKeyPress } from "hooks/useKeyPress";
 import ColorComponentsWrapper from "components/ColorComponentsWrapper";
-import hexToHsl from "hex-to-hsl";
-import hslToHex from "hsl-to-hex";
+import { HSLColor } from "lib/types";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
@@ -33,20 +32,14 @@ function App() {
   function onColorComponentChange(k: 0 | 1 | 2, angle: number) {
     const currentColors = colorsRef.current;
     const currentColor = selectedColorRef.current;
-    const hsl = hexToHsl(currentColors[currentColor]);
+    const hsl = currentColors[currentColor];
     const v = degToPercent(angle);
     hsl[k] = v;
 
-    const hex = hslToHex(...hsl);
-
-    const newColors: [string, string] = [...colors];
-    newColors[currentColor] = hex;
+    const newColors: [HSLColor, HSLColor] = [...colors];
+    newColors[currentColor] = hsl;
     setColors(newColors);
   }
-
-  useEffect(() => {
-
-  }, [selectedColor]);
 
   useEffect(() => {
     function handleHueChange() {

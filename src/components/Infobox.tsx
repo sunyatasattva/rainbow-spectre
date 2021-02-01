@@ -5,10 +5,10 @@ import Sound from "lib/tones";
 import { calculateColorsRatio, fractionMax } from "lib/utils";
 import React, { useEffect, useState } from "react";
 import DifferenceBar from "./DifferenceBar";
-import { Ratio } from "lib/types";
+import { HSLColor, Ratio } from "lib/types";
 
 interface Props {
-  colors: [string, string];
+  colors: [HSLColor, HSLColor];
 }
 
 function getIntervalName(ratio: [number, number]) {

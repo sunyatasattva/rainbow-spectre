@@ -5,14 +5,7 @@
   "dependencies": {
     "@mdi/js": "^5.8.55",
     "@mdi/react": "^1.4.0",
-    "@types/jest": "^24.0.18",
-    "@types/lodash.camelcase": "^4.3.6",
-    "@types/node": "^12.7.5",
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.9.0",
     "frac": "^1.1.2",
-    "hex-to-hsl": "^1.0.2",
-    "hsl-to-hex": "^1.0.0",
     "lodash.camelcase": "^4.3.0",
     "node-sass": "^4.14.1",
     "react": "^16.9.0",
@@ -20,6 +13,7 @@
     "react-hooks-global-state": "^1.0.1",
     "react-scripts": "^4.0.0",
     "react-switch": "^5.0.1",
+    "react-transition-group": "^4.4.1",
     "typescript": "^4.0.0"
   },
   "scripts": {
@@ -43,5 +37,12 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "http://suonoterapia.org/rainbow"
+  "homepage": "http://suonoterapia.org/rainbow",
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/lodash.camelcase": "^4.3.6",
+    "@types/node": "^12.7.5",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+  }
 }

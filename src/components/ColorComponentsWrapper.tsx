@@ -3,6 +3,8 @@ import React from "react";
 import hexToHsl from "hex-to-hsl";
 import Handle from "./Handle";
 import { useColors } from "hooks/useGlobalState";
+import { ColorComponent, HSLColor } from "lib/types";
+import { hslToString } from "lib/utils";
 
 interface Props {
   children: JSX.Element;

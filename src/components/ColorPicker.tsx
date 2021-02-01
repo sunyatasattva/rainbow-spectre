@@ -1,19 +1,19 @@
 import React from "react";
-import hslToHex from "hsl-to-hex";
 import Handle from "./Handle";
 import "../styles/color-picker.scss";
-import hexToHsl from "hex-to-hsl";
+import { HSLColor } from "lib/types";
 
 interface Props {
-  onChange?: (colors: string[], i: number) => any;
+  onChange?: (colors: HSLColor[], i: number) => any;
   onClickHandle?: (angle: number, i: number) => any;
   radiusInner?: number;
   radiusOuter?: number;
-  value: string[];
+  selectedColor: 0 | 1;
+  value: HSLColor[];
 }
 
 interface State {
-  value: string[];
+  value: HSLColor[];
 }
 
 export default class ColorPicker extends React.Component<Props, State> {
@@ -30,7 +30,8 @@ export default class ColorPicker extends React.Component<Props, State> {
 
   private handleChange(angle: number, i: number) {
     const newVal = [...this.state.value];
-    newVal[i] = hslToHex(Math.round(angle), 100, 50);
+    const [/**/, s, l] = newVal[i];
+    newVal[i] = [Math.round(angle), s, l];
 
     this.setState({ value: newVal });
     this.props.onChange?.(this.state.value, i);
@@ -85,7 +86,7 @@ export default class ColorPicker extends React.Component<Props, State> {
         <Handle
           className={i === 0 ? "reference-handle" : ""}
           key={i}
-          initialAngle={hexToHsl(color)[0]}
+          initialAngle={color[0]}
           onChange={(angle) => this.handleChange(angle, i)}
           onClick={(angle) => this.props.onClickHandle?.(angle, i)}
           parentSize={this.props.radiusOuter!}
