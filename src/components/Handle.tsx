@@ -2,6 +2,7 @@ import "../styles/handle.scss";
 import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { bus } from "../app";
 import useMouseRotation from "../hooks/useMouseRotation";
+import { useOptions } from "hooks/useGlobalState";
 
 interface Props {
   className?: string;
@@ -15,26 +16,29 @@ interface Props {
 }
 
 export default function Handle(props: Props) {
-  const { ignoreLock } = props;
+  const [{ lockRatio }] = useOptions();
+  const ignoreLock = !props.ignoreLock || !lockRatio;
   const container = useRef<HTMLDivElement>(null);
   const [angle, setAngle] = useMouseRotation(
     props.initialAngle,
     container as MutableRefObject<HTMLElement>
   );
   const angleRef = useRef<number>();
+  const lockRef = useRef<boolean>(false);
   const onChangeRef = useRef(props.onChange);
 
   angleRef.current = angle;
+  lockRef.current = !ignoreLock;
 
   const respondToChanges = useCallback(
     ({ newVal, oldVal }: { newVal: number, oldVal: number }) => {
-      if(!ignoreLock && oldVal !== angleRef.current) {
+      if(lockRef.current && oldVal !== angleRef.current) {
         const delta = newVal - oldVal;
 
         setAngle(angleRef.current! + delta);
       }
     },
-    [ignoreLock, setAngle]
+    [setAngle]
   );
 
   useEffect(
