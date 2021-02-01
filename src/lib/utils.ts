@@ -30,6 +30,10 @@ export function degToRad(n: number) {
   return (n * Math.PI) / 180;
 }
 
+export function degToPercent(n: number) {
+  return Math.floor(n / 360 * 100);
+}
+
 export function playColorsInterval(a: string, b: string, f: number) {
   const ratio = calculateColorsRatio(a, b);
   
@@ -56,6 +60,22 @@ export function radToDeg(x: number) {
   const theta = x * 180 / Math.PI;
 
   return theta < 0 ? theta + 360 : theta;
+}
+
+export function setStateProp<
+  T,
+  K extends keyof T
+>(
+  setState: React.Dispatch<React.SetStateAction<T>>,
+  key: K,
+  val: T[K]
+) {
+  return setState((prev) => {
+    return {
+      ...prev,
+      [key]: val
+    };
+  });
 }
 
 export function fraction(n: number): Ratio {

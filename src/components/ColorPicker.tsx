@@ -2,9 +2,11 @@ import React from "react";
 import hslToHex from "hsl-to-hex";
 import Handle from "./Handle";
 import "../styles/color-picker.scss";
+import hexToHsl from "hex-to-hsl";
 
 interface Props {
-  onChange?: (colors: string[]) => any;
+  onChange?: (colors: string[], i: number) => any;
+  onClickHandle?: (angle: number, i: number) => any;
   radiusInner?: number;
   radiusOuter?: number;
   value: string[];
@@ -31,7 +33,7 @@ export default class ColorPicker extends React.Component<Props, State> {
     newVal[i] = hslToHex(Math.round(angle), 100, 50);
 
     this.setState({ value: newVal });
-    this.props.onChange && this.props.onChange(this.state.value);
+    this.props.onChange?.(this.state.value, i);
   }
 
   private renderColorWheel(canvas: HTMLCanvasElement) {
@@ -81,10 +83,11 @@ export default class ColorPicker extends React.Component<Props, State> {
     return value.map((color, i) => {
       return (
         <Handle
+          className={i === 0 ? "reference-handle" : ""}
           key={i}
-          initialColor={color}
-          isReferenceHandle={i === 0}
+          initialAngle={hexToHsl(color)[0]}
           onChange={(angle) => this.handleChange(angle, i)}
+          onClick={(angle) => this.props.onClickHandle?.(angle, i)}
           parentSize={this.props.radiusOuter!}
         />
       );

@@ -5,6 +5,8 @@ export type AllowedHarmonicLimit = "None" | 3 | 5 | 7 | 11 | "12-TET";
  */
 export type HSLColor = [hue: number, saturation: number, lightness: number];
 
+export type ColorComponent = "hue" | "saturation" | "lightness";
+
 /**
   * @property  {number}   attack  The attack duration of the sound (in secs). See {@link Sound#createEnvelope}
   * @property  {number}   decay   The decay duration of the sound (in secs). See {@link Sound#createEnvelope}

@@ -4,17 +4,13 @@ import Option from "./Option";
 import { Options, useOptions } from "../hooks/useGlobalState";
 import { AllowedHarmonicLimit } from "lib/types";
 import { mdiAbTesting, mdiMotionPlay, mdiRecordCircleOutline, mdiVariableBox } from "@mdi/js";
+import { setStateProp } from "lib/utils";
 
 export default function OptionsBox() {
   const [options, setOptions] = useOptions();
 
   function setOption<K extends keyof Options>(key: K, val: Options[K]) {
-    return setOptions((prev) => {
-      return {
-        ...prev,
-        [key]: val
-      };
-    });
+    return setStateProp(setOptions, key, val);
   }
 
   return (
