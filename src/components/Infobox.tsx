@@ -1,13 +1,19 @@
+import React, { useEffect, useState } from "react";
+import { HSLColor, Note, Ratio } from "lib/types";
 import "../styles/infobox.scss";
+import ColorPicker from "./ColorPicker";
+import DifferenceBar from "./DifferenceBar";
 import { useOptions } from "hooks/useGlobalState";
 import intervals, { equallyTemperedIntervals } from "lib/intervals";
+import { fractionMax } from "lib/math";
+import { wavelengthToAudibleFrequency } from "lib/spectrum-calculator";
 import Sound from "lib/tones";
-import { calculateColorsRatio, decimalsToCents, fractionMax, getEqualTemperedNoteNumber, MIDIToName, wavelengthToAudibleFrequency } from "lib/utils";
-import React, { useEffect, useState } from "react";
-import DifferenceBar from "./DifferenceBar";
-import { HSLColor, Note, Ratio } from "lib/types";
-import ColorPicker from "./ColorPicker";
-
+import {
+  calculateColorsRatio,
+  decimalsToCents,
+  getEqualTemperedNoteNumber,
+  MIDIToName
+} from "lib/utils";
 interface Props {
   angle?: number;
   colors: [HSLColor, HSLColor];

@@ -1,5 +1,5 @@
 import { spectrumCoordinates, sRGBD65Matrix } from "./spectrum-coordinates";
-import { clamp } from "./utils";
+import { clamp } from "./math";
 
 type RGBColor = [r: number, g: number, b: number];
 type RGBAColor = [r: number, g: number, b: number, a: number];
@@ -99,6 +99,12 @@ function interpolate(idx: number, offset: number) {
 
     return y0 + offset * (y1 - y0) / (x1 - x0);
   });
+}
+
+export function wavelengthToAudibleFrequency(wavelength: number) {
+  const frequency = wavelengthToFrequency(wavelength) * 1e+12;
+
+  return frequency / Math.pow(2, 40);
 }
 
 /**

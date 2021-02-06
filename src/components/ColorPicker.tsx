@@ -8,7 +8,7 @@ import {
   wavelengthToRGB,
   wavelengthToRGBA
 } from "lib/spectrum-calculator";
-import { degToRad } from "lib/utils";
+import { degToRad } from "lib/math";
 
 interface Props {
   mode: "hue" | "spectrum";

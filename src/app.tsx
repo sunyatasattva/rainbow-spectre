@@ -5,13 +5,14 @@ import Core from "./components/Core";
 import Infobox from "./components/Infobox";
 import OptionsBox from "./components/OptionsBox";
 import { useOptions } from "./hooks/useGlobalState";
-import { degToPercent, playColorsInterval } from "./lib/utils";
+import { playColorsInterval } from "./lib/utils";
 import EventBus from "./lib/EventBus";
 import logo from "./images/logo.svg";
 import "./styles/app.scss";
 import { useKeyPress } from "hooks/useKeyPress";
 import ColorComponentsWrapper from "components/ColorComponentsWrapper";
 import { HSLColor } from "lib/types";
+import { degToPercent } from "lib/math";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
