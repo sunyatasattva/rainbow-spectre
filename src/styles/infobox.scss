@@ -14,6 +14,21 @@
   width: 483px;
   height: 300px;
 
+  .interval,
+  .note-details {
+    @media screen and (max-width: 600px) {
+      font-size: 88px;
+    }
+
+    font-size: 128px;
+    text-transform: uppercase;
+    height: 185px;
+
+    sub {
+      font-size: 0.7em;
+    }
+  }
+
   .badge {
     border-radius: 10px;
     display: inline-block;
@@ -34,16 +49,6 @@
     &.is-12-tet { background-color: rgb(128, 0, 79);}
   }
 
-  .interval {
-    @media screen and (max-width: 600px) {
-      font-size: 88px;
-    }
-
-    font-size: 128px;
-    text-transform: uppercase;
-    height: 185px;
-  }
-
   .interval-name {
     opacity: 1;
     transition: opacity 0.2s ease-out;
@@ -51,6 +56,10 @@
     &.unknown-interval {
       opacity: 0;
     }
+  }
+
+  .note-accidentals {
+    font-size: 0.5em;
   }
 }
 

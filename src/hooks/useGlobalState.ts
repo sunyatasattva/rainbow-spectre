@@ -8,6 +8,7 @@ export interface Options {
   lockRatio: boolean;
   mode: "interval" | "absolute";
   showColorSliders: boolean;
+  showVisibleSpectrumWheel: boolean;
 }
 
 const defaultColors: [HSLColor, HSLColor] = [
@@ -22,6 +23,7 @@ const defaultOptions: Options = {
   lockRatio: false,
   mode: "interval",
   showColorSliders: false,
+  showVisibleSpectrumWheel: false,
 };
 
 const globalState = createGlobalState({

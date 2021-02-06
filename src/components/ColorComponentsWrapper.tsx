@@ -92,6 +92,8 @@ interface ColorComponentSliderProps {
 }
 
 function ColorComponentSlider(props: ColorComponentSliderProps) {
+  const RADIUS = 15;
+  const CIRCUMFERENCE = RADIUS * Math.PI * 2
   const { colorComponent, selectedColor } = props;
   const [colors] = useColors();
   const strokeWidth = sizes[props.colorComponent].strokeWidth;
@@ -123,13 +125,13 @@ function ColorComponentSlider(props: ColorComponentSliderProps) {
           cx="50%"
           cy="50%"
           stroke={`${hslToString(ringTrainValue)}`}
-          strokeDasharray="94.2"
-          strokeDashoffset={(94.2 * (1 - relevantComponent/100)).toFixed(2)}
+          strokeDasharray={CIRCUMFERENCE}
+          strokeDashoffset={(CIRCUMFERENCE * (1 - relevantComponent/100)).toFixed(2)}
           strokeWidth={strokeWidth}
           style={{
             transition: `stroke-dashoffset ${timeout}ms ease-out`
           }}
-          r="15"
+          r={RADIUS}
         />
       </g>
     </CSSTransition>

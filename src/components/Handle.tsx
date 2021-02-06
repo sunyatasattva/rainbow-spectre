@@ -3,9 +3,11 @@ import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useRef 
 import { bus } from "../app";
 import useMouseRotation from "../hooks/useMouseRotation";
 import { useOptions } from "hooks/useGlobalState";
+import { HSLColor } from "lib/types";
 
 interface Props {
   className?: string;
+  handleColor?: HSLColor;
   initialAngle: number;
   isReferenceHandle?: boolean;
   ignoreLock?: boolean;
@@ -16,6 +18,7 @@ interface Props {
 }
 
 export default function Handle(props: Props) {
+  const { handleColor } = props;
   const [{ lockRatio }] = useOptions();
   const ignoreLock = !props.ignoreLock || !lockRatio;
   const container = useRef<HTMLDivElement>(null);
@@ -53,6 +56,8 @@ export default function Handle(props: Props) {
     [respondToChanges]
   );
 
+  const handleBackgroundHue = handleColor ? handleColor[0] : angle;
+
   return (
     <div
       className={`handle-container ${props.className}`}
@@ -68,7 +73,7 @@ export default function Handle(props: Props) {
         className="handle"
         onMouseDown={() => props.onClick?.(angle)}
         style={{
-          backgroundColor: `hsl(${angle}deg, 100%, 50%)`
+          backgroundColor: `hsl(${handleBackgroundHue}deg, 100%, 50%)`
         }}
       >
       </span>

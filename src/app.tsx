@@ -19,6 +19,7 @@ export const bus = new EventBus<{
 }>();
 
 function App() {
+  const [angle, setAngle] = useState(0);
   const [colors, setColors] = useColors();
   const colorsRef = useRef(colors);
   const [selectedColor, setSelectedColor] = useState<0 | 1>(0);
@@ -67,9 +68,11 @@ function App() {
           selectedColor={selectedColor}
           onChange={onColorComponentChange}
         >
-          <ColorPicker 
-            onChange={(val) => {
-              setColors([val[0], val[1]]);
+          <ColorPicker
+            mode={options.showVisibleSpectrumWheel ? "spectrum" : "hue"}
+            onChange={({ angle, colors }) => {
+              setAngle(angle);
+              setColors([colors[0], colors[1]]);
             }}
             onClickHandle={(_, i) => {
               setSelectedColor(i as 0 | 1);
@@ -81,7 +84,10 @@ function App() {
             <Core colors={colors} />
           </ColorPicker>
         </ColorComponentsWrapper>
-        <Infobox colors={colors} />
+        <Infobox
+          angle={angle}
+          colors={colors}
+        />
         <OptionsBox />
       </main>
       <footer className="app-footer"></footer>

@@ -3,7 +3,7 @@ import React from "react";
 import Option from "./Option";
 import { Options, useOptions } from "../hooks/useGlobalState";
 import { AllowedHarmonicLimit } from "lib/types";
-import { mdiAbTesting, mdiMotionPlay, mdiPalette, mdiRecordCircleOutline, mdiVariableBox } from "@mdi/js";
+import { mdiAbTesting, mdiMotionPlay, mdiPalette, mdiRecordCircleOutline, mdiVariableBox, mdiWaveform } from "@mdi/js";
 import { setStateProp } from "lib/utils";
 
 export default function OptionsBox() {
@@ -95,6 +95,17 @@ export default function OptionsBox() {
           onChange={setOption}
           label="Lock ratio"
           value={options.lockRatio}
+        />
+        <Option
+          helpText={`The default color space representation for this mode
+          involves a hue color wheel, which best represents the way our
+          brain processes colors, but it is not a physically accurate
+          representation. With this option, you can switch to show a
+          physically accurate representation of the visible specturm`}
+          icon={mdiWaveform}
+          onChange={setOption}
+          label="Show visible spectrum wheel"
+          value={options.showVisibleSpectrumWheel}
         />
       </ul>
     </div>

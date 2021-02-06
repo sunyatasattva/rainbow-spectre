@@ -21,6 +21,7 @@ interface SwitchProps extends Props {
   children?: never;
   label: string;
   onChange: (name: keyof Options, val: boolean) => any;
+  optionName?: keyof Options;
   value: boolean;
 }
 
@@ -35,7 +36,7 @@ export default function Option(props: CustomInputProps | SwitchProps) {
 
   function handleChange(v: boolean) {
     props.onChange?.(
-      (camelCase(props.label) as keyof Options),
+      props.optionName || (camelCase(props.label) as keyof Options),
       v
     );
   }
