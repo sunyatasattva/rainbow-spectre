@@ -27,17 +27,18 @@
     }
   }
 
+  circle {
+    cursor: pointer;
+  }
+
   .fish {
+    cursor: pointer;
     transform: scale(1);
     transform-box: fill-box;
     transform-origin: 50% 50%;
     transition: transform 0.2s ease-out;
 
     -webkit-tap-highlight-color: transparent;
-
-    &:hover {
-      cursor: pointer;
-    }
 
     .frequency-container {
       display: none;

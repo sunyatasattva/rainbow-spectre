@@ -3,23 +3,44 @@ import pitchSort from "pitch-sort";
 import { HSLColor, Note } from "./types";
 import { logBase } from "./math";
 import Sound from "./tones";
+import {
+  wavelengthToAudibleFrequency,
+  calculateWavelengthFromAngle
+} from "./spectrum-calculator";
 
 export const MIDI_A4 = 69;
 
-export function calculateColorsInterval(a: HSLColor, b: HSLColor) {
+export function calculateAngleInterval(a: number, b: number) {
   const CENTS_PER_DEGREE = 1200 / 360;
-  const [aHue] = a;
-  const [bHue] = b;
-  let difference = 360 + bHue - aHue;
+  let difference = 360 + b - a;
   if(difference > 360) difference -= 360;
 
   return difference * CENTS_PER_DEGREE;
+}
+
+export function calculateAngleRatio(a: number, b: number) {
+  const cents = calculateAngleInterval(a, b);
+
+  return Sound.centsToRatio(cents);
+}
+
+export function calculateColorsInterval(a: HSLColor, b: HSLColor) {
+  const [aHue] = a;
+  const [bHue] = b;
+
+  return calculateAngleInterval(aHue, bHue);
 }
 
 export function calculateColorsRatio(a: HSLColor, b: HSLColor) {
   const cents = calculateColorsInterval(a, b);
 
   return Sound.centsToRatio(cents);
+}
+
+export function calculateFrequencyFromAngle(angle: number) {
+  return wavelengthToAudibleFrequency(
+    calculateWavelengthFromAngle(angle)
+  );
 }
 
 export function hslToString(hsl: HSLColor) {
@@ -122,9 +143,13 @@ export function MIDIToName(n: number, pitchSet?: string[]): Omit<Note, "cents"> 
   }
 }
 
-export function playColorsInterval(a: HSLColor, b: HSLColor, f: number) {
-  const ratio = calculateColorsRatio(a, b);
-  
+export function playAngleInterval(a: number, b: number, f: number) {
+  const ratio = calculateAngleRatio(a, b);
+
+  playInterval(ratio, f);
+}
+
+export function playInterval(ratio: number, f: number) {
   Sound.play(f, { volume: 0.33 });
   Sound.play(f * ratio, { volume: 0.33 });
 }

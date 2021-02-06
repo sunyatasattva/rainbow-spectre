@@ -34,6 +34,10 @@ function bezier(x: number, start = 0, end = 1) {
   return Math.pow(normalizedX, 2) * (3 - 2 * normalizedX);
 }
 
+export function calculateWavelengthFromAngle(angle: number) {
+  return calculateWavelengthStep(360 - angle, 360);
+}
+
 export function calculateWavelengthStep(n: number, steps: number) {
   return n * (ULTRAVIOLET_WL / steps) + ULTRAVIOLET_WL
   - COLOR_FALLOFF_THRESHOLD / 2;
@@ -104,7 +108,7 @@ function interpolate(idx: number, offset: number) {
 export function wavelengthToAudibleFrequency(wavelength: number) {
   const frequency = wavelengthToFrequency(wavelength) * 1e+12;
 
-  return frequency / Math.pow(2, 40);
+  return frequency / Math.pow(2, 41);
 }
 
 /**

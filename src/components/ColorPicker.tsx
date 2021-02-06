@@ -4,7 +4,7 @@ import Handle from "./Handle";
 import "../styles/color-picker.scss";
 import { HSLColor } from "lib/types";
 import {
-  calculateWavelengthStep,
+  calculateWavelengthFromAngle,
   wavelengthToRGB,
   wavelengthToRGBA
 } from "lib/spectrum-calculator";
@@ -12,8 +12,8 @@ import { degToRad } from "lib/math";
 
 interface Props {
   mode: "hue" | "spectrum";
-  onChange?: ({ angle, handleIdx, colors }: {
-    angle: number,
+  onChange?: ({ angles, handleIdx, colors }: {
+    angles: number[],
     colors: HSLColor[],
     handleIdx: number
   }) => any;
@@ -25,6 +25,7 @@ interface Props {
 }
 
 interface State {
+  angles: number[];
   value: HSLColor[];
 }
 
@@ -35,16 +36,19 @@ export default class ColorPicker extends React.Component<Props, State> {
   }
 
   state = {
+    angles: [this.props.value[0][0], this.props.value[1][0]],
     value: this.props.value
   }
 
   private canvas = React.createRef<HTMLCanvasElement>();
 
   private handleChange(angle: number, i: number) {
-    const wl = ColorPicker.calculateWavelengthFromAngle(angle);
-    console.log({wl});
+    const wl = calculateWavelengthFromAngle(angle);
+    const newAngles = [...this.state.angles];
     const newVal = [...this.state.value];
     const [/**/, s, l] = newVal[i];
+
+    newAngles[i] = angle;
 
     if(this.props.mode === "spectrum") {
       const hsl = Color.rgb( wavelengthToRGB(wl) ).hsl();
@@ -53,16 +57,34 @@ export default class ColorPicker extends React.Component<Props, State> {
       newVal[i] = [Math.round(angle), s, l];
     }
 
-    this.setState({ value: newVal });
+    this.setState({
+      angles: newAngles,
+      value: newVal
+    });
+
     this.props.onChange?.({
-      angle,
-      colors: this.state.value,
+      angles: newAngles,
+      colors: newVal,
       handleIdx: i
     });
   }
 
-  static calculateWavelengthFromAngle(angle: number) {
-    return calculateWavelengthStep(360 - angle, 360);
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if(props.value.length !== state.value.length) {
+      if(props.value.length > state.value.length) {
+        return {
+          angles: [state.value[0][0], props.value[1][0]],
+          value: [state.value[0], props.value[1]]
+        }
+      } else {
+        return {
+          angles: [props.value[0][0]],
+          value: [props.value[0]]
+        }
+      }
+    } else {
+      return null;
+    }
   }
 
   private renderColorWheel(canvas: HTMLCanvasElement) {
@@ -93,7 +115,7 @@ export default class ColorPicker extends React.Component<Props, State> {
     for (let i = 0; i < 360; i += 0.5) {
       if(mode === "spectrum") {
         const [r, g, b, a] = wavelengthToRGBA(
-          ColorPicker.calculateWavelengthFromAngle(i)
+          calculateWavelengthFromAngle(i)
         );
 
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;

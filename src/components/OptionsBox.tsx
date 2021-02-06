@@ -1,10 +1,12 @@
 import "../styles/options-box.scss";
 import React from "react";
-import Option from "./Option";
+import Option, { defaultIconProps } from "./Option";
 import { Options, useOptions } from "../hooks/useGlobalState";
 import { AllowedHarmonicLimit } from "lib/types";
-import { mdiAbTesting, mdiMotionPlay, mdiPalette, mdiRecordCircleOutline, mdiVariableBox, mdiWaveform } from "@mdi/js";
+import { mdiAbTesting, mdiCircleMultiple, mdiMotionPlay, mdiMusic, mdiMusicNoteQuarter, mdiPalette, mdiRecordCircleOutline, mdiVariableBox, mdiWaveform } from "@mdi/js";
 import { setStateProp } from "lib/utils";
+import Segment from "./Segment";
+import Icon from "@mdi/react";
 
 export default function OptionsBox() {
   const [options, setOptions] = useOptions();
@@ -18,8 +20,47 @@ export default function OptionsBox() {
       <h2>Options</h2>
       <ul className="options">
         <Option
+          className="mode"
+          helpText={`In “interval” mode, you can experience the musical
+          relationship between two colors. The actual hues of the colors
+          are not important in this mode, only their relative relationship.
+          On the other hand, in “absolute” mode, you can hear the sound
+          of a single color, by hearing its frequency transposed to
+          the audible range.`}
+          icon={mdiCircleMultiple}
+          label="Mode">
+            <Segment
+              onChange={(val) => setOption("mode", val as Options["mode"])}
+              options={[
+                {
+                  label: (
+                    <>
+                      <Icon {...defaultIconProps} size={0.5} path={mdiMusic} />
+                      Interval
+                    </>
+                  ),
+                  value: "interval"
+                },
+                {
+                  label: (
+                    <>
+                      <Icon
+                        {...defaultIconProps}
+                        size={0.5}
+                        path={mdiMusicNoteQuarter}
+                      />
+                      Absolute
+                    </>
+                  ),
+                  value: "absolute"
+                }
+              ]}
+              value={options.mode}
+            />
+        </Option>
+        <Option
           className="reference-frequency"
-          helpText={`In relative mode, the color wheel is a representation
+          helpText={`In interval mode, the color wheel is a representation
           of an octave; as such, the colors do not represent absolute values,
           but a ratio relative to each other. One of the handles in the color
           wheel (shown with a dot in the middle), represent the fixed reference
@@ -78,6 +119,7 @@ export default function OptionsBox() {
           value={options.autoplay}
         />
         <Option
+          disabled={options.showVisibleSpectrumWheel}
           helpText={`This option will display two concentrical circles
           around the color picker, for you to refine the exact color you
           would like to pick. Note that this won't have any effect on the
@@ -103,7 +145,12 @@ export default function OptionsBox() {
           representation. With this option, you can switch to show a
           physically accurate representation of the visible specturm`}
           icon={mdiWaveform}
-          onChange={setOption}
+          onChange={
+            (k, v) => {
+              setOption(k, v);
+              setOption("showColorSliders", false);
+            }
+          }
           label="Show visible spectrum wheel"
           value={options.showVisibleSpectrumWheel}
         />

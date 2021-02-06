@@ -11,7 +11,7 @@ export interface Options {
   showVisibleSpectrumWheel: boolean;
 }
 
-const defaultColors: [HSLColor, HSLColor] = [
+export const defaultColors: HSLColor[] = [
   [50, 100, 50],
   [200, 100, 50]
 ];

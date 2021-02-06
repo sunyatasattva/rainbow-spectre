@@ -1,26 +1,34 @@
-import { useColors } from "hooks/useGlobalState";
 import React, { useEffect, useRef, useState } from "react";
+import "./styles/app.scss";
+import logo from "./images/logo.svg";
+import { defaultColors, useColors } from "hooks/useGlobalState";
 import ColorPicker from "./components/ColorPicker"
 import Core from "./components/Core";
 import Infobox from "./components/Infobox";
 import OptionsBox from "./components/OptionsBox";
 import { useOptions } from "./hooks/useGlobalState";
-import { playColorsInterval } from "./lib/utils";
 import EventBus from "./lib/EventBus";
-import logo from "./images/logo.svg";
-import "./styles/app.scss";
 import { useKeyPress } from "hooks/useKeyPress";
 import ColorComponentsWrapper from "components/ColorComponentsWrapper";
-import { HSLColor } from "lib/types";
 import { degToPercent } from "lib/math";
+import { calculateFrequencyFromAngle, playAngleInterval } from "lib/utils";
+import Sound from "lib/tones";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
   angleCommit: (deg: number) => void;
+  coreClick: () => void;
 }>();
 
+function playFrequencyFromAngle(angle: number) {
+  return Sound.play(
+    calculateFrequencyFromAngle(angle),
+    { volume: 0.33 }
+  );
+}
+
 function App() {
-  const [angle, setAngle] = useState(0);
+  const [angles, setAngles] = useState([50, 200]);
   const [colors, setColors] = useColors();
   const colorsRef = useRef(colors);
   const [selectedColor, setSelectedColor] = useState<0 | 1>(0);
@@ -38,16 +46,32 @@ function App() {
     const v = degToPercent(angle);
     hsl[k] = v;
 
-    const newColors: [HSLColor, HSLColor] = [...colors];
+    const newColors = [...colors];
     newColors[currentColor] = hsl;
     setColors(newColors);
   }
 
   useEffect(() => {
+    if(options.mode === "absolute") {
+      setAngles( (angles) => [angles[0]] );
+      setColors( (colors) => [colors[0]] );
+    } else {
+      const [ a, b ] = defaultColors
+      setAngles( [a[0], b[0]] );
+      setColors(defaultColors)
+    }
+  }, [options, setColors])
+
+  useEffect(() => {
     function handleHueChange() {
-      const [a, b] = colors;
+      const [a, b] = angles;
       
-      if(options.autoplay) playColorsInterval(a, b, options.baseFrequency);
+      if(options.autoplay) {
+        if(options.mode === "interval")
+          playAngleInterval(a, b, options.baseFrequency);
+        else
+          playFrequencyFromAngle(angles[0]);
+      }
     }
 
     bus.on("angleCommit", handleHueChange);
@@ -55,7 +79,19 @@ function App() {
     return () => {
       bus.off("angleCommit", handleHueChange);
     }
-  }, [colors, options]);
+  }, [angles, options]);
+
+  useEffect(() => {
+    function coreClick() {
+      playFrequencyFromAngle(angles[0]);
+    }
+
+    bus.on("coreClick", coreClick);
+
+    return () => {
+      bus.off("coreClick", coreClick);
+    }
+  }, [angles]);
 
   return (
     <div className={`app ${isAltPressed ? "alt-pressed" : ""}`}>
@@ -70,10 +106,13 @@ function App() {
           onChange={onColorComponentChange}
         >
           <ColorPicker
-            mode={options.showVisibleSpectrumWheel ? "spectrum" : "hue"}
-            onChange={({ angle, colors }) => {
-              setAngle(angle);
-              setColors([colors[0], colors[1]]);
+            mode={
+              (options.showVisibleSpectrumWheel
+                || options.mode === "absolute") ? "spectrum" : "hue"
+            }
+            onChange={({ angles, colors }) => {
+              setAngles(angles);
+              setColors(colors);
             }}
             onClickHandle={(_, i) => {
               setSelectedColor(i as 0 | 1);
@@ -85,10 +124,7 @@ function App() {
             <Core colors={colors} />
           </ColorPicker>
         </ColorComponentsWrapper>
-        <Infobox
-          angle={angle}
-          colors={colors}
-        />
+        <Infobox angles={angles} />
         <OptionsBox />
       </main>
       <footer className="app-footer"></footer>
