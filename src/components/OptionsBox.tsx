@@ -30,7 +30,10 @@ export default function OptionsBox() {
           icon={mdiCircleMultiple}
           label="Mode">
             <Segment
-              onChange={(val) => setOption("mode", val as Options["mode"])}
+              onChange={(val: Options["mode"]) => {
+                if(val === "absolute") setOption("showColorSliders", false);
+                setOption("mode", val)
+              }}
               options={[
                 {
                   label: (
