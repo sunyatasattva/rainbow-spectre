@@ -146,12 +146,12 @@ export function MIDIToName(n: number, pitchSet?: string[]): Omit<Note, "cents"> 
 export function playAngleInterval(a: number, b: number, f: number) {
   const ratio = calculateAngleRatio(a, b);
 
-  playInterval(ratio, f);
+  return playInterval(ratio, f);
 }
 
 export function playInterval(ratio: number, f: number) {
   Sound.play(f, { volume: 0.33 });
-  Sound.play(f * ratio, { volume: 0.33 });
+  return Sound.play(f * ratio, { volume: 0.33 });
 }
 
 export function setStateProp<

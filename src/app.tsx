@@ -48,10 +48,18 @@ function App() {
   const selectedColorRef = useRef(selectedColor);
   const [options] = useOptions();
   const isAltPressed = useKeyPress("Alt");
+  const [isAutoplaying, setIsAutoplaying] = useState(false);
 
   anglesRef.current = angles;
   colorsRef.current = colors;
   selectedColorRef.current = selectedColor;
+
+  function className() {
+    const altPressed = isAltPressed ? "alt-pressed" : "";
+    const autoPlaying = isAutoplaying ? "is-autoplaying" : "";
+
+    return `app ${altPressed} ${autoPlaying}`;
+  }
 
   function onColorComponentChange(k: 0 | 1 | 2, angle: number) {
     const currentColors = colorsRef.current;
@@ -83,10 +91,14 @@ function App() {
       const [a, b] = angles;
       
       if(options.autoplay) {
+        let sound: Promise<Sound>;
+        setIsAutoplaying(true);
         if(options.mode === "interval")
-          playAngleInterval(a, b, options.baseFrequency);
+          sound = playAngleInterval(a, b, options.baseFrequency);
         else
-          playFrequencyFromAngle(angles[0]);
+          sound = playFrequencyFromAngle(angles[0]);
+        
+        sound.then( () => setIsAutoplaying(false) );
       }
     }
 
@@ -110,7 +122,7 @@ function App() {
   }, [angles]);
 
   return (
-    <div className={`app ${isAltPressed ? "alt-pressed" : ""}`}>
+    <div className={className()}>
       <header className="app-header">
         <a href="https://www.suonoterapia.org" className="logo-container">
           <img src={logo} alt="Associazione Suonomusicoterapia Italiana" />
