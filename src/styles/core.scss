@@ -40,6 +40,11 @@
 
     -webkit-tap-highlight-color: transparent;
 
+    &.is-pressed {
+      opacity: 0.9;
+      transform: scale(0.95);
+    }
+
     .frequency-container {
       display: none;
     }

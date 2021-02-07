@@ -6,12 +6,13 @@ import { useKeyPress } from "hooks/useKeyPress";
 import Sound from "lib/tones";
 import { HSLColor } from "lib/types";
 import { bus } from "app";
+import useLongPress from "hooks/useLongPress";
+import { isTouchEvent } from "hooks/useInteractionEventListener";
 
 interface CoreProps {
   baseFrequency?: number;
   colors: HSLColor[];
 }
-
 
 export default function Core(props: CoreProps) {
   const [leftColor, rightColor] = props.colors;
@@ -33,6 +34,26 @@ export default function Core(props: CoreProps) {
 
     playAngleInterval(aHue, bHue, baseFrequency);
   }
+
+  const onLongPressFish = useLongPress<SVGGElement>(
+    {
+      onLongPress(e) {
+        if( isTouchEvent(e.nativeEvent) ) {
+          let sound: Promise<Sound>;
+          const currentTarget = e.currentTarget;
+          currentTarget.classList.add("is-pressed");
+
+          if(currentTarget.id === "left-fish")
+            sound = Sound.play(baseFrequency, { volume: 0.33 });
+          else
+            sound = Sound.play( calculateColorFrequency(), { volume: 0.33 } );
+          
+          sound.then( () => currentTarget.classList.remove("is-pressed") );
+        }
+      }
+    },
+    { shouldPreventDefault: false }
+  );
 
   /**
    * This trick is required because SVG doesn't support `z-index` property
@@ -76,6 +97,7 @@ export default function Core(props: CoreProps) {
           <g
             className="fish left-fish"
             id="left-fish"
+            {...onLongPressFish}
             onClick={
               () => isAltPressed && Sound.play(baseFrequency, { volume: 0.33 })
             }
@@ -93,9 +115,11 @@ export default function Core(props: CoreProps) {
           </g>
           <g
             className="fish right-fish"
+            id="right-fish"
+            {...onLongPressFish}
             onClick={
               () => isAltPressed && Sound.play(
-                calculateColorFrequency() as number,
+                calculateColorFrequency(),
                 { volume: 0.33 }
               )
             }

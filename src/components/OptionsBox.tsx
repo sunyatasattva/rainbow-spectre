@@ -69,7 +69,8 @@ export default function OptionsBox() {
           you can still play the sounds by clicking on the circle in the
           middle of the color wheel. Trick: you can play the sounds
           separately by holding [Alt] or [Option] on your keyboard
-          when clicking the circle.`}
+          when clicking the circle (or Long Pressing if you are on
+          mobile).`}
           icon={mdiMotionPlay}
           onChange={setOption}
           label="Autoplay"

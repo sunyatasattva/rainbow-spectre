@@ -7,7 +7,7 @@ type EventMap = Record<MouseEvents, MouseEvent>
   & Record<TouchEvents, TouchEvent>;
 type EventHandler<E extends AllowedEvents> = (e: EventMap[E]) => any;
 
-export function isTouchEvent(e: MouseEvent | TouchEvent): e is TouchEvent {
+export function isTouchEvent(e: Event): e is TouchEvent {
   return !!((e as TouchEvent).touches);
 }
 
