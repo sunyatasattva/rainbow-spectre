@@ -70,16 +70,17 @@ export default class ColorPicker extends React.Component<Props, State> {
   }
 
   static getDerivedStateFromProps(props: Props, state: State) {
+    const hsl = [state.angles[0], 100, 50];
     if(props.value.length !== state.value.length) {
       if(props.value.length > state.value.length) {
         return {
-          angles: [state.value[0][0], props.value[1][0]],
-          value: [state.value[0], props.value[1]]
+          angles: [state.angles[0], props.value[1][0]],
+          value: [hsl, props.value[1]]
         }
       } else {
         return {
-          angles: [props.value[0][0]],
-          value: [props.value[0]]
+          angles: [state.angles[0]],
+          value: [hsl]
         }
       }
     } else {

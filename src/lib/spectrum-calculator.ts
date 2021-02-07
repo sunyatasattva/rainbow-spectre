@@ -34,6 +34,34 @@ function bezier(x: number, start = 0, end = 1) {
   return Math.pow(normalizedX, 2) * (3 - 2 * normalizedX);
 }
 
+/**
+ * see: https://en.wikipedia.org/wiki/SRGB#The_sRGB_transfer_function_(%22gamma%22)
+ **/
+function correctSRGBGamma(channel: number) {
+  if(channel <= COLOR_INTENSITY_THRESHOLD)
+    return PHI * channel;
+
+  const k = COLOR_TRANSFER_COEFFICIENT;
+  
+  return (1 + k) * Math.pow(channel, 1 / GAMMA) - k;
+}
+
+function interpolate(idx: number, offset: number) {
+  const target = spectrumCoordinates[idx];
+
+  if(offset === 0) return target;
+
+  const x0 = idx * NM_RESOLUTION;
+  const x1 = x0 + NM_RESOLUTION;
+
+  return target.map((coord, i) => {
+    const y0 = coord;
+    const y1 = spectrumCoordinates[idx + 1][i];
+
+    return y0 + offset * (y1 - y0) / (x1 - x0);
+  });
+}
+
 export function calculateWavelengthFromAngle(angle: number) {
   return calculateWavelengthStep(360 - angle, 360);
 }
@@ -78,31 +106,13 @@ function correctColorIntensity(
 }
 
 /**
- * see: https://en.wikipedia.org/wiki/SRGB#The_sRGB_transfer_function_(%22gamma%22)
- **/
-function correctSRGBGamma(channel: number) {
-  if(channel <= COLOR_INTENSITY_THRESHOLD)
-    return PHI * channel;
+ * @param frequency frequency in Hz
+ * @return wavelength in nm
+ */
+export function frequencyToWavelength(frequency: number) {
+  const wl = SPEED_OF_LIGHT / (frequency * Math.pow(2, 41));
 
-  const k = COLOR_TRANSFER_COEFFICIENT;
-  
-  return (1 + k) * Math.pow(channel, 1 / GAMMA) - k;
-}
-
-function interpolate(idx: number, offset: number) {
-  const target = spectrumCoordinates[idx];
-
-  if(offset === 0) return target;
-
-  const x0 = idx * NM_RESOLUTION;
-  const x1 = x0 + NM_RESOLUTION;
-
-  return target.map((coord, i) => {
-    const y0 = coord;
-    const y1 = spectrumCoordinates[idx + 1][i];
-
-    return y0 + offset * (y1 - y0) / (x1 - x0);
-  });
+  return wl * 1e+9;
 }
 
 export function wavelengthToAudibleFrequency(wavelength: number) {
@@ -142,16 +152,18 @@ export function waveLengthToRawRGB(wavelength: number): RGBColor {
   return rgb.map(channel => channel * 255) as RGBColor;
 }
 
-export function wavelengthToRGB(wavelength: number) {
+export function wavelengthToRGB(wavelength: number):
+  [r: number, g: number, b: number] {
   return correctColorIntensity(
     waveLengthToRawRGB(wavelength),
     wavelength
-  );
+  ) as RGBColor;
 }
 
-export function wavelengthToRGBA(wavelength: number) {
+export function wavelengthToRGBA(wavelength: number):
+  [r: number, g: number, b: number, a: number] {
   return correctColorIntensity(
     [...waveLengthToRawRGB(wavelength), 1],
     wavelength
-  );
+  ) as RGBAColor;
 }

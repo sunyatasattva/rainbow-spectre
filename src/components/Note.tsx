@@ -6,6 +6,7 @@ import {
   getEqualTemperedNoteNumber,
   MIDIToName
 } from "lib/utils";
+import { frequencyToWavelength } from "lib/spectrum-calculator";
 
 interface Props {
   frequency: number;
@@ -31,6 +32,9 @@ export default function Note(props: Props) {
 
   return (
     <>
+      <div className="badge">
+        {`${frequencyToWavelength(frequency).toFixed(1)} nm`}
+      </div>
       <div className="note-container">
         <div className="note-details">
           <span className="note-name">{note.name}</span>

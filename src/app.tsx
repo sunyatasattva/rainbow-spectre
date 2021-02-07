@@ -13,12 +13,24 @@ import ColorComponentsWrapper from "components/ColorComponentsWrapper";
 import { degToPercent } from "lib/math";
 import { calculateFrequencyFromAngle, playAngleInterval } from "lib/utils";
 import Sound from "lib/tones";
+import { calculateWavelengthFromAngle, wavelengthToRGB } from "lib/spectrum-calculator";
+import Color from "color";
+import { HSLColor } from "lib/types";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
   angleCommit: (deg: number) => void;
   coreClick: () => void;
 }>();
+
+function hslFromAngle(angle: number) {
+  const wl = calculateWavelengthFromAngle(angle);
+  const color = Color.rgb(
+    wavelengthToRGB(wl)
+    );
+
+  return color.hsl().array() as HSLColor;
+}
 
 function playFrequencyFromAngle(angle: number) {
   return Sound.play(
@@ -29,6 +41,7 @@ function playFrequencyFromAngle(angle: number) {
 
 function App() {
   const [angles, setAngles] = useState([50, 200]);
+  const anglesRef = useRef(angles);
   const [colors, setColors] = useColors();
   const colorsRef = useRef(colors);
   const [selectedColor, setSelectedColor] = useState<0 | 1>(0);
@@ -36,6 +49,7 @@ function App() {
   const [options] = useOptions();
   const isAltPressed = useKeyPress("Alt");
 
+  anglesRef.current = angles;
   colorsRef.current = colors;
   selectedColorRef.current = selectedColor;
 
@@ -53,14 +67,16 @@ function App() {
 
   useEffect(() => {
     if(options.mode === "absolute") {
+      setColors(
+        [hslFromAngle(anglesRef.current[0])]
+      );
       setAngles( (angles) => [angles[0]] );
-      setColors( (colors) => [colors[0]] );
     } else {
       const [ a, b ] = defaultColors
       setAngles( [a[0], b[0]] );
       setColors(defaultColors)
     }
-  }, [options, setColors])
+  }, [options.mode, setColors])
 
   useEffect(() => {
     function handleHueChange() {

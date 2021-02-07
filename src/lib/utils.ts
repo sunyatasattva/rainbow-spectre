@@ -5,7 +5,7 @@ import { logBase } from "./math";
 import Sound from "./tones";
 import {
   wavelengthToAudibleFrequency,
-  calculateWavelengthFromAngle
+  calculateWavelengthFromAngle,
 } from "./spectrum-calculator";
 
 export const MIDI_A4 = 69;
