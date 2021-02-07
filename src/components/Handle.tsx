@@ -22,7 +22,7 @@ interface Props {
 export default function Handle(props: Props) {
   const { handleColor } = props;
   const [{ lockRatio }] = useOptions();
-  const ignoreLock = !props.ignoreLock || !lockRatio;
+  const ignoreLock = props.ignoreLock || !lockRatio;
   const container = useRef<HTMLDivElement>(null);
   const [angle, setAngle] = useMouseRotation(
     props.initialAngle,
