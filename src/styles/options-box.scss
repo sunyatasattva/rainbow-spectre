@@ -62,13 +62,17 @@
     padding: 1em 10px;
   }
 
+  .option-mode { order: -3 ; }
+  .option-reference-frequency { order: -2; }
+  .option-round { order: -1; }
+
   .options {
     display: flex;
     flex-direction: column;
     padding: 0;
   }
 
-  .reference-frequency {
+  .option-reference-frequency {
     .input-wrapper::after {
       @media screen and (max-width: 600px) {
         font-size: 12px;
