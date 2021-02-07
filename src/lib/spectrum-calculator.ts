@@ -67,8 +67,12 @@ export function calculateWavelengthFromAngle(angle: number) {
 }
 
 export function calculateWavelengthStep(n: number, steps: number) {
-  return n * (ULTRAVIOLET_WL / steps) + ULTRAVIOLET_WL
-  - COLOR_FALLOFF_THRESHOLD / 2;
+  return n * 
+    (
+      (ULTRAVIOLET_WL - (COLOR_FALLOFF_THRESHOLD / 3))
+      / steps
+    )
+      + ULTRAVIOLET_WL - COLOR_FALLOFF_THRESHOLD / 3;
 } 
 
 /**
