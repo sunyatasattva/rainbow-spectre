@@ -13,18 +13,21 @@ interface Props {
 }
 interface CustomInputProps extends Props {
   children?: JSX.Element;
+  disabled?: never;
   label: string;
   onChange?: never;
   value?: never;
 }
 interface SwitchProps extends Props {
   children?: never;
+  disabled?: boolean;
   label: string;
   onChange: (name: keyof Options, val: boolean) => any;
+  optionName?: keyof Options;
   value: boolean;
 }
 
-const defaultIconProps = {
+export const defaultIconProps = {
   className: "icon",
   color: "#fff",
   size: 1
@@ -35,7 +38,7 @@ export default function Option(props: CustomInputProps | SwitchProps) {
 
   function handleChange(v: boolean) {
     props.onChange?.(
-      (camelCase(props.label) as keyof Options),
+      props.optionName || (camelCase(props.label) as keyof Options),
       v
     );
   }
@@ -63,6 +66,7 @@ export default function Option(props: CustomInputProps | SwitchProps) {
             <Switch
               checked={props.value!}
               checkedIcon={false}
+              disabled={props.disabled}
               offColor="#444"
               onColor="#4c9c4c"
               onChange={handleChange}

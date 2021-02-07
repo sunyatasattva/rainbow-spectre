@@ -3,9 +3,13 @@ import React, { CSSProperties, MutableRefObject, useCallback, useEffect, useRef 
 import { bus } from "../app";
 import useMouseRotation from "../hooks/useMouseRotation";
 import { useOptions } from "hooks/useGlobalState";
+import { HSLColor } from "lib/types";
+import Color from "color";
+import { calculateWavelengthFromAngle, wavelengthToRGBA } from "lib/spectrum-calculator";
 
 interface Props {
   className?: string;
+  handleColor?: HSLColor;
   initialAngle: number;
   isReferenceHandle?: boolean;
   ignoreLock?: boolean;
@@ -16,8 +20,9 @@ interface Props {
 }
 
 export default function Handle(props: Props) {
+  const { handleColor } = props;
   const [{ lockRatio }] = useOptions();
-  const ignoreLock = !props.ignoreLock || !lockRatio;
+  const ignoreLock = props.ignoreLock || !lockRatio;
   const container = useRef<HTMLDivElement>(null);
   const [angle, setAngle] = useMouseRotation(
     props.initialAngle,
@@ -53,6 +58,14 @@ export default function Handle(props: Props) {
     [respondToChanges]
   );
 
+  const handleBackgroundHue = handleColor ? handleColor[0] : angle;
+  const alpha = handleColor ? wavelengthToRGBA(
+    calculateWavelengthFromAngle(angle)
+  )[3] : 1;
+  const handleBackgroundColor = Color.hsl([handleBackgroundHue, 100, 50])
+    .alpha(alpha)
+    .string();
+
   return (
     <div
       className={`handle-container ${props.className}`}
@@ -68,7 +81,7 @@ export default function Handle(props: Props) {
         className="handle"
         onMouseDown={() => props.onClick?.(angle)}
         style={{
-          backgroundColor: `hsl(${angle}deg, 100%, 50%)`
+          backgroundColor: handleBackgroundColor
         }}
       >
       </span>

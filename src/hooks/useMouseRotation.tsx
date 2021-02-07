@@ -2,7 +2,7 @@ import { MutableRefObject, useCallback, useState } from "react";
 import { bus } from "../app";
 import useInteractionEventListener,
   { isTouchEvent } from "./useInteractionEventListener";
-import { radToDeg } from "../lib/utils";
+import { radToDeg } from "../lib/math";
 
 export default function useMouseRotation(
   defaultAngle: number,

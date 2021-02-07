@@ -29,6 +29,13 @@ export enum ColorComponent {
   release: number;
 }
 
+export type Note = {
+  accidental?: string,
+  cents: number,
+  name: string,
+  octave: number
+};
+
 export interface Pitch {
 	frequency: number;
 }

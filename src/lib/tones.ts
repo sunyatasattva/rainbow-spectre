@@ -8,7 +8,7 @@
 
 import frac from "frac";
 import { SoundOptions, Pitch, Envelope, WaveType, Ratio } from "./types";
-import { fractionMax, isPowerOfTwo, logBase, primeFactorsOf } from "./utils";
+import { fractionMax, isPowerOfTwo, logBase, primeFactorsOf } from "./math";
 import WebkitPatch from "./webkit-audiocontext-patch";
 import { parsedIntervals } from "./intervals";
 
