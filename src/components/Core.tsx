@@ -39,11 +39,13 @@ export default function Core(props: CoreProps) {
    * and so when the scale animation would kick in, the overlap was wrong.
    */
   useEffect(() => {
-    const core = document.getElementById("core");
+    return () => {
+      const core = document.getElementById("core");
 
-    if(!core?.firstElementChild) return;
+      if(!core?.firstElementChild) return;
 
-    core.appendChild(core.firstElementChild);
+      core.appendChild(core.firstElementChild);
+    }
   }, [shouldSwitch]);
 
   return (
@@ -52,7 +54,6 @@ export default function Core(props: CoreProps) {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="core"
-          id="core"
           viewBox="0 0 466 466"
         >
           <circle
@@ -78,6 +79,8 @@ export default function Core(props: CoreProps) {
             onClick={
               () => isAltPressed && Sound.play(baseFrequency, { volume: 0.33 })
             }
+            onMouseEnter={() => setShouldSwitch(true)}
+            onMouseLeave={() => shouldSwitch && setShouldSwitch(false)}
           >
             <path
               d="M122.1,343.7c0-61.1,49.6-110.7,110.7-110.7s110.7-49.6,110.7-110.7c0-60.1-48.1-109.1-107.8-110.6c0.6,0,1.2,0,1.8,0
@@ -96,8 +99,6 @@ export default function Core(props: CoreProps) {
                 { volume: 0.33 }
               )
             }
-            onMouseEnter={() => setShouldSwitch(true)}
-            onMouseLeave={() => shouldSwitch && setShouldSwitch(false)}
           >
             <path
               d="M232.8,11.7c122.2,0,221.3,99.1,221.3,221.4S355,454.4,232.8,454.4c-61.1,0-110.7-49.6-110.7-110.7
