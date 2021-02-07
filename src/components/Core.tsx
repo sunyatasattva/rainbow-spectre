@@ -35,23 +35,38 @@ export default function Core(props: CoreProps) {
     playAngleInterval(aHue, bHue, baseFrequency);
   }
 
-  const onLongPressFish = useLongPress<SVGGElement>(
-    {
-      onLongPress(e) {
-        if( isTouchEvent(e.nativeEvent) ) {
-          let sound: Promise<Sound>;
-          const currentTarget = e.currentTarget;
-          currentTarget.classList.add("is-pressed");
+  const onLongPressFish = useLongPress<SVGGElement>({
+    onLongPress(e) {
+      if( isTouchEvent(e.nativeEvent) ) {
+        let sound: Sound;
+        const currentTarget = e.currentTarget;
+        currentTarget.classList.add("is-pressed");
 
-          if(currentTarget.id === "left-fish")
-            sound = Sound.play(baseFrequency, { volume: 0.33 });
-          else
-            sound = Sound.play( calculateColorFrequency(), { volume: 0.33 } );
-          
-          sound.then( () => currentTarget.classList.remove("is-pressed") );
-        }
+        if(currentTarget.id === "left-fish")
+          sound = new Sound(baseFrequency, { sustain: -1, volume: 0.33 });
+        else
+          sound = new Sound(
+            calculateColorFrequency(),
+            { sustain: -1, volume: 0.33 }
+          );
+
+        sound.play();
+        
+        return () => {
+          currentTarget.classList.remove("is-pressed");
+          sound.fadeOut();
+        };
       }
-    },
+    }},
+    { shouldPreventDefault: false }
+  );
+
+  const onLongPressCore = useLongPress<SVGCircleElement>({
+    onLongPress() {
+      bus.emit("coreClick", true);
+
+      return () => bus.emit("corePressUp");
+    }},
     { shouldPreventDefault: false }
   );
 
@@ -78,6 +93,7 @@ export default function Core(props: CoreProps) {
           viewBox="0 0 466 466"
         >
           <circle
+            {...onLongPressCore}
             cx="233"
             cy="233"
             fill={hslToString(leftColor)}

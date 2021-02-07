@@ -492,6 +492,7 @@ export default class Sound implements Pitch {
 		// Start the removal of the sound process after a little more than the sound duration to account for
 		// the approximation. (To make sure that the sound doesn't get cut off while still audible)
 		return new Promise((resolve) => {
+			if(sustain < 0) return;
 			let effectiveSoundDuration = attack + decay + sustain;
 			
 			setTimeout( () => resolve(this), effectiveSoundDuration * 1000 );
@@ -558,7 +559,11 @@ export default class Sound implements Pitch {
    * @return  {Sound}  The stopped Sound
    */
   stop() {
-    this.oscillator.stop();
+    try {
+			this.oscillator.stop();
+		} catch(e) {
+			console.warn("Error stopping sound", e);
+		}
     
     return this.remove();
   };

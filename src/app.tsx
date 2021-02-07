@@ -20,7 +20,8 @@ import { HSLColor } from "lib/types";
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
   angleCommit: (deg: number) => void;
-  coreClick: () => void;
+  coreClick: (longPress?: boolean) => void;
+  corePressUp: () => void;
 }>();
 
 function hslFromAngle(angle: number) {
@@ -110,14 +111,31 @@ function App() {
   }, [angles, options]);
 
   useEffect(() => {
-    function coreClick() {
-      playFrequencyFromAngle(angles[0]);
+    let sound: Sound;
+
+    function coreClick(longPress?: boolean) {
+      if(!longPress)
+        playFrequencyFromAngle(angles[0]);
+      else {
+        sound = new Sound(
+          calculateFrequencyFromAngle(angles[0]),
+          { sustain: -1, volume: 0.33 }
+        );
+
+        sound.play();
+      }
+    }
+
+    function corePressUp() {
+      sound.fadeOut();
     }
 
     bus.on("coreClick", coreClick);
-
+    bus.on("corePressUp", corePressUp);
+    
     return () => {
       bus.off("coreClick", coreClick);
+      bus.off("corePressUp", corePressUp);
     }
   }, [angles]);
 
