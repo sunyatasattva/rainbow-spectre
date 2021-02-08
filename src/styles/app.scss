@@ -12,6 +12,19 @@
     box-sizing: border-box;
   }
 
+  a {
+    color: #4ed6ff;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: #4ed6ff;
+    }
+  }
+
   .app-header {
     background-color: #262626;
     border-bottom: 1px solid #1f1f1f;

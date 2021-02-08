@@ -89,10 +89,12 @@ export default function Option(props: CustomInputProps | SwitchProps) {
           : null
         }
       </div>
-      {showHelp ?
-        <p className="help-text">
-          {props.helpText}
-        </p>
+      {showHelp && props.helpText ?
+        <div
+          className="help-text"
+          dangerouslySetInnerHTML={{ __html: props.helpText }}
+        >
+        </div>
         : null
       }
     </div>

@@ -4,6 +4,8 @@ import DifferenceBar from "./DifferenceBar";
 import intervals, { equallyTemperedIntervals } from "lib/intervals";
 import { fractionMax } from "lib/math";
 import Sound from "lib/tones";
+import { translate as t } from "lib/i18n";
+import dictionary from "i18n";
 
 interface Props {
   harmonicLimit: AllowedHarmonicLimit;
@@ -71,7 +73,7 @@ export default function Interval(props: Props) {
         <div className={badgeClassName()}>
           {harmonicLimit === "12-TET" ?
             harmonicLimit
-            : `${currentRatioLimit}-limit`
+            : t("OPTION_ROUND_O_LIMIT", { n: currentRatioLimit })
           }
         </div>
         : null
@@ -83,7 +85,9 @@ export default function Interval(props: Props) {
           <sub>{interval.ratio[1]}</sub>
         </div>
         <div className={intervalNameClassName()}>
-          {interval.name}
+          {t(
+            interval.name as keyof typeof dictionary[keyof typeof dictionary]
+          )}
         </div>
       </div>
       {harmonicLimit !== "None" ?
