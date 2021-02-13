@@ -1,5 +1,7 @@
 import { mdiCircleMultiple, mdiWaveform } from "@mdi/js";
 
+const ROOT_URL = `/rainbow/`;
+
 const infoBar = {
   HOW_DO_ENDS_MEET_CONTENT: `
   <p>
@@ -39,7 +41,7 @@ const infoBar = {
     “pure wavelengths”—we'll get to that, don't worry), you will see
     that there is an invisible gap and the ends do not truly meet.
     <figure>
-      <img src="./images/rgb-illumination.jpg" />
+      <img src="${ROOT_URL}images/rgb-illumination.jpg" />
       <figcaption>
         <span class="caption">
           Notice how Magenta appears as a combination of equal amounts of blue
@@ -90,7 +92,7 @@ const infoBar = {
     electromagnetic wave of a certain frequency or wavelength, such as one
     emitted by a laser, appears to our eyes as a specific color.
     <figure>
-      <img src="./images/laser.jpg" />
+      <img src="${ROOT_URL}images/laser.jpg" />
       <figcaption>
         <span class="caption">
           Red lasers: 660nm, 635nm;
@@ -134,7 +136,7 @@ const infoBar = {
     And that's why magenta is there, as we have mentioned above.
 
     <figure>
-      <img src="./images/hsv-cylinder.png" />
+      <img src="${ROOT_URL}images/hsv-cylinder.png" />
       <figcaption>
         <span class="caption">
           In the HSL/HSV system, hues are arranged radially to more closely
@@ -182,7 +184,7 @@ const infoBar = {
     actually diverge from the reference note.
 
     <figure>
-      <img src="./images/compression-wave.gif" />
+      <img src="${ROOT_URL}images/compression-wave.gif" />
       <figcaption>
         <span class="caption">
           Representation of the propagation of a sound wave through a medium
@@ -311,7 +313,7 @@ const infoBar = {
     <em>ultraviolets</em>.
 
     <figure>
-      <img src="./images/em-spectrum.svg" />
+      <img src="${ROOT_URL}images/em-spectrum.svg" />
       <figcaption>
         <span class="caption">
           A linear representation of the electro-magnetic spectrum
@@ -426,7 +428,8 @@ const en_US = {
       visible light spectrum</a>.
     </p>`,
     OPTION_VISIBLE_SPECTRUM_LABEL: `Show visible spectrum wheel`,
-    OPTIONS_HEADER: `Options`
+    OPTIONS_HEADER: `Options`,
+    OVERTONE_SPIRAL: `Overtone spiral`
 } as const;
 
 export default en_US;
