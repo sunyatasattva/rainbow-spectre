@@ -1,0 +1,144 @@
+@keyframes highlight {
+  from {
+    background-color: transparent;
+  }
+
+  to {
+    background-color: rgba(107, 105, 91, 0.5);
+  }
+}
+
+.infobar {
+  background-color: #262626;
+  box-shadow: -5px 0 10px #111;
+  display: flex;
+  flex-direction: column;
+  font-family: Sintony, Roboto, Helvetica, Arial, sans-serif;
+  font-size: 0.83rem;
+  max-width: 500px;
+  overflow: scroll;
+  text-align: left;
+  user-select: text;
+  width: 50%;
+  position: absolute;
+  right: 0;
+  top: 100px;
+  bottom: 0;
+  z-index: 2;
+  transform: translateX(100%);
+  transition: transform .66s cubic-bezier(0.8, 0, 0.2, 1);
+
+  @media screen and (max-width: 600px) {
+    width: 100%
+  }
+
+  &.enter-done {
+    transform: translateX(0);
+  }
+
+  figcaption {
+    background-color: #333;
+    border-radius: 5px;
+    margin: 0;
+    padding: 10px;
+    text-align: left;
+  }
+
+  figure {
+    border: 1px solid #444;
+    margin: 1.625rem 0;
+    padding: 15px;
+    text-align: center;
+
+    img {
+      border-bottom: 1px solid #444;
+      margin-bottom: .4rem;
+      padding-bottom: .81rem;
+    }
+
+    span {
+      display: block;
+
+      &.attribution {
+        font-size: .8em;
+        font-style: italic;
+      }
+    }
+  }
+
+  section {
+    > a,
+    > a:visited {
+      align-items: center;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+
+      &:hover {
+        text-decoration: none;
+
+        svg {
+          display: flex;
+        }
+      }
+
+      h2 {
+        flex-basis: 100%;
+      }
+
+      svg {
+        display: none;
+        position: absolute;
+        right: 25px;
+      }
+    }
+
+    &.is-active {
+      animation: .5s ease-in-out 2 alternate highlight;
+
+      > a svg {
+        display: flex;
+      }
+    }
+  }
+
+  .option-name {
+    background-color: #3a3a3a;
+    border-radius: 3px;
+    display: inline-block;
+    padding: 2px 6px;
+
+    svg {
+      fill: #fff;
+      position: relative;
+      top: 3px;
+      width: 16px;
+      height: 16px;
+
+      path {
+        fill: #fff;
+      }
+    }
+  }
+
+  .section-content,
+  .section-title {
+    line-height: 1.625em;
+    padding: 1.5rem 2rem;
+    text-align: left;
+  }
+
+  .section-title {
+    align-items: center;
+    background-color: #222;
+    display: flex;
+    font-size: 1.25rem;
+    justify-content: space-between;
+    margin: 0;
+  }
+
+  .toggle-button-container {
+    width: 40px;
+    height: 40px;
+  }
+}

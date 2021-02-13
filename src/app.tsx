@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./styles/app.scss";
 import logo from "./images/logo.svg";
+import overtoneLogo from "./images/overtone.svg";
 import { defaultColors, useColors } from "hooks/useGlobalState";
 import ColorPicker from "./components/ColorPicker"
 import Core from "./components/Core";
@@ -16,6 +17,11 @@ import Sound from "lib/tones";
 import { calculateWavelengthFromAngle, wavelengthToRGB } from "lib/spectrum-calculator";
 import Color from "color";
 import { HSLColor } from "lib/types";
+import Infobar from "components/Infobar";
+import Icon from "@mdi/react";
+import { defaultIconProps } from "components/Option";
+import { mdiFacebook, mdiInformationVariant } from "@mdi/js";
+import useHash from "hooks/useHash";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
@@ -50,6 +56,9 @@ function App() {
   const [options] = useOptions();
   const isAltPressed = useKeyPress("Alt");
   const [isAutoplaying, setIsAutoplaying] = useState(false);
+  const [showInfobar, setShowInfobar] = useState(false);
+  const [pinInfobar, setPinInfobar] = useState(false);
+  const hash = useHash();
 
   anglesRef.current = angles;
   colorsRef.current = colors;
@@ -61,6 +70,15 @@ function App() {
 
     return `app ${altPressed} ${autoPlaying}`;
   }
+
+  function closeInfobarUnlessPinned(e: React.MouseEvent) {
+    e.persist();
+
+    const pathIncludesInfobar = e.nativeEvent.composedPath()
+      .some(el => (el as HTMLElement).classList?.contains("infobar"));
+
+    if(!pinInfobar && !pathIncludesInfobar) setShowInfobar(false);
+  } 
 
   function onColorComponentChange(k: 0 | 1 | 2, angle: number) {
     const currentColors = colorsRef.current;
@@ -139,14 +157,60 @@ function App() {
     }
   }, [angles]);
 
+  useEffect(() => {
+    if(hash) setShowInfobar(true);
+  }, [hash]);
+
   return (
     <div className={className()}>
       <header className="app-header">
         <a href="https://www.suonoterapia.org" className="logo-container">
           <img src={logo} alt="Associazione Suonomusicoterapia Italiana" />
         </a>
+        <nav>
+          <ul>
+            <li className="toggle-button-container overtone-link-container">
+              <a href="https://www.suonoterapia.org/overtones">
+                <img src={overtoneLogo} alt="Representation of 8th Overtone" />
+                Overtone Spiral
+              </a>
+            </li>
+            <li className={
+              `toggle-button-container toggle-infobar-button-container`
+            }>
+              <button
+                className={showInfobar ? "is-active" : ""}
+                onClick={() => setShowInfobar(!showInfobar)}>
+                <Icon
+                  {...defaultIconProps}
+                  path={mdiInformationVariant}
+                />
+              </button>
+            </li>
+            <li className="toggle-button-container facebook-button-container">
+              <a
+                href="https://www.facebook.com/suonoterapia"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Icon
+                  color="#ccc"
+                  path={mdiFacebook}
+                  size={1.5}
+                />
+              </a>
+            </li>
+          </ul>
+        </nav>
       </header>
-      <main className="app-content">
+      <main
+        className="app-content"
+        onClick={closeInfobarUnlessPinned}
+      >
+        <Infobar
+          active={showInfobar}
+          usePin={[pinInfobar, setPinInfobar]}
+        />
         <ColorComponentsWrapper
           selectedColor={selectedColor}
           onChange={onColorComponentChange}
