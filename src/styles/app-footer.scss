@@ -1,0 +1,121 @@
+.app-footer {
+  align-items: center;
+  background-color: #262626;
+  border-top: 1px solid #1f1f1f;
+  display: flex;
+  font-size: .81rem;
+  justify-content: space-between;
+  padding: 25px;
+
+  .social {
+    flex-grow: .8;
+
+    ul {
+      display: flex;
+      flex-grow: 1;
+      justify-content: flex-end;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      display: flex;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      line-height: 16px;
+      margin: 0;
+      margin-right: 10px;
+      padding: 2px 5px;
+      user-select: none;
+      vertical-align: middle;
+      white-space: nowrap;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+      -webkit-font-smoothing: antialiased;
+
+      &.donate {
+        &:hover {
+          background-color: #fa9900;
+          border-color: #e58c00;
+          
+          a {
+            color: #222;
+          }
+
+          #bottom-p {
+            fill: #009ad9;
+          }
+
+          #intersection {
+            fill: #212b67;
+          }
+
+          #top-p {
+            fill: #243982;
+          }
+        }
+
+        svg {
+          width: 10px;
+          height: 10px;
+        }
+
+        path {
+          transition: fill 0.2s ease-in-out;
+        }
+      }
+
+      &.github {
+        &:hover {
+          background-color: #eff3f6;
+          border-color: #d6d6d6;
+          
+          a,
+          svg {
+            color: #222;
+            fill: #222;
+          }
+        }
+      }
+
+      &.share-facebook {
+        &:hover {
+          background-color: #4065b4;
+          border-color: #314e8d;
+        }
+      }
+
+      &.share-twitter {
+        &:hover {
+          background-color: #0693e3;
+          border-color: #187cb5;
+        }
+      }
+      
+      a,
+      a:visited {
+        color: #fff;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      a,
+      button {
+        align-items: center;
+        display: flex;
+      }
+
+      img,
+      svg {
+        margin-right: .5em;
+      }
+    }
+  }
+}

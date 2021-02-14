@@ -17,6 +17,7 @@ import Infobar from "components/Infobar";
 import useHash from "hooks/useHash";
 import useAngles from "hooks/useAngles";
 import AppHeader from "components/AppHeader";
+import AppFooter from "components/AppFooter";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
@@ -136,7 +137,7 @@ function App() {
         <Infobox angles={angles} />
         <OptionsBox />
       </main>
-      <footer className="app-footer"></footer>
+      <AppFooter />
     </div>
   );
 }

@@ -235,7 +235,7 @@ const infoBar = {
   </p>`,
   ONE_COLOR_ONE_SOUND_TITLE: `Wait, don't go! I've heard each color corresponds to one sound.
   Explain please.`,
-  INFOBAR_TITLE: `The Color of Sound`,
+  INFOBAR_TITLE: `The Sound of Color`,
   TL_DR: `
   <p>
     <strong>TL; DR:</strong> This is an exploration and visualization 
