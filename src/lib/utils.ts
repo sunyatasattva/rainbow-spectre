@@ -1,6 +1,6 @@
 import getPitchSet from "pitch-set";
 import pitchSort from "pitch-sort";
-import { HSLColor, Note } from "./types";
+import { HSLColor, Note, Ratio } from "./types";
 import { logBase } from "./math";
 import Sound from "./tones";
 import {
@@ -16,6 +16,12 @@ export function calculateAngleInterval(a: number, b: number) {
   if(difference > 360) difference -= 360;
 
   return difference * CENTS_PER_DEGREE;
+}
+
+export function calculateAngleFromRatio(ratio: Ratio) {
+  const [num, den] = ratio;
+
+  return ( logBase(2, num / den) * 360 ) % 360;
 }
 
 export function calculateAngleRatio(a: number, b: number) {

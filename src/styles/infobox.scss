@@ -22,7 +22,7 @@
 
     font-size: 128px;
     text-transform: uppercase;
-    height: 185px;
+    height: 200px;
 
     sub {
       font-size: 0.7em;
@@ -47,6 +47,10 @@
     &.limit-7 { background-color: rgb(212, 82, 42); }
     &.limit-11 { background-color: rgb(98, 0, 128); }
     &.is-12-tet { background-color: rgb(128, 0, 79);}
+  }
+
+  .interval {
+    cursor: pointer;
   }
 
   .interval-name {

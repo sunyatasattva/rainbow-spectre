@@ -66,7 +66,7 @@ function HandleAnimationWrapper(props: HandleAnimationWrapperProps) {
               className={
                 `${colorComponent}-handle ${className} ${transitionState}`
               }
-              initialAngle={angle}
+              angle={angle}
               key={`${selectedColor}-s`}
               ignoreLock={true}
               onChange={(v) => onChange?.(referenceComponent, v)}

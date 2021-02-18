@@ -43,14 +43,14 @@ export default class ColorPicker extends React.Component<Props, State> {
   private canvas = React.createRef<HTMLCanvasElement>();
 
   private handleChange(angle: number, i: number) {
-    const wl = calculateWavelengthFromAngle(angle);
     const newAngles = [...this.state.angles];
     const newVal = [...this.state.value];
     const [/**/, s, l] = newVal[i];
-
+    
     newAngles[i] = angle;
-
+    
     if(this.props.mode === "spectrum") {
+      const wl = calculateWavelengthFromAngle(angle);
       const hsl = Color.rgb( wavelengthToRGB(wl) ).hsl();
       newVal[i] = hsl.array() as HSLColor;
     } else {
@@ -153,7 +153,7 @@ export default class ColorPicker extends React.Component<Props, State> {
         <Handle
           className={`${referenceHandleClassName} ${selectedHandleClassName}`}
           handleColor={this.props.mode === "spectrum" ? color : undefined}
-          initialAngle={color[0]}
+          angle={color[0]}
           key={i}
           onChange={(angle) => this.handleChange(angle, i)}
           onClick={(angle) => this.props.onClickHandle?.(angle, i)}

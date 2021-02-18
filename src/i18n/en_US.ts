@@ -429,7 +429,10 @@ const en_US = {
     </p>`,
     OPTION_VISIBLE_SPECTRUM_LABEL: `Show visible spectrum wheel`,
     OPTIONS_HEADER: `Options`,
-    OVERTONE_SPIRAL: `Overtone spiral`
+    OVERTONE_SPIRAL: `Overtone spiral`,
+    RATIO_INPUT_INFO: `Enter your own interval and press <kbd>Enter ↵</kbd>`,
+    RATIO_INPUT_ERROR: `Please enter a valid interval, in the form <pre>num/den</pre>
+    or <pre>num:den</pre>`
 } as const;
 
 export default en_US;

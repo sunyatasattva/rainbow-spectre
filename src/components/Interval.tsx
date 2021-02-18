@@ -6,9 +6,11 @@ import { fractionMax } from "lib/math";
 import Sound from "lib/tones";
 import { translate as t } from "lib/i18n";
 import dictionary from "i18n";
+import IntervalInput from "./IntervalInput";
 
 interface Props {
   harmonicLimit: AllowedHarmonicLimit;
+  onChangeRatio: (newRatio: Ratio) => void;
   ratio: number;
 }
 
@@ -28,8 +30,25 @@ function getIntervalName(ratio: [number, number]) {
   return interval ? interval.name : "Unknown interval";
 }
 
+function updateInteval(ratio: number, harmonicLimit: AllowedHarmonicLimit)
+: IntervalInfo {
+  const ratioInCents = Sound.ratioToCents(ratio);
+  const interval = harmonicLimit !== "None" ?
+    Sound.getClosestIntervalTo(ratio, harmonicLimit)
+    : fractionMax(ratio, 100);
+  const intervalInCents = Sound.ratioToCents(interval);
+
+  return {
+    actualCents: ratioInCents,
+    idealCents: intervalInCents,
+    name: getIntervalName(interval),
+    ratio: interval
+  }
+}
+
 export default function Interval(props: Props) {
-  const { harmonicLimit, ratio } = props;
+  const { harmonicLimit, onChangeRatio, ratio } = props;
+  const [isEditing, setIsEditing] = useState(false);
   const [interval, setInterval] = useState<IntervalInfo>({
     actualCents: 0,
     idealCents: 0,
@@ -53,18 +72,9 @@ export default function Interval(props: Props) {
   }
 
   useEffect(() => {
-    const ratioInCents = Sound.ratioToCents(ratio);
-    const interval = harmonicLimit !== "None" ?
-      Sound.getClosestIntervalTo(ratio, harmonicLimit)
-      : fractionMax(ratio, 100);
-    const intervalInCents = Sound.ratioToCents(interval);
+    const newInterval = updateInteval(ratio, harmonicLimit);
 
-    setInterval({
-      actualCents: ratioInCents,
-      idealCents: intervalInCents,
-      name: getIntervalName(interval),
-      ratio: interval
-    })
+    setInterval(newInterval);
   }, [harmonicLimit, ratio])
 
   return (
@@ -79,10 +89,24 @@ export default function Interval(props: Props) {
         : null
       }
       <div className="interval-container">
-        <div className="interval">
-          <sup>{interval.ratio[0]}</sup>
-          <span>/</span>
-          <sub>{interval.ratio[1]}</sub>
+        <div className="interval" onClick={() => setIsEditing(true)}>
+          {isEditing ?
+            <IntervalInput
+              defaultValue={interval.ratio.join("/")}
+              onChange={(e) => {
+                const [num, den] = (e.target as HTMLInputElement).value
+                  .split(/\/|:/);
+                onChangeRatio([+num, +den]);
+                setIsEditing(false);
+              }}
+            />
+            :
+            <>
+              <sup>{interval.ratio[0]}</sup>
+              <span>/</span>
+              <sub>{interval.ratio[1]}</sub>
+            </>
+          }
         </div>
         <div className={intervalNameClassName()}>
           {t(

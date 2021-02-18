@@ -12,12 +12,13 @@ import ColorComponentsWrapper from "components/ColorComponentsWrapper";
 import { degToPercent } from "lib/math";
 import { calculateWavelengthFromAngle, wavelengthToRGB } from "lib/spectrum-calculator";
 import Color from "color";
-import { HSLColor } from "lib/types";
+import { HSLColor, Ratio } from "lib/types";
 import Infobar from "components/Infobar";
 import useHash from "hooks/useHash";
 import useAngles from "hooks/useAngles";
 import AppHeader from "components/AppHeader";
 import AppFooter from "components/AppFooter";
+import { calculateAngleFromRatio } from "lib/utils";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
@@ -36,7 +37,7 @@ function hslFromAngle(angle: number) {
 }
 
 function App() {
-  const [angles, setAngles] = useState([50, 200]);
+  const [angles, setAngles] = useState([50, 240]);
   const anglesRef = useRef(angles);
   const [colors, setColors] = useColors();
   const colorsRef = useRef(colors);
@@ -69,7 +70,24 @@ function App() {
       .some(el => (el as HTMLElement).classList?.contains("infobar"));
 
     if(!pinInfobar && !pathIncludesInfobar) setShowInfobar(false);
-  } 
+  }
+
+  function handleRatioChange(newRatio: Ratio) {
+    const angle = calculateAngleFromRatio(newRatio);
+    
+    setAngles((angles) => {
+      const [a] = angles;
+      const [aColor, bColor] = colors;
+      const newAngles = [a, a + angle];
+
+      setColors([
+        aColor,
+        [newAngles[1], bColor[1], bColor[2]]
+      ]);
+
+      return newAngles;
+    });
+  }
 
   function onColorComponentChange(k: 0 | 1 | 2, angle: number) {
     const currentColors = colorsRef.current;
@@ -134,7 +152,10 @@ function App() {
             <Core colors={colors} />
           </ColorPicker>
         </ColorComponentsWrapper>
-        <Infobox angles={angles} />
+        <Infobox
+          angles={angles}
+          onChangeRatio={handleRatioChange}
+        />
         <OptionsBox />
       </main>
       <AppFooter />

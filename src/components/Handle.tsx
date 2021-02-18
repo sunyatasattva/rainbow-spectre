@@ -6,11 +6,12 @@ import { useOptions } from "hooks/useGlobalState";
 import { HSLColor } from "lib/types";
 import Color from "color";
 import { calculateWavelengthFromAngle, wavelengthToRGBA } from "lib/spectrum-calculator";
+import usePrevious from "hooks/usePrevious";
 
 interface Props {
+  angle: number;
   className?: string;
   handleColor?: HSLColor;
-  initialAngle: number;
   isReferenceHandle?: boolean;
   ignoreLock?: boolean;
   onChange: (value: number) => any;
@@ -20,17 +21,16 @@ interface Props {
 }
 
 export default function Handle(props: Props) {
-  const { handleColor } = props;
+  const { handleColor, onChange } = props;
   const [{ lockRatio }] = useOptions();
   const ignoreLock = props.ignoreLock || !lockRatio;
   const container = useRef<HTMLDivElement>(null);
   const [angle, setAngle] = useMouseRotation(
-    props.initialAngle,
+    props.angle,
     container as MutableRefObject<HTMLElement>
   );
   const angleRef = useRef<number>();
   const lockRef = useRef<boolean>(false);
-  const onChangeRef = useRef(props.onChange);
 
   angleRef.current = angle;
   lockRef.current = !ignoreLock;
@@ -46,17 +46,25 @@ export default function Handle(props: Props) {
     [setAngle]
   );
 
-  useEffect(
-    () => {
-      onChangeRef.current(angle);
-    },
-    [angle]
-  );
-
+  // This responds to changes of angle changes of other handles
+  // in the application.
   useEffect(
     () => { bus.on("angleChange", respondToChanges) },
     [respondToChanges]
   );
+
+  const previousAngles = usePrevious({ prop: props.angle, angle });
+
+  // When the angle is changed from above, use that. This is needed
+  // for when the angle is set through, e.g. the infobox changing
+  // the ratio.
+  useEffect(() => {
+    if(previousAngles?.angle !== angle) {
+      setAngle(angle);
+      onChange?.(angle);
+    }
+    else setAngle(props.angle);
+  }, [angle, previousAngles, props.angle, onChange, setAngle]);
 
   const handleBackgroundHue = handleColor ? handleColor[0] : angle;
   const alpha = handleColor ? wavelengthToRGBA(

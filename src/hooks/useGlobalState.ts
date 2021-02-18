@@ -13,7 +13,7 @@ export interface Options {
 
 export const defaultColors: HSLColor[] = [
   [50, 100, 50],
-  [200, 100, 50]
+  [198, 100, 50]
 ];
 
 const defaultOptions: Options = {
