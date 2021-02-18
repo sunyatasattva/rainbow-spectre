@@ -19,10 +19,12 @@ import useAngles from "hooks/useAngles";
 import AppHeader from "components/AppHeader";
 import AppFooter from "components/AppFooter";
 import { calculateAngleFromRatio } from "lib/utils";
+import useCents from "hooks/useCents";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
   angleCommit: (deg: number) => void;
+  centChange: (val: number, commit?: boolean) => void;
   coreClick: (longPress?: boolean) => void;
   corePressUp: () => void;
 }>();
@@ -51,6 +53,7 @@ function App() {
   const hash = useHash();
   
   useAngles(angles, options, setIsAutoplaying);
+  useCents([angles, setAngles], setColors);
 
   anglesRef.current = angles;
   colorsRef.current = colors;

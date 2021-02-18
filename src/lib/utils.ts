@@ -18,10 +18,10 @@ export function calculateAngleInterval(a: number, b: number) {
   return difference * CENTS_PER_DEGREE;
 }
 
-export function calculateAngleFromRatio(ratio: Ratio) {
-  const [num, den] = ratio;
+export function calculateAngleFromRatio(ratio: Ratio | number) {
+  if(typeof ratio !== "number") ratio = ratio[0] / ratio[1];
 
-  return ( logBase(2, num / den) * 360 ) % 360;
+  return ( logBase(2, ratio) * 360 ) % 360;
 }
 
 export function calculateAngleRatio(a: number, b: number) {
