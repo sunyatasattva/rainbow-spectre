@@ -13,18 +13,21 @@ interface Props {
 }
 interface CustomInputProps extends Props {
   children?: JSX.Element;
+  disabled?: never;
   label: string;
   onChange?: never;
   value?: never;
 }
 interface SwitchProps extends Props {
   children?: never;
+  disabled?: boolean;
   label: string;
   onChange: (name: keyof Options, val: boolean) => any;
+  optionName?: keyof Options;
   value: boolean;
 }
 
-const defaultIconProps = {
+export const defaultIconProps = {
   className: "icon",
   color: "#fff",
   size: 1
@@ -35,7 +38,7 @@ export default function Option(props: CustomInputProps | SwitchProps) {
 
   function handleChange(v: boolean) {
     props.onChange?.(
-      (camelCase(props.label) as keyof Options),
+      props.optionName || (camelCase(props.label) as keyof Options),
       v
     );
   }
@@ -50,43 +53,48 @@ export default function Option(props: CustomInputProps | SwitchProps) {
 
   return (
     <div className={`option ${props.className ? props.className : ""}`}>
-      <label>
-        <span className="label-text">
-          {props.icon ?
-            <Icon {...defaultIconProps} path={props.icon} />
-            : null
+      <div className="controls">
+        <label>
+          <span className="label-text">
+            {props.icon ?
+              <Icon {...defaultIconProps} path={props.icon} />
+              : null
+            }
+            {props.label}
+          </span>
+          {!props.children ?
+            <Switch
+              checked={props.value!}
+              checkedIcon={false}
+              disabled={props.disabled}
+              offColor="#444"
+              onColor="#4c9c4c"
+              onChange={handleChange}
+              uncheckedIcon={false}
+            />
+            :
+            <div className="input-wrapper">
+              {props.children}
+            </div>
           }
-          {props.label}
-        </span>
-        {!props.children ?
-          <Switch
-            checked={props.value!}
-            checkedIcon={false}
-            offColor="#444"
-            onColor="#4c9c4c"
-            onChange={handleChange}
-            uncheckedIcon={false}
-          />
-          :
-          <div className="input-wrapper">
-            {props.children}
+        </label>
+        {props.helpText ?
+          <div className="icon-container" onClick={toggleDescription}>
+            <Icon
+              {...defaultIconProps}
+              className={helpClassName()}
+              path={mdiInformationVariant}
+            />
           </div>
+          : null
         }
-      </label>
-      {props.helpText ?
-        <div className="icon-container" onClick={toggleDescription}>
-          <Icon
-            {...defaultIconProps}
-            className={helpClassName()}
-            path={mdiInformationVariant}
-          />
+      </div>
+      {showHelp && props.helpText ?
+        <div
+          className="help-text"
+          dangerouslySetInnerHTML={{ __html: props.helpText }}
+        >
         </div>
-        : null
-      }
-      {showHelp ?
-        <p className="help-text">
-          {props.helpText}
-        </p>
         : null
       }
     </div>

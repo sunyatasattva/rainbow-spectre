@@ -6,6 +6,20 @@
 	position:    relative;
 
   transition: text-indent 0.2s ease-in-out;
+
+  input {
+    background: transparent;
+    border: none;
+    color: #f3f3f3;
+    display: inline-block;
+    font-family: Judson, Georgia, serif;
+    font-size: 17px;
+    outline: 0;
+    padding: 0;
+    pointer-events: none;
+    user-select: none;
+    width: 40px;
+  }
   
   .cent-bar {
     border-bottom: 5px solid #fff;
@@ -18,5 +32,25 @@
     margin-left:   -5px;
   
     transition: left 0.2s ease-in-out;
+  }
+
+  .cents {
+    white-space: nowrap;
+  }
+
+  .react-draggable-number-input-container {
+    display: inline-block;
+    text-indent: 0 !important;
+    user-select: none;
+    position: relative;
+
+    &::after {
+      content: "¢";
+      cursor: ew-resize;
+      display: inline-block;
+      position: absolute;
+      right: 5px;
+      top: 0;
+    }
   }
 }

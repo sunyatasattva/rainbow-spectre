@@ -1,0 +1,53 @@
+.color-components-wrapper {
+  position: relative;
+
+  > .handle-container {
+    &.lightness-handle {
+      left: -30px;
+      top: -30px;
+    }
+
+    &.reference-handle {
+      .handle::after {
+        background-color: #aaa;
+        width: 5px;
+        height: 5px;
+        right: 5px;
+        top: 5px;
+      }
+    }
+
+    &.saturation-handle {
+      left: -15px;
+      top: -15px;
+    }
+
+    .handle {
+      background-color: #fff !important;
+      border: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  .components-rings {
+    position: absolute;
+    left: -30px;
+    top: -30px;
+    width: 360px;
+  }
+
+  .ring {
+    fill: transparent;
+    transform: rotate(-90deg);
+    transform-origin: 50%;
+
+    &.exit-done,
+    &.enter-done {
+      .ring-train {
+        transition: none !important;
+      }
+    }
+  }
+}

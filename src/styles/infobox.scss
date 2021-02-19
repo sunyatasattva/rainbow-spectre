@@ -6,6 +6,7 @@
   font-family: Judson, Georgia, serif;
   font-weight: 100;
   justify-content: space-around;
+  max-width: 100%;
   padding: 10px;
   position: relative;
   text-align: center;
@@ -13,11 +14,26 @@
   width: 483px;
   height: 300px;
 
+  .interval,
+  .note-details {
+    @media screen and (max-width: 600px) {
+      font-size: 88px;
+    }
+
+    font-size: 128px;
+    text-transform: uppercase;
+    height: 200px;
+
+    sub {
+      font-size: 0.7em;
+    }
+  }
+
   .badge {
     border-radius: 10px;
     display: inline-block;
-    font-size: 13px;
-    font-style: italic;
+    font-family: Sintony, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 12px;
     padding: 5px 8px;
     position: absolute;
     right: 10px;
@@ -34,9 +50,7 @@
   }
 
   .interval {
-    font-size: 128px;
-    text-transform: uppercase;
-    height: 185px;
+    cursor: pointer;
   }
 
   .interval-name {
@@ -46,6 +60,10 @@
     &.unknown-interval {
       opacity: 0;
     }
+  }
+
+  .note-accidentals {
+    font-size: 0.5em;
   }
 }
 

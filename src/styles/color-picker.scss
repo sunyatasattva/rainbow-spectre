@@ -3,9 +3,12 @@
   border: 1px solid white;
   overflow: hidden;
   position: relative;
-}
+  user-select: none;
+  z-index: 0;
+  -webkit-user-select: none;
 
-.color-picker-container canvas {
-  position: absolute;
-  left: 0;
+  canvas {
+    position: absolute;
+    left: 0;
+  }
 }

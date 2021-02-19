@@ -42,7 +42,7 @@ export default function WebkitPatch() {
 		AudioContext = (window as any).webkitAudioContext;
 		OscillatorNode = window.OscillatorNode;
 		
-		if( !AudioContext.hasOwnProperty("createGain") ) {
+		if( !AudioContext.prototype.hasOwnProperty("createGain") ) {
 			AudioContext.prototype.createGain = AudioContext.prototype.createGainNode;
 		}
 		

@@ -1,0 +1,35 @@
+.segmented-control-container {
+  background-color: #1b1b1b;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+
+  label {
+    background-color: #222;
+    border-radius: 5px;
+    padding: 5px 10px;
+    transition: background-color .15s ease-out;
+
+    @media screen and (max-width: 600px) {
+      font-size: 12px;
+    }
+
+    &:hover {
+      background-color: #2b2b2b;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &.is-selected {
+      background-color: #444;
+    }
+  }
+  
+  input {
+    display: none;
+  }
+}

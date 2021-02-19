@@ -1,0 +1,100 @@
+<svg width="605" height="115" xmlns="http://www.w3.org/2000/svg">
+<linearGradient id="lgSpectrum">
+<stop stop-color="#020005"/>
+<stop offset=".013514" stop-color="#020006"/>
+<stop offset=".027027" stop-color="#030008"/>
+<stop offset=".040541" stop-color="#04000A"/>
+<stop offset=".054054" stop-color="#06000D"/>
+<stop offset=".067568" stop-color="#080110"/>
+<stop offset=".081081" stop-color="#0C0117"/>
+<stop offset=".094595" stop-color="#11021F"/>
+<stop offset=".108108" stop-color="#17032A"/>
+<stop offset=".121622" stop-color="#1F053A"/>
+<stop offset=".135135" stop-color="#25084B"/>
+<stop offset=".148649" stop-color="#290A5C"/>
+<stop offset=".162162" stop-color="#2B0E6F"/>
+<stop offset=".175676" stop-color="#291380"/>
+<stop offset=".189189" stop-color="#1F237B"/>
+<stop offset=".202703" stop-color="#132E74"/>
+<stop offset=".216216" stop-color="#09376C"/>
+<stop offset=".229730" stop-color="#0A3E66"/>
+<stop offset=".243243" stop-color="#0C4667"/>
+<stop offset=".256757" stop-color="#0E4F6A"/>
+<stop offset=".270270" stop-color="#10596C"/>
+<stop offset=".283784" stop-color="#11636D"/>
+<stop offset=".297297" stop-color="#146E6F"/>
+<stop offset=".310811" stop-color="#177970"/>
+<stop offset=".324324" stop-color="#178672"/>
+<stop offset=".337838" stop-color="#1A9574"/>
+<stop offset=".351351" stop-color="#1DA375"/>
+<stop offset=".364865" stop-color="#1DB273"/>
+<stop offset=".378378" stop-color="#20C070"/>
+<stop offset=".391892" stop-color="#22CB6B"/>
+<stop offset=".405405" stop-color="#21D662"/>
+<stop offset=".418919" stop-color="#23E054"/>
+<stop offset=".432432" stop-color="#36E842"/>
+<stop offset=".445946" stop-color="#50ED28"/>
+<stop offset=".459459" stop-color="#73EB22"/>
+<stop offset=".472973" stop-color="#8FE722"/>
+<stop offset=".486486" stop-color="#A5E221"/>
+<stop offset=".500000" stop-color="#B9DC22"/>
+<stop offset=".513514" stop-color="#CBD621"/>
+<stop offset=".527027" stop-color="#DCCE20"/>
+<stop offset=".540541" stop-color="#ECC420"/>
+<stop offset=".554054" stop-color="#F2B735"/>
+<stop offset=".567568" stop-color="#F5AB42"/>
+<stop offset=".581081" stop-color="#F69F49"/>
+<stop offset=".594595" stop-color="#F7944B"/>
+<stop offset=".608108" stop-color="#F98848"/>
+<stop offset=".621622" stop-color="#FA7B42"/>
+<stop offset=".635135" stop-color="#FB6C39"/>
+<stop offset=".648649" stop-color="#FD5B2E"/>
+<stop offset=".662162" stop-color="#FC471F"/>
+<stop offset=".675676" stop-color="#F7300F"/>
+<stop offset=".689189" stop-color="#EA220D"/>
+<stop offset=".702703" stop-color="#D42215"/>
+<stop offset=".716216" stop-color="#BF2318"/>
+<stop offset=".729730" stop-color="#A92309"/>
+<stop offset=".743243" stop-color="#981F07"/>
+<stop offset=".756757" stop-color="#871B06"/>
+<stop offset=".770270" stop-color="#771805"/>
+<stop offset=".783784" stop-color="#671504"/>
+<stop offset=".797297" stop-color="#591303"/>
+<stop offset=".810811" stop-color="#4D1103"/>
+<stop offset=".824324" stop-color="#420E02"/>
+<stop offset=".837838" stop-color="#370C01"/>
+<stop offset=".851351" stop-color="#2E0A01"/>
+<stop offset=".864865" stop-color="#270801"/>
+<stop offset=".878378" stop-color="#210600"/>
+<stop offset=".891892" stop-color="#1E0400"/>
+<stop offset=".905405" stop-color="#1A0300"/>
+<stop offset=".918919" stop-color="#170200"/>
+<stop offset=".932432" stop-color="#130100"/>
+<stop offset=".945946" stop-color="#100100"/>
+<stop offset=".959459" stop-color="#0C0100"/>
+<stop offset=".972973" stop-color="#080100"/>
+<stop offset=".986486" stop-color="#060100"/>
+<stop offset="1" stop-color="#040100"/>
+</linearGradient>
+<g stroke="#444">
+<rect x="2.5" y="47" width="599" height="64" fill="url(#lgSpectrum)" stroke-linejoin="round"/>
+<path d="M2.5 4V43m114 4V4m72 0V43m120 0V4m36 0V43m48 0V4m210 0V43" fill="none"/>
+</g>
+<g fill="#fff" font-family="FreeSans" font-size="20" text-anchor="middle">
+  <text x="497.01" y="30.79">R</text>
+  <text x="368.47" y="30.68">O</text>
+  <text x="321.28" y="30.79">Y</text>
+  <text x="248.74" y="30.68">G</text>
+  <text x="152.16" y="30.79">B</text>
+  <text x="59.43" y="30.79">V</text>
+<g fill="#fff" font-size="14" transform="rotate(-90)">
+  <text x="-23.41" y="13.09">380</text>
+  <text x="-23.39" y="112.77">450</text>
+  <text x="-23.42" y="184.77">495</text>
+  <text x="-23.43" y="304.77">570</text>
+  <text x="-23.43" y="340.77">590</text>
+  <text x="-23.47" y="388.77">620</text>
+  <text x="-23.48" y="598.77">750</text>
+</g>
+</g>
+</svg>

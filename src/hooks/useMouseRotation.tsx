@@ -1,7 +1,8 @@
 import { MutableRefObject, useCallback, useState } from "react";
 import { bus } from "../app";
-import useMouseEventListener from "./useMouseEventListener";
-import { radToDeg } from "../lib/utils";
+import useInteractionEventListener,
+  { isTouchEvent } from "./useInteractionEventListener";
+import { radToDeg } from "../lib/math";
 
 export default function useMouseRotation(
   defaultAngle: number,
@@ -10,15 +11,25 @@ export default function useMouseRotation(
   const [angle, setAngle] = useState(defaultAngle);
 
   const handleRotation = useCallback(
-    (e: MouseEvent) => {
+    (e: MouseEvent | TouchEvent) => {
       if (!element.current)
         return;
+      
+      e.preventDefault();
+      
+      let clientX, clientY;
+
+      if( isTouchEvent(e) ) {
+        ({ clientX, clientY } = e.touches[0]);
+      } else {
+        ({ clientX, clientY } = e);
+      }
 
       const boundingRect = element.current.getBoundingClientRect();
 
       const delta = {
-        x: e.clientX - Math.round(boundingRect.left + boundingRect.width / 2),
-        y: (e.clientY - Math.round(boundingRect.top + boundingRect.height / 2)) * -1,
+        x: clientX - Math.round(boundingRect.left + boundingRect.width / 2),
+        y: (clientY - Math.round(boundingRect.top + boundingRect.height / 2)) * -1,
       };
 
       const radianAngle = (Math.atan2(delta.y, delta.x) - Math.PI / 2) * -1;
@@ -35,17 +46,22 @@ export default function useMouseRotation(
 
   function mouseDown() {
     document.addEventListener("mouseup", mouseUp);
+    document.addEventListener("touchend", mouseUp);
     document.addEventListener("mousemove", handleRotation);
+    document.addEventListener("touchmove", handleRotation)
   }
 
   function mouseUp() {
     document.removeEventListener("mouseup", mouseUp);
+    document.removeEventListener("touchend", mouseUp);
     document.removeEventListener("mousemove", handleRotation);
+    document.removeEventListener("touchmove", handleRotation);
 
     bus.emit("angleCommit", angle);
   }
 
-  useMouseEventListener(element, "mousedown", mouseDown);
+  useInteractionEventListener(element, "mousedown", mouseDown);
+  useInteractionEventListener(element, "touchstart", mouseDown);
 
   return [angle, setAngle] as const;
 }

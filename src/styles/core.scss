@@ -1,5 +1,6 @@
 .core-container {
   overflow: visible;
+  user-select: none;
   width: 200px;
   position: absolute;
   left: calc(50% - 100px);
@@ -7,20 +8,41 @@
 }
 
 .core {
+  user-select: none;
   transition: transform 0.2s ease-out;
 
-  &:hover {
-    transform: scale(1.05);
+  @media (hover: hover) {
+    &:hover {
+      transform: scale(1.075);
+    }
+
+    &:active {
+      transform: scale(1.025);
+    }
+  }
+
+  @media (hover: none) {
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  circle {
+    cursor: pointer;
   }
 
   .fish {
+    cursor: pointer;
     transform: scale(1);
     transform-box: fill-box;
     transform-origin: 50% 50%;
     transition: transform 0.2s ease-out;
 
-    &:hover {
-      cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &.is-pressed {
+      opacity: 0.9;
+      transform: scale(0.95);
     }
 
     .frequency-container {
@@ -30,11 +52,30 @@
 }
 
 .alt-pressed {
-  .core:hover .fish {
-    transform: scale(1);
-  }
+  .core {
+    &:hover,
+    &:active {
+      transform: scale(1);
 
-  .core .fish:hover {
+      .fish {
+        transform: scale(1);
+      }
+    }
+
+    .fish {
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(1.025);
+      }
+    }
+  }
+}
+
+.is-autoplaying {
+  .core {
     transform: scale(1.05);
   }
 }
