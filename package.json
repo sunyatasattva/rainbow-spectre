@@ -42,7 +42,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "http://suonoterapia.org/rainbow",
+  "homepage": "http://suonoterapia.org/sound-of-color",
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/lodash.camelcase": "^4.3.6",

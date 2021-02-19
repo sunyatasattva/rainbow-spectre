@@ -49,7 +49,7 @@ function App() {
   const [options] = useOptions();
   const isAltPressed = useKeyPress("Alt");
   const [isAutoplaying, setIsAutoplaying] = useState(false);
-  const [showInfobar, setShowInfobar] = useState(false);
+  const [showInfobar, setShowInfobar] = useState(true);
   const [pinInfobar, setPinInfobar] = useState(false);
   const hash = useHash();
   const previousOptions = usePrevious(options);
