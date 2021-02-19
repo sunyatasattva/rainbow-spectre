@@ -20,6 +20,7 @@ import AppHeader from "components/AppHeader";
 import AppFooter from "components/AppFooter";
 import { calculateAngleFromRatio } from "lib/utils";
 import useCents from "hooks/useCents";
+import usePrevious from "hooks/usePrevious";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
@@ -39,7 +40,7 @@ function hslFromAngle(angle: number) {
 }
 
 function App() {
-  const [angles, setAngles] = useState([50, 240]);
+  const [angles, setAngles] = useState([50, 198]);
   const anglesRef = useRef(angles);
   const [colors, setColors] = useColors();
   const colorsRef = useRef(colors);
@@ -51,6 +52,7 @@ function App() {
   const [showInfobar, setShowInfobar] = useState(false);
   const [pinInfobar, setPinInfobar] = useState(false);
   const hash = useHash();
+  const previousOptions = usePrevious(options);
   
   useAngles(angles, options, setIsAutoplaying);
   useCents([angles, setAngles], setColors);
@@ -105,17 +107,43 @@ function App() {
   }
 
   useEffect(() => {
-    if(options.mode === "absolute") {
-      setColors(
-        [hslFromAngle(anglesRef.current[0])]
-      );
-      setAngles( (angles) => [angles[0]] );
-    } else {
-      const [ a, b ] = defaultColors
-      setAngles( [a[0], b[0]] );
-      setColors(defaultColors)
+    const angles = anglesRef.current;
+
+    if(previousOptions?.mode !== options.mode) {
+      if(options.mode === "absolute") {
+        setColors(
+          [hslFromAngle(angles[0])]
+        );
+        setAngles( (angles) => [angles[0]] );
+      } else {
+        const [ a, b ] = defaultColors
+        setAngles( [a[0], b[0]] );
+        setColors(defaultColors)
+      }
     }
-  }, [options.mode, setColors])
+
+    
+  }, [options.mode, previousOptions, setColors]);
+
+  useEffect(() => {
+    const angles = anglesRef.current;
+    
+    if(
+      previousOptions
+      && previousOptions.showVisibleSpectrumWheel
+      !== options.showVisibleSpectrumWheel
+    ) {
+      if(options.showVisibleSpectrumWheel) {
+        setColors(
+          angles.map(hslFromAngle)
+        );
+      } else {
+        setColors(
+          angles.map(angle => [angle, 100, 50])
+        );
+      }
+    }
+  }, [previousOptions, options.showVisibleSpectrumWheel, setColors])
 
   useEffect(() => {
     if(hash) setShowInfobar(true);
@@ -151,7 +179,8 @@ function App() {
             radiusInner={110}
             radiusOuter={300}
             selectedColor={selectedColor}
-            value={colors}>
+            value={{ angles, colors }}
+          >
             <Core colors={colors} />
           </ColorPicker>
         </ColorComponentsWrapper>

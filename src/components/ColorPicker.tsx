@@ -21,7 +21,10 @@ interface Props {
   radiusInner?: number;
   radiusOuter?: number;
   selectedColor: 0 | 1;
-  value: HSLColor[];
+  value: {
+    angles: number[],
+    colors: HSLColor[]
+  }
 }
 
 interface State {
@@ -36,11 +39,18 @@ export default class ColorPicker extends React.Component<Props, State> {
   }
 
   state = {
-    angles: [this.props.value[0][0], this.props.value[1][0]],
-    value: this.props.value
+    angles: [...this.props.value.angles],
+    value: this.props.value.colors
   }
 
   private canvas = React.createRef<HTMLCanvasElement>();
+
+  private calculateSpectrumColorFromAngle(angle: number): HSLColor {
+    const wl = calculateWavelengthFromAngle(angle);
+    const hsl = Color.rgb( wavelengthToRGB(wl) ).hsl();
+
+    return hsl.array() as HSLColor;
+  }
 
   private handleChange(angle: number, i: number) {
     const newAngles = [...this.state.angles];
@@ -50,9 +60,7 @@ export default class ColorPicker extends React.Component<Props, State> {
     newAngles[i] = angle;
     
     if(this.props.mode === "spectrum") {
-      const wl = calculateWavelengthFromAngle(angle);
-      const hsl = Color.rgb( wavelengthToRGB(wl) ).hsl();
-      newVal[i] = hsl.array() as HSLColor;
+      newVal[i] = this.calculateSpectrumColorFromAngle(angle);
     } else {
       newVal[i] = [Math.round(angle), s, l];
     }
@@ -71,11 +79,15 @@ export default class ColorPicker extends React.Component<Props, State> {
 
   static getDerivedStateFromProps(props: Props, state: State) {
     const hsl = [state.angles[0], 100, 50];
-    if(props.value.length !== state.value.length) {
-      if(props.value.length > state.value.length) {
+    
+    if(props.value.colors.length !== state.value.length) {
+      if(props.value.colors.length > state.value.length) {
         return {
-          angles: [state.angles[0], props.value[1][0]],
-          value: [hsl, props.value[1]]
+          angles: [state.angles[0], props.value.angles[1]],
+          value: [
+            hsl,
+            [props.value.angles[1], 100, 50]
+          ]
         }
       } else {
         return {
@@ -145,15 +157,16 @@ export default class ColorPicker extends React.Component<Props, State> {
   private renderHandles() {
     const { selectedColor, value } = this.props;
 
-    return value.map((color, i) => {
+    return value.colors.map((color, i) => {
       const referenceHandleClassName = i === 0 ? "reference-handle" : "";
       const selectedHandleClassName = i === selectedColor ? "is-selected" : "";
+      const angle = value.angles[i];
 
       return (
         <Handle
           className={`${referenceHandleClassName} ${selectedHandleClassName}`}
           handleColor={this.props.mode === "spectrum" ? color : undefined}
-          angle={color[0]}
+          angle={angle}
           key={i}
           onChange={(angle) => this.handleChange(angle, i)}
           onClick={(angle) => this.props.onClickHandle?.(angle, i)}
