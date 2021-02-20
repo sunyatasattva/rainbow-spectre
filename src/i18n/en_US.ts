@@ -450,7 +450,7 @@ const en_US = {
   VERSION_INFO: `
     &nbsp;Version&nbsp;
     <a href="https://github.com/sunyatasattva/rainbow-spectre/releases/">
-      1.0.2
+      1.0.3
     </a>
   `
 } as const;

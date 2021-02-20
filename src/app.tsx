@@ -21,7 +21,7 @@ import AppFooter from "components/AppFooter";
 import { calculateAngleFromRatio } from "lib/utils";
 import useCents from "hooks/useCents";
 import usePrevious from "hooks/usePrevious";
-import useMobile from "hooks/useMobile";
+import useMobile from "hooks/useBreakpoint";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;

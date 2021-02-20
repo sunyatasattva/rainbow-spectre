@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
-export default function useMobile(breakpoint: number) {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= breakpoint);
+export default function useBreakpoint(breakpoint: number) {
+  const [isBreakpoint, setIsBreakpoint] = useState(
+    window.innerWidth <= breakpoint
+  );
 
   useEffect(() => {
     function handleWindowSizeChange() {
-      setIsMobile(
+      setIsBreakpoint(
         window.innerWidth <= breakpoint
       );
     }
@@ -16,5 +18,5 @@ export default function useMobile(breakpoint: number) {
     }
   }, [breakpoint]);
 
-  return isMobile;
+  return isBreakpoint;
 }

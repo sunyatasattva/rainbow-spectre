@@ -48,7 +48,7 @@ export default function Note(props: Props) {
           {frequency.toFixed(1)} Hz
         </div>
       </div>
-      <DifferenceBar value={note.cents} />
+      <DifferenceBar readonly value={note.cents} />
     </>
   )
 }
