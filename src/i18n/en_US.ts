@@ -1,4 +1,5 @@
 import { mdiCircleMultiple, mdiWaveform } from "@mdi/js";
+import overtoneLogo from "../images/overtone.svg";
 
 const ROOT_URL = `/sound-of-color/`;
 
@@ -278,8 +279,12 @@ const infoBar = {
     essential and distinctive part of the musical system of each culture.
     However, there are certain other simple mathematical ratios which
     are most often used cross-culturally (you can learn, experience, and
-    experiment more with them on <a href="/overtones">the overtone
-    spiral</a>).
+    experiment more with them on the
+    <a class="option-name" href="/overtones">
+      <img src=${overtoneLogo} alt="Representation of 8th Overtone" />
+      Overtones spiral
+    </a>
+    ).
   </p>
   <p>
     So we wondered: what if we tried to visualize on the color wheel
