@@ -6,6 +6,17 @@
   font-size: .81rem;
   justify-content: space-between;
   padding: 25px;
+  position: relative;
+  z-index: 2;
+
+  @media screen and (max-width: 600px) {
+    display: block;
+
+    .credits {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+  }
 
   .social {
     flex-grow: .8;
@@ -17,6 +28,10 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
+
+      @media screen and (max-width: 600px) {
+        justify-content: space-between;
+      }
     }
 
     li {

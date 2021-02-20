@@ -20,6 +20,7 @@
   nav {
     display: flex;
     flex-basis: 45%;
+    flex-grow: 1;
     justify-content: space-between;
     padding: 25px 25px 25px 0;
 
@@ -52,7 +53,7 @@
 
   .logo-container {
     display: inline-block;
-    flex-basis: 50%;
+    flex-basis: 100px;
     padding-left: 25px;
     height: 100%;
 

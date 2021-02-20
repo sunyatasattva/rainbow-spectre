@@ -21,6 +21,7 @@ import AppFooter from "components/AppFooter";
 import { calculateAngleFromRatio } from "lib/utils";
 import useCents from "hooks/useCents";
 import usePrevious from "hooks/usePrevious";
+import useMobile from "hooks/useMobile";
 
 export const bus = new EventBus<{
   angleChange: ({ oldVal, newVal }: { oldVal: number, newVal: number }) => void;
@@ -40,6 +41,7 @@ function hslFromAngle(angle: number) {
 }
 
 function App() {
+  const isMobile = useMobile(600);
   const [angles, setAngles] = useState([50, 198]);
   const anglesRef = useRef(angles);
   const [colors, setColors] = useColors();
@@ -49,11 +51,11 @@ function App() {
   const [options] = useOptions();
   const isAltPressed = useKeyPress("Alt");
   const [isAutoplaying, setIsAutoplaying] = useState(false);
-  const [showInfobar, setShowInfobar] = useState(true);
+  const [showInfobar, setShowInfobar] = useState(!isMobile);
   const [pinInfobar, setPinInfobar] = useState(false);
   const hash = useHash();
   const previousOptions = usePrevious(options);
-  
+
   useAngles(angles, options, setIsAutoplaying);
   useCents([angles, setAngles], setColors);
 
