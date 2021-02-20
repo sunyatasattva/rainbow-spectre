@@ -4,19 +4,16 @@ import {ReactComponent as PayPalIcon} from "../images/paypal-icon.svg";
 import { mdiFacebook, mdiGithub, mdiTwitter } from "@mdi/js";
 import Icon from "@mdi/react";
 import { FacebookShareButton, TwitterShareButton } from "react-share";
+import { translate as t} from "lib/i18n";
 
 export default function AppFooter() {
   return (
     <footer className="app-footer">
       <p className="credits">
-        Designed and crafted with joy by&nbsp;
-        <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> and&nbsp;
-        <a href="https://www.facebook.com/skye.lofvander">Skye Løfvander</a>.
-        <span className="version">
-          &nbsp;Version&nbsp;
-          <a href="https://github.com/sunyatasattva/rainbow-spectre/releases/">
-          1.0.0
-          </a>
+        <span dangerouslySetInnerHTML={{ __html: t("CREDITS")}}></span>
+        <span className="version" dangerouslySetInnerHTML={{
+          __html: t("VERSION_INFO")
+        }}>
         </span>
       </p>
       <div className="social">
@@ -24,29 +21,29 @@ export default function AppFooter() {
           <li className="donate">
             <a href="https://paypal.me/sunyatasattva" >
               <PayPalIcon />
-              <span>Donate</span>
+              <span>{t("SOCIAL_DONATE")}</span>
             </a>
           </li>
           <li className="share-facebook">
             <FacebookShareButton
               className="facebook-button"
-              url="https://suonoterapia.org/rainbow">
+              url="https://suonoterapia.org/sound-of-color">
               <Icon
                 path={mdiFacebook}
                 size={.5}
               />
-              Share
+              {t("SOCIAL_SHARE")}
             </FacebookShareButton>
           </li>
           <li className="share-twitter">
             <TwitterShareButton
-              url="https://suonoterapia.org/rainbow"
+              url="https://suonoterapia.org/sound-of-color"
               >
               <Icon
                 path={mdiTwitter}
                 size={.5}
               />
-              Tweet
+              {t("SOCIAL_TWEET")}
             </TwitterShareButton>
           </li>
           <li className="github">
@@ -55,7 +52,7 @@ export default function AppFooter() {
                 path={mdiGithub}
                 size={.5}
               />
-              Source
+              {t("SOCIAL_SOURCE")}
             </a>
           </li>
         </ul>

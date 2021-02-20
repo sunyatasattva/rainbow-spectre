@@ -44,7 +44,7 @@ export default function Infobar(props: Props) {
   const hash = useHash();
 
   return (
-    <CSSTransition in={props.active} timeout={0}>
+    <CSSTransition appear in={props.active} timeout={1000}>
       <aside className="infobar">
         <h1 className="section-title">
           {t("INFOBAR_TITLE")}
