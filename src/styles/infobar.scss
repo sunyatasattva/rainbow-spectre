@@ -16,7 +16,9 @@
   font-family: Sintony, Roboto, Helvetica, Arial, sans-serif;
   font-size: 0.83rem;
   max-width: 500px;
-  overflow: scroll;
+  padding-bottom: 2em;
+  overflow-x: hidden;
+  overflow-y: scroll;
   text-align: left;
   user-select: text;
   width: 50%;
