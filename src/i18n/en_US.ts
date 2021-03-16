@@ -1,7 +1,8 @@
 import { mdiCircleMultiple, mdiWaveform } from "@mdi/js";
+import projectInfo from "../../package.json";
 import overtoneLogo from "../images/overtone.svg";
 
-const ROOT_URL = `/sound-of-color/`;
+const ROOT_URL = `/${projectInfo.homepage.split("/")[3]}/`;
 
 const infoBar = {
   HOW_DO_ENDS_MEET_CONTENT: `
@@ -313,7 +314,7 @@ const infoBar = {
     end of the spectrum is where light starts appearing to us as red.
     Increasing the frequency, we get within the small range of all (humanly)
     visible colors; then, at some point, we perceive the violet tones and
-    finallt the wave fades back into invisibility—being too fast (or short)
+    finally the wave fades back into invisibility—being too fast (or short)
     for our eyes to perceive—in what we call—you guessed it—the
     <em>ultraviolets</em>.
 
@@ -450,7 +451,7 @@ const en_US = {
   VERSION_INFO: `
     &nbsp;Version&nbsp;
     <a href="https://github.com/sunyatasattva/rainbow-spectre/releases/">
-      1.0.4
+      ${projectInfo.version}
     </a>
   `
 } as const;

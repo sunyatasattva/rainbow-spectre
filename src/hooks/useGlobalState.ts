@@ -1,9 +1,11 @@
+import dictionary from "i18n";
 import { AllowedHarmonicLimit, HSLColor } from "lib/types";
 import { createGlobalState } from "react-hooks-global-state";
 
 export interface Options {
   autoplay: boolean;
   baseFrequency: number;
+  currentLocale: keyof typeof dictionary,
   harmonicLimit: AllowedHarmonicLimit;
   lockRatio: boolean;
   mode: "interval" | "absolute";
@@ -19,6 +21,7 @@ export const defaultColors: HSLColor[] = [
 const defaultOptions: Options = {
   autoplay: true,
   baseFrequency: 220,
+  currentLocale: "en_US",
   harmonicLimit: 5,
   lockRatio: false,
   mode: "interval",

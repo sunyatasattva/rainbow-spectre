@@ -6,6 +6,7 @@ import { translate as t } from "lib/i18n";
 import Icon from "@mdi/react";
 import { mdiLinkBoxVariant, mdiPin, mdiPinOff } from "@mdi/js";
 import { defaultIconProps } from "./Option";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface Props {
   active: boolean;
@@ -20,34 +21,35 @@ interface Section {
   title: string;
 }
 
-const sections: Record<string, Section> = {
-  "what-is-this": {
-    content: t("WHAT_IS_THIS_CONTENT"),
-    title: t("WHAT_IS_THIS_TITLE")
-  },
-  "how-do-the-ends-meet": {
-    content: t("HOW_DO_ENDS_MEET_CONTENT"),
-    title: t("HOW_DO_ENDS_MEET_TITLE")
-  },
-  "what-about-sound": {
-    content: t("WHAT_ABOUT_SOUND_CONTENT"),
-    title: t("WHAT_ABOUT_SOUND_TITLE")
-  },
-  "one-color-one-sound": {
-    content: t("ONE_COLOR_ONE_SOUND_CONTENT"),
-    title: t("ONE_COLOR_ONE_SOUND_TITLE")
-  }
-}
-
 export default function Infobar(props: Props) {
   const [isPinned, setIsPinned] = props.usePin;
   const hash = useHash();
+
+  const sections: Record<string, Section> = {
+    "what-is-this": {
+      content: t("WHAT_IS_THIS_CONTENT"),
+      title: t("WHAT_IS_THIS_TITLE")
+    },
+    "how-do-the-ends-meet": {
+      content: t("HOW_DO_ENDS_MEET_CONTENT"),
+      title: t("HOW_DO_ENDS_MEET_TITLE")
+    },
+    "what-about-sound": {
+      content: t("WHAT_ABOUT_SOUND_CONTENT"),
+      title: t("WHAT_ABOUT_SOUND_TITLE")
+    },
+    "one-color-one-sound": {
+      content: t("ONE_COLOR_ONE_SOUND_CONTENT"),
+      title: t("ONE_COLOR_ONE_SOUND_TITLE")
+    }
+  }
 
   return (
     <CSSTransition appear in={props.active} timeout={1000}>
       <aside className="infobar">
         <h1 className="section-title">
           {t("INFOBAR_TITLE")}
+          <LanguageSwitcher direction="bottom" />
           <div className="toggle-button-container">
             <button
               className={
