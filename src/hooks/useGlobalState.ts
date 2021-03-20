@@ -1,4 +1,5 @@
 import dictionary from "i18n";
+import { normalizeLanguageCode } from "lib/i18n";
 import { AllowedHarmonicLimit, HSLColor } from "lib/types";
 import { createGlobalState } from "react-hooks-global-state";
 
@@ -18,10 +19,14 @@ export const defaultColors: HSLColor[] = [
   [198, 100, 50]
 ];
 
+
+const userLang = normalizeLanguageCode(navigator.language);
+
 const defaultOptions: Options = {
   autoplay: true,
   baseFrequency: 220,
-  currentLocale: "en_US",
+  currentLocale: dictionary[userLang as keyof typeof dictionary]
+    ? userLang! : "en_US",
   harmonicLimit: 5,
   lockRatio: false,
   mode: "interval",
