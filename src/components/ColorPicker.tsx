@@ -29,9 +29,16 @@ interface Props {
 
 interface State {
   angles: number[];
+  prevMode: "hue" | "spectrum";
   value: HSLColor[];
 }
 
+function calculateSpectrumColorFromAngle(angle: number): HSLColor {
+  const wl = calculateWavelengthFromAngle(angle);
+  const hsl = Color.rgb( wavelengthToRGB(wl) ).hsl();
+
+  return hsl.array() as HSLColor;
+}
 export default class ColorPicker extends React.Component<Props, State> {
   static defaultProps = {
     radiusInner: 0,
@@ -40,17 +47,11 @@ export default class ColorPicker extends React.Component<Props, State> {
 
   state = {
     angles: [...this.props.value.angles],
+    prevMode: this.props.mode,
     value: this.props.value.colors
   }
 
   private canvas = React.createRef<HTMLCanvasElement>();
-
-  private calculateSpectrumColorFromAngle(angle: number): HSLColor {
-    const wl = calculateWavelengthFromAngle(angle);
-    const hsl = Color.rgb( wavelengthToRGB(wl) ).hsl();
-
-    return hsl.array() as HSLColor;
-  }
 
   private handleChange(angle: number, i: number) {
     const newAngles = [...this.state.angles];
@@ -60,7 +61,7 @@ export default class ColorPicker extends React.Component<Props, State> {
     newAngles[i] = angle;
     
     if(this.props.mode === "spectrum") {
-      newVal[i] = this.calculateSpectrumColorFromAngle(angle);
+      newVal[i] = calculateSpectrumColorFromAngle(angle);
     } else {
       newVal[i] = [Math.round(angle), s, l];
     }
@@ -94,6 +95,28 @@ export default class ColorPicker extends React.Component<Props, State> {
           angles: [state.angles[0]],
           value: [hsl]
         }
+      }
+    } else if(props.mode !== state.prevMode) {
+      const [firstAngle, secondAngle] = props.value.angles;
+
+      if(props.mode === "hue") {
+        return {
+          ...state,
+          prevMode: props.mode,
+          value: [
+            firstAngle, 100, 50,
+            secondAngle, 100, 50,
+          ]
+        };
+      } else {
+        return {
+          ...state,
+          prevMode: props.mode,
+          value: [
+            calculateSpectrumColorFromAngle(firstAngle),
+            calculateSpectrumColorFromAngle(secondAngle)
+          ]
+        };
       }
     } else {
       return null;
