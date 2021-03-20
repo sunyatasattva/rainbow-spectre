@@ -508,7 +508,8 @@ const intervals = {
   "Septimal supermajor seventh": "Septimal let forstørret septim",
   "Just augmented seventh": "Ren forstørret septim",
   "Semi-diminished octave": "Halvformindsket oktav",
-  "Perfect octave": "Perfekt oktav"
+  "Perfect octave": "Perfekt oktav",
+  "Unknown interval": "Ukendt interval"
 };
 
 const da_DA = {
