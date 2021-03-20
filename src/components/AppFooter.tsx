@@ -5,10 +5,12 @@ import { mdiFacebook, mdiGithub, mdiTwitter } from "@mdi/js";
 import Icon from "@mdi/react";
 import { FacebookShareButton, TwitterShareButton } from "react-share";
 import { translate as t} from "lib/i18n";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function AppFooter() {
   return (
     <footer className="app-footer">
+      <LanguageSwitcher direction="top" />
       <p className="credits">
         <span dangerouslySetInnerHTML={{ __html: t("CREDITS")}}></span>
         <span className="version" dangerouslySetInnerHTML={{

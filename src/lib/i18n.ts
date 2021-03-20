@@ -8,7 +8,9 @@ type TranslationParams = Record<string, string | number>
   & TranslationWithDefault;
 
 const DEFAULT_LOCALE: keyof typeof dictionary = "en_US";
-let currentLocale: keyof typeof dictionary = "en_US";
+let currentLocale:
+  keyof typeof dictionary = normalizeLanguageCode(navigator.language)
+  || DEFAULT_LOCALE;
 
 function interpolate(
   message: string,
@@ -21,6 +23,12 @@ function interpolate(
   return message.replace(/\{(\w+)\}/g, (_, match) => {
     return params[match].toString();
   });
+}
+
+export function normalizeLanguageCode(code: string) {
+  if( code.includes("da") ) return "da_DA";
+  if( code.includes("en") ) return "en_US";
+  if( code.includes("it") ) return "it_IT";
 }
 
 export function setLocale(locale: keyof typeof dictionary) {

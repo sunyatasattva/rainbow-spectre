@@ -1,14 +1,15 @@
 import { mdiCircleMultiple, mdiWaveform } from "@mdi/js";
+import projectInfo from "../../package.json";
 import overtoneLogo from "../images/overtone.svg";
 
-const ROOT_URL = `/sound-of-color/`;
+const ROOT_URL = `/${projectInfo.homepage.split("/")[3]}/`;
 
 const infoBar = {
   HOW_DO_ENDS_MEET_CONTENT: `
   <p>
     To put it bluntly, it's a trick of our perception. Well… like
     everything else, I suppose. The thing is: our brains are surprisingly
-    good at pattern recognition. That seems our primary meaning-making
+    good at pattern recognition. That seems to be our primary meaning-making
     mechanism: we do not care about things in isolation, but only about
     relationships; things that do not form regularities, or orderly
     perceptions, we call “noise” and we filter them out very efficiently
@@ -119,12 +120,12 @@ const infoBar = {
     </strong> mode. Starting
     from invisible, infrared wavelengths, you can follow clockwise as the
     wavelengths become shorter and we see all the rainbow colors, until
-    we fade back into invisibility on the ultraviolets wavelengths.
+    we fade back into invisibility on the ultraviolet wavelengths.
   </p>
   <p>
-    However, life is almost never as pure as physics, and the light we
+    However, life is almost never as pure as physics, and the light which
     come across is oftentimes not a pure wave: it is instead a mix of
-    many waves, which get interpreted by our eyes as being of one color.
+    many waves, which gets interpreted by our eyes as being of one color.
     As such, a yellow color might be the result of very different mixtures
     of red and green light.
   </p>
@@ -159,7 +160,7 @@ const infoBar = {
     the theory goes like this: each pure color is a wave with a certain
     frequency. The frequency is obviously very high, but what would happen
     if we took that frequency and <em>slowed it down</em> until it reached
-    the range of audible, or even musical frequencies? Keeping in mind
+    the range of audible, or even musical, frequencies? Keeping in mind
     <a href="#what-about-sound">what we learned about the octave</a>, since
     the significance of the sound doesn't change with each circle doubling
     its frequency, we should get an equivalent sound that we can play
@@ -288,7 +289,7 @@ const infoBar = {
   </p>
   <p>
     So we wondered: what if we tried to visualize on the color wheel
-    the same proportions the we usually find harmonious in music? That's
+    the same proportions that we usually find harmonious in music? That's
     how this experiment was born.
   </p>`,
   WHAT_ABOUT_SOUND_TITLE: `Get to the point! What about sound?`,
@@ -313,7 +314,7 @@ const infoBar = {
     end of the spectrum is where light starts appearing to us as red.
     Increasing the frequency, we get within the small range of all (humanly)
     visible colors; then, at some point, we perceive the violet tones and
-    finallt the wave fades back into invisibility—being too fast (or short)
+    finally the wave fades back into invisibility—being too fast (or short)
     for our eyes to perceive—in what we call—you guessed it—the
     <em>ultraviolets</em>.
 
@@ -329,7 +330,7 @@ const infoBar = {
   </p>
   <p>
     So, you might be thinking: that sounds a lot like a line, rather than
-    a circle. How would the two ends meets?
+    a circle. How would the two ends meet?
   </p>`,
   WHAT_IS_THIS_TITLE: `What am I watching?`
 }
@@ -450,7 +451,7 @@ const en_US = {
   VERSION_INFO: `
     &nbsp;Version&nbsp;
     <a href="https://github.com/sunyatasattva/rainbow-spectre/releases/">
-      1.0.4
+      ${projectInfo.version}
     </a>
   `
 } as const;
