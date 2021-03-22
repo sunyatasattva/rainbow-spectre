@@ -317,10 +317,11 @@ const infoBar = {
   WHAT_IS_THIS_CONTENT: `
   <p>
     Det, du kan se, er en farvecirkel, men en sådan har du sikkert stiftet
-    bekendtskab med allerede. Har du nogensinde undret dig over, at de 
-    spektrale farver, som i en regnbue ligger i lag fra violet nederst til
-    rød øverst, her gengives, så disse to er mødes som nabofarver i en sluttet
-    cirkel? Det er et spændende spørgsmål, og årsagen er kompleks.
+    bekendtskab med allerede. Har du nogensinde undret dig over, at i en
+    regnbues spektrale farver er rød og violet adskilt i top og bund af
+    alle de mellemliggende farvetoner, men i en farvecirkel mødes  disse 
+    to som nabofarver i en sluttet kreds? Det er et spændende spørgsmål,
+    og årsagen er kompleks.
   </p>
   <p>
     Farve er, som du sikkert ved, et udtryk for lys, men ikke alt lys opleves
@@ -336,10 +337,11 @@ const infoBar = {
     opfatte dem, for <em>infrarøde</em>. Det er i denne ende af frekvens- og
     bølgelængde-spektret, at lys begynder at give os oplevelsen af farven rød.
     I takt med, at frekvensen stiger og bølgelængden mindskes, får vi oplevelsen
-    af de synlige farver, indtil vi når de violette nuancer. Derfra vil 
-    farveoplevelsen igen forsvinde, da frekvenserne bliver for høje og 
-    bølgelængderne for korte til, at vores øjne kan opfange dem, og så har vi
-    – som du måske har gættet – nået den <em>ultraviolette</em> del af spektret.
+    af spektrets synlige farver via orange, gul og grøn til blå, indtil vi når
+    de violette nuancer. Derfra vil farveoplevelsen igen forsvinde, da 
+    frekvenserne bliver for høje og bølgelængderne for korte til, at vores øjne
+    kan opfange dem, og så har vi – som du måske har gættet – nået den
+    <em>ultraviolette</em> del af spektret.
 
     <figure>
       <img src="${ROOT_URL}images/em-spectrum.svg" />
@@ -517,7 +519,7 @@ const da_DA = {
   ...intervals,
   CREDITS: `
     Formgivet og programmeret af &nbsp;
-    <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> and&nbsp;
+    <a href="https://facebook.com/sunyatasattva">Marco Lucio Giannotta</a> og&nbsp;
     <a href="https://www.facebook.com/skye.lofvander">Skye Løfvander</a>.
   `,
   OPTION_AUTOPLAY_HELP: `
