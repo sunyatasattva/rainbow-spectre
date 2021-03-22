@@ -778,37 +778,37 @@ export default intervals;
 
 export const equallyTemperedIntervals: Record<number, Interval> = {
   100: {
-    "name": "Tempered Minor second"
+    "name": "Tempered minor second"
   },
   200: {
-    "name": "Tempered Major second"
+    "name": "Tempered major second"
   },
   300: {
-    "name": "Tempered Minor third"
+    "name": "Tempered minor third"
   },
   400: {
-    "name": "Tempered Major third"
+    "name": "Tempered major third"
   },
   500: {
-    "name": "Tempered Fourth"
+    "name": "Tempered fourth"
   },
   600: {
-    "name": "Tempered Tritone"
+    "name": "Tempered tritone"
   },
   700: {
-    "name": "Tempered Fifth"
+    "name": "Tempered fifth"
   },
   800: {
-    "name": "Tempered Minor sixth"
+    "name": "Tempered minor sixth"
   },
   900: {
-    "name": "Tempered Major sixth"
+    "name": "Tempered major sixth"
   },
   1000: {
-    "name": "Tempered Minor seventh"
+    "name": "Tempered minor seventh"
   },
   1100: {
-    "name": "Tempered Major seventh"
+    "name": "Tempered major seventh"
   }
 }
 
