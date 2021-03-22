@@ -56,6 +56,9 @@ export default class ColorPicker extends React.Component<Props, State> {
   private handleChange(angle: number, i: number) {
     const newAngles = [...this.state.angles];
     const newVal = [...this.state.value];
+
+    if( !newVal[i] ) return;
+
     const [/**/, s, l] = newVal[i];
     
     newAngles[i] = angle;
