@@ -514,7 +514,7 @@ const intervals = {
   "Unknown interval": "Ukendt interval"
 };
 
-const da_DA = {
+const da_DK = {
   ...infoBar,
   ...intervals,
   CREDITS: `
@@ -636,4 +636,4 @@ const da_DA = {
   `
 } as const;
 
-export default da_DA;
+export default da_DK;

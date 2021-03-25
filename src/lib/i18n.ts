@@ -26,7 +26,7 @@ function interpolate(
 }
 
 export function normalizeLanguageCode(code: string) {
-  if( code.includes("da") ) return "da_DA";
+  if( code.includes("da") ) return "da_DK";
   if( code.includes("en") ) return "en_US";
   if( code.includes("it") ) return "it_IT";
 }

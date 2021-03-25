@@ -6,7 +6,7 @@ import { setLocale } from "lib/i18n";
 import { setStateProp } from "lib/utils";
 
 const languagesMap = {
-  "da_DA": "Dansk",
+  "da_DK": "Dansk",
   "en_US": "English",
   "it_IT": "Italiano"
 } as const;
