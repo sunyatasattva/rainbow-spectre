@@ -118,8 +118,8 @@ function App() {
         );
         setAngles( (angles) => [angles[0]] );
       } else {
-        const [ a, b ] = defaultColors
-        setAngles( [a[0], b[0]] );
+        const [ /**/, b ] = defaultColors
+        setAngles( (angles) => [angles[0], b[0]] );
         setColors(defaultColors)
       }
     }

@@ -9,6 +9,7 @@ import {
   wavelengthToRGBA
 } from "lib/spectrum-calculator";
 import { degToRad } from "lib/math";
+import { defaultColors } from "hooks/useGlobalState";
 
 interface Props {
   mode: "hue" | "spectrum";
@@ -82,33 +83,16 @@ export default class ColorPicker extends React.Component<Props, State> {
   }
 
   static getDerivedStateFromProps(props: Props, state: State) {
-    const hsl = [state.angles[0], 100, 50];
-    
-    if(props.value.colors.length !== state.value.length) {
-      if(props.value.colors.length > state.value.length) {
-        return {
-          angles: [state.angles[0], props.value.angles[1]],
-          value: [
-            hsl,
-            [props.value.angles[1], 100, 50]
-          ]
-        }
-      } else {
-        return {
-          angles: [state.angles[0]],
-          value: [hsl]
-        }
-      }
-    } else if(props.mode !== state.prevMode) {
-      const [firstAngle, secondAngle] = props.value.angles;
-
+    if(props.mode !== state.prevMode) {
+      const [firstAngle] = props.value.angles;
+      
       if(props.mode === "hue") {
         return {
           ...state,
           prevMode: props.mode,
           value: [
-            firstAngle, 100, 50,
-            secondAngle, 100, 50,
+            [firstAngle, 100, 50],
+            defaultColors[1]
           ]
         };
       } else {
@@ -116,8 +100,7 @@ export default class ColorPicker extends React.Component<Props, State> {
           ...state,
           prevMode: props.mode,
           value: [
-            calculateSpectrumColorFromAngle(firstAngle),
-            calculateSpectrumColorFromAngle(secondAngle)
+            calculateSpectrumColorFromAngle(firstAngle)
           ]
         };
       }
