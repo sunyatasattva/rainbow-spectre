@@ -63,6 +63,7 @@ export default function OptionsBox() {
           icon={mdiMotionPlay}
           onChange={setOption}
           label={t("OPTION_AUTOPLAY_LABEL")}
+          optionName="autoplay"
           value={options.autoplay}
         />
         {options.mode === "interval" ?
@@ -71,7 +72,8 @@ export default function OptionsBox() {
               className="option-reference-frequency"
               helpText={t("OPTION_REFERENCE_HELP")}
               icon={mdiRecordCircleOutline}
-              label={t("OPTION_REFERENCE_LABEL")}>
+              label={t("OPTION_REFERENCE_LABEL")}
+            >
               <input
                 id="reference-frequency"
                 max="440"
@@ -113,6 +115,7 @@ export default function OptionsBox() {
               icon={mdiPalette}
               onChange={setOption}
               label={t("OPTION_COLOR_SLIDERS_LABEL")}
+              optionName="showColorSliders"
               value={options.showColorSliders}
             />
             <Option
@@ -120,6 +123,7 @@ export default function OptionsBox() {
               icon={mdiAbTesting}
               onChange={setOption}
               label={t("OPTION_LOCK_RATIO_LABEL")}
+              optionName="lockRatio"
               value={options.lockRatio}
             />
             <Option
@@ -132,6 +136,7 @@ export default function OptionsBox() {
                 }
               }
               label={t("OPTION_VISIBLE_SPECTRUM_LABEL")}
+              optionName="showVisibleSpectrumWheel"
               value={options.showVisibleSpectrumWheel}
             />
           </>
